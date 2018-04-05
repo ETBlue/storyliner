@@ -22,14 +22,34 @@ class App extends Component {
       const lines = text.split('\n')
       const headers = lines[1].split(',')
       let result = []
+
       for (let i = 2; i < lines.length; i++){
-        let obj = {}
+        let obj = {quote: []}
+        let author = ''
         const columns = lines[i].split(',')
+
         headers.forEach((header, index) => {
-          obj[header] = columns[index]
+          if (header === '_quote_author') {
+            author = columns[index]
+          } else if (header === 'quote_content') {
+            if (columns[index].length !== 0) {
+              obj.quote = columns[index].split(';').map((q) => {
+                return {author: author, content: q}
+              })
+            }
+          } else {
+            obj[header] = columns[index]
+          }
         })
-        result.push(obj)
+
+        // when the date colume is empty, merge quotes
+        if (obj.date.length === 0) {
+          result[result.length - 1].quote = result[result.length - 1].quote.concat(obj.quote)
+        } else {
+          result.push(obj)
+        }
       }
+
       return result
     }
 
@@ -53,72 +73,76 @@ class App extends Component {
 
   render() {
 
-    const renderQuote = (text, author) => {
-      if (text.length === 0) {
+    const renderQuote = (quotes) => {
+      if (quotes.length === 0) {
         return
       }
-      const quotes = text.split(';').map((content, index) => (
+      const quotesJSX = quotes.map((data, index) => (
         <blockquote key={index} >
           <i className='quote left icon' />
           <i className='quote right icon' />
-          {content}<span style={{fontSize: '0.85em', opacity: '0.85', display:'inline-block'}} > — {author}</span>
+          {data.content}<span style={{fontSize: '0.85em', opacity: '0.85', display:'inline-block'}} > — {data.author}</span>
         </blockquote>
       ))
       return(
         <div className='ui secondary segment'>
-          {quotes}
+          {quotesJSX}
         </div>
       )
     }
 
-    const Menu = this.state.data.map((content, index) => (
-      <a key={index} className='item'>
-        {content.date}
-      </a>
-    ))
+    let Menu = []
 
-    const Relation = this.state.data.map((content, index) => (
-      <article key={index}>
-      <div className='ui two column stackable grid' >
-        <div className='eleven wide column'>
-        <div className='ui segments'>
-          <div className='ui segment'>
-            <p>
-              <a className='ui large horizontal label' data-role={content._subject}>
-                {content._subject}
-              </a>
-              <span>
-              {content.action}
-              </span>
-              <a className='ui large horizontal label' data-role={content._object}>
-                {content._object}
-              </a>
-              <span>
-              {content.content_topic}
-              </span>
-            </p>
-            <p style={{marginTop: '-0.5rem', opacity: '0.85', fontSize: '0.85em'}} >
-              {content.via}{content.channel}{content.content_carrier} — 
-              <a href={content["ref_url"]} target='_blank'>
-              {content.ref_title.length > 0 ?
-                content.ref_title : content.ref_url}
-              </a>
+    const Relation = this.state.data.map((content, index) => {
+      Menu.push(
+        <a key={index} className='item'>
+          {content.date}
+        </a>
+      )
+
+      return (
+        <article key={index}>
+        <div className='ui two column stackable grid' >
+          <div className='eleven wide column'>
+          <div className='ui segments'>
+            <div className='ui segment'>
+              <p>
+                <a className='ui large horizontal label' data-role={content._subject}>
+                  {content._subject}
+                </a>
+                <span>
+                {content.action}
+                </span>
+                <a className='ui large horizontal label' data-role={content._object}>
+                  {content._object}
+                </a>
+                <span>
+                {content.content_topic}
+                </span>
+              </p>
+              <p style={{marginTop: '-0.5rem', opacity: '0.85', fontSize: '0.85em'}} >
+                {content.via}{content.channel}{content.content_carrier} — 
+                <a href={content["ref_url"]} target='_blank'>
+                {content.ref_title.length > 0 ?
+                  content.ref_title : content.ref_url}
+                </a>
+              </p>
+            </div>
+            {renderQuote(content.quote)}
+          </div>
+          </div>
+          <div className='five wide column'>
+            <h4 className='ui dividing header' style={{color: 'rgba(0,0,0,0.6)'}} >
+              圍觀筆記
+            </h4>
+            <p style={{opacity: '0.85'}} >
+            {content.note}
             </p>
           </div>
-          {renderQuote(content.quote_content, content._quote_author)}
         </div>
-        </div>
-        <div className='five wide column'>
-          <h4 className='ui dividing header' style={{color: 'rgba(0,0,0,0.6)'}} >
-            圍觀筆記
-          </h4>
-          <p style={{opacity: '0.85'}} >
-          {content.note}
-          </p>
-        </div>
-      </div>
-      </article>
-    ))
+        </article>
+      )
+    })
 
     return (
       <div className="App">
@@ -132,9 +156,11 @@ class App extends Component {
           </h1>
         </header>
         <section className="App-body ui container" style={{display: 'flex'}} >
-          <nav className='ui vertical secondary pointing menu' style={{width: '5rem', flex: 'none'}}>
-          {Menu}
-          </nav>
+        <div style={{width: '5rem', flex: 'none'}}>
+            <nav className='ui vertical fluid secondary pointing menu'>
+              {Menu}
+            </nav>
+        </div>
           <div style={{width: '100%', paddingLeft: '2rem'}} >
           {Relation}
           </div>
