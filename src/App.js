@@ -11,7 +11,8 @@ class App extends Component {
     this.state = {
       isLoaded: false,
       data: [],
-      title: ''
+      title: '',
+      subtitle: ''
     }
 
   }
@@ -54,14 +55,19 @@ class App extends Component {
     }
 
     const csv2Title = (text) => {
-      return text.split('\n')[0].split(',')[0]
+      const titles = text.split('\n')[0].split(',')
+      return {
+        title: titles[0],
+        subtitle: titles[1]
+      }
     }
 
     fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8ukLhLNcPLc20_7J2ju6_e_KSLW2RW0LDu_1_4__IvaVUCO1BhZ9RGwefcWkOVRQ8XjlYv6MSe8oA/pub?gid=1467627135&single=true&output=csv")
       .then((respond) => {
         respond.text().then(text => {
           this.setState({
-            title: csv2Title(text),
+            title: csv2Title(text).title,
+            subtitle: csv2Title(text).subtitle,
             data: csv2Obj(text),
             isLoaded: true
           })
@@ -147,22 +153,27 @@ class App extends Component {
     return (
       <div className="App">
         <header className='App-header'>
-          <h1 className="ui header">
-            <img src={logo} alt="logo" className='ui image App-logo' />
-            <div className='content'>
-              <i className='icon bars' style={{position: 'absolute', right: '2rem', margin: '0', opacity: '0.5', fontSize: '1.5rem'}} />
+        <div className='ui container' style={{display: 'flex'}} >
+          <img src={logo} alt="logo" className='ui image App-logo' style={{flex: 'none'}} />
+          <h1 className="ui header" style={{flexGrow: '1', margin: '0'}} >
               {this.state.title}
-            </div>
+              <div className='sub header'>
+                {this.state.subtitle}
+              </div>
           </h1>
+          <div style={{flex: 'none'}} >
+            <i className='icon bars' style={{margin: '0.7rem 0 0 0', opacity: '0.5', fontSize: '1.5rem'}} />
+          </div>
+        </div>
         </header>
         <section className="App-body ui container" style={{display: 'flex'}} >
-        <div style={{width: '5rem', flex: 'none'}}>
+          <div style={{width: '5rem', flex: 'none'}}>
             <nav className='ui vertical fluid secondary pointing menu'>
               {Menu}
             </nav>
-        </div>
-          <div style={{width: '100%', paddingLeft: '2rem'}} >
-          {Relation}
+          </div>
+          <div style={{paddingLeft: '2rem'}} >
+            {Relation}
           </div>
         </section>
       </div>
