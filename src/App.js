@@ -187,8 +187,8 @@ class App extends Component {
       })
       body = (
         <div style={{display: 'flex'}} >
-          <div style={{width: '5rem', flex: 'none'}}>
-            <nav className='ui vertical fluid secondary pointing menu'>
+          <div style={{width: '4rem', flex: 'none'}}>
+            <nav className='ui vertical fluid secondary tiny pointing menu'>
               {Menu}
             </nav>
           </div>
