@@ -202,7 +202,9 @@ class App extends Component {
       <div className="App">
         <header className='App-header'>
         <div className='ui container' style={{display: 'flex'}} >
-          <img src={logo} alt="logo" className='ui image App-logo' style={{flex: 'none'}} />
+          <a href='/storyliner/' style={{flex: 'none'}}>
+          <img src={logo} alt="logo" className='ui image App-logo' />
+          </a>
           <h1 className="ui header" style={{flexGrow: '1', margin: '0'}} >
               <span className='App-name' >
                 {title}
