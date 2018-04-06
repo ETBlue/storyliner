@@ -2,7 +2,7 @@
 }
 
 .App-name {
-  color: rgba(0,0,0,0.75);
+  color: rgba(0,0,0,0.85);
   /*
   font-family: 'Love Ya Like A Sister', cursive;
   font-family: 'Fredericka the Great', cursive;
@@ -23,7 +23,7 @@
   font-family: 'Copse', serif;
   font-family: 'Belgrano', serif;
   */
-  color: rgba(0,0,0,0.75);
+  color: rgba(0,0,0,0.85);
   font-family: 'Arvo', serif;
 }
 
@@ -49,13 +49,13 @@
 
 .App-footer a {
   margin: 0 0.5rem;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .Menu-timestamp {
   font-size: 0.85em;
   display: inline-block;
-  opacity: 0.5;
+  opacity: 0.7;
 }
 
 .Relation.active {
@@ -65,12 +65,12 @@
 
 .Relation .description {
   margin-top: -0.5em;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0,0,0,0.7);
   font-size: 0.85rem;
 }
 
 .Relation a {
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 .Note-header {
@@ -79,7 +79,7 @@
 }
 
 .Note-content {
-  color: rgba(0,0,0,0.75);
+  color: rgba(0,0,0,0.7);
 }
 
 .ui.horizontal.label {
@@ -97,7 +97,7 @@
 blockquote {
   margin: 1rem 1.5rem;
   position: relative;
-  color: rgba(0,0,0,0.75);
+  color: rgba(0,0,0,0.7);
 }
 
 blockquote .Author {
