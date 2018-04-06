@@ -106,7 +106,7 @@ class App extends Component {
           </div>
           <div style={{margin: '2rem auto', flexGrow: '1'}} >
           <div className='ui fluid action input' >
-            <input type='text' placeholder='Your data source here...' onChange={e => {this.onInput(e)}} value={this.state.input} />
+            <input type='text' placeholder='Your data source here... (.csv file)' onChange={e => {this.onInput(e)}} value={this.state.input} />
             <button className='ui teal button' onClick={e => {this.onSubmit()}}>Submit</button>
           </div>
           </div>
@@ -218,9 +218,32 @@ class App extends Component {
           </div>
         </div>
         </header>
-        <section className="App-body ui container">
+        <main className="App-body ui container">
           {body}
-        </section>
+        </main>
+        <hr className='ui divider' />
+        <footer className='App-footer' >
+        <div className='ui center aligned container'>
+          <div style={{margin: '0 auto', padding: '0 4rem 2rem 4rem'}}>
+            <p>
+            Yet another open data experiment by ETBlue.
+            <br />
+            <a href='https://github.com/ETBlue/storyliner' target='_blank'>
+              <i className='icon code' />
+              Source code
+            </a>
+            <a href='https://etblue.github.io/storyliner/?source=https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8ukLhLNcPLc20_7J2ju6_e_KSLW2RW0LDu_1_4__IvaVUCO1BhZ9RGwefcWkOVRQ8XjlYv6MSe8oA/pub?output=csv' target='_blank'>
+              <i className='icon globe' />
+              Sample page
+            </a>
+            <a href='https://docs.google.com/spreadsheets/d/1w8IAAl2JZhqpmLIxJ8GWNO6KT0CQxM4wCnnIPpGvLPM/edit?usp=sharing' target='_blank'>
+              <i className='icon table' />
+              Sample data
+            </a>
+            </p>
+          </div>
+        </div>
+        </footer>
       </div>
     );
   }
