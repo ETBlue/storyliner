@@ -3,5 +3,5 @@ html, body {
   padding: 0;
   font-size: 16px;
   background-color: #eee;
-  color: #333;
+  color: rgba(0,0,0,0.75);
 }

@@ -2,7 +2,7 @@
 }
 
 .App-name {
-  color: rgba(0,0,0,0.6);
+  color: rgba(0,0,0,0.75);
   /*
   font-family: 'Love Ya Like A Sister', cursive;
   font-family: 'Fredericka the Great', cursive;
@@ -23,6 +23,7 @@
   font-family: 'Copse', serif;
   font-family: 'Belgrano', serif;
   */
+  color: rgba(0,0,0,0.75);
   font-family: 'Arvo', serif;
 }
 
@@ -43,11 +44,42 @@
 }
 
 .App-footer {
-  opacity: 0.6;
+  color: rgba(0,0,0,0.5);
 }
 
 .App-footer a {
   margin: 0 0.5rem;
+  opacity: 0.75;
+}
+
+.Menu-timestamp {
+  font-size: 0.85em;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.Relation.active {
+  border: 2px #e03997 solid;
+  margin: -1px!important;
+}
+
+.Relation .description {
+  margin-top: -0.5em;
+  color: rgba(0,0,0,0.5);
+  font-size: 0.85rem;
+}
+
+.Relation a {
+  opacity: 0.75;
+}
+
+.Note-header {
+  font-size: 0.85rem!important;
+  font-weight: normal!important;
+}
+
+.Note-content {
+  color: rgba(0,0,0,0.75);
 }
 
 .ui.horizontal.label {
@@ -62,14 +94,17 @@
   margin-right: 0;
 }
 
-.ui.active.segments {
-  border: 2px #e03997 solid;
-  margin: -1px;
-}
-
 blockquote {
   margin: 1rem 1.5rem;
   position: relative;
+  color: rgba(0,0,0,0.75);
+}
+
+blockquote .Author {
+  font-size: 0.85rem;
+  color: rgba(0,0,0,0.5);
+  display: inline-block;
+  margin-left: 0.5em;
 }
 
 blockquote i.icon.quote {

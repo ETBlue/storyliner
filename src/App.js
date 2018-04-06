@@ -148,7 +148,8 @@ class App extends Component {
           <blockquote key={index} >
             <i className='quote left icon' />
             <i className='quote right icon' />
-            {data.content}<span style={{fontSize: '0.85em', opacity: '0.85', display:'inline-block'}} > — {data.author}</span>
+            {data.content}
+            <span className='Author'>— {data.author}</span>
           </blockquote>
         ))
         return(
@@ -165,7 +166,7 @@ class App extends Component {
         let time = ''
         if (content.time.length > 0) {
           time = (
-          <span style={{fontSize: '0.85em', display: 'inline-block', opacity: '0.6'}}>
+          <span className='Menu-timestamp'>
           {content.time}
           </span>
           )
@@ -181,7 +182,7 @@ class App extends Component {
           <article key={index} id={index}>
           <div className='ui two column stackable grid' >
             <div className='eleven wide column'>
-            <div className={`ui segments ${isActive}`}>
+            <div className={`Relation ui segments ${isActive}`}>
               <div className='ui segment'>
                 <p>
                   <a className='ui large horizontal label' data-role={content._subject}>
@@ -197,9 +198,8 @@ class App extends Component {
                   {content.content_topic}
                   </span>
                 </p>
-                <p style={{marginTop: '-0.5rem', opacity: '0.85', fontSize: '0.85em'}} >
-                  {content.via}{content.channel}{content.content_carrier} — 
-                  <a href={content["ref_url"]} target='_blank' rel='noopener noreferrer'>
+                <p className='description'>
+                  {content.via}{content.channel}{content.content_carrier} — <a href={content["ref_url"]} target='_blank' rel='noopener noreferrer'>
                   {content.ref_title.length > 0 ?
                     content.ref_title : content.ref_url}
                   </a>
@@ -209,10 +209,10 @@ class App extends Component {
             </div>
             </div>
             <div className='five wide column'>
-              <h4 className='ui dividing header' style={{color: 'rgba(0,0,0,0.6)'}} >
+              <h4 className='Note-header ui dividing teal header'>
                 圍觀筆記
               </h4>
-              <p style={{opacity: '0.85'}} >
+              <p className='Note-content'>
               {content.note}
               </p>
             </div>
