@@ -1,6 +1,29 @@
 .App {
-  background-color: #eee;
-  color: #333;
+}
+
+.App-name {
+  color: rgba(0,0,0,0.6);
+  /*
+  font-family: 'Love Ya Like A Sister', cursive;
+  font-family: 'Fredericka the Great', cursive;
+  font-family: 'Special Elite', cursive;
+
+  font-family: 'Unkempt', cursive;
+  font-family: 'Life Savers', cursive;
+  font-family: 'Kranky', cursive;
+  font-family: 'Miltonian', cursive;
+  font-family: 'Ribeye Marrow', cursive;
+  */
+  font-family: 'Jacques Francois Shadow', cursive;
+}
+
+.App-description {
+  /*
+  font-family: 'Glegoo', serif;
+  font-family: 'Copse', serif;
+  font-family: 'Belgrano', serif;
+  */
+  font-family: 'Arvo', serif;
 }
 
 .App-logo {

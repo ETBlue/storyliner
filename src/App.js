@@ -156,9 +156,11 @@ class App extends Component {
         <div className='ui container' style={{display: 'flex'}} >
           <img src={logo} alt="logo" className='ui image App-logo' style={{flex: 'none'}} />
           <h1 className="ui header" style={{flexGrow: '1', margin: '0'}} >
-              {this.state.title}
-              <div className='sub header'>
-                {this.state.subtitle}
+              <span className='App-name' >
+                {title}
+              </span>
+              <div className='sub header App-description'>
+                {subtitle}
               </div>
           </h1>
           <div style={{flex: 'none'}} >
