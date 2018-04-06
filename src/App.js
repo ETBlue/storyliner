@@ -136,9 +136,18 @@ class App extends Component {
         )
       }
       Relation = this.state.data.map((content, index) => {
+        let time = ''
+        if (content.time.length > 0) {
+          time = (
+          <span style={{fontSize: '0.85em', display: 'inline-block', opacity: '0.6'}}>
+          {content.time}
+          </span>
+          )
+        }
         Menu.push(
           <a key={index} className='item'>
             {content.date}
+            {time}
           </a>
         )
 
