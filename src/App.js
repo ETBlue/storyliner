@@ -178,6 +178,23 @@ class App extends Component {
           </a>
         )
 
+        let Note = (
+          <div className='five wide column'>
+          </div>
+        )
+        if (content.note.length > 0) {
+          Note = (
+            <div className='five wide column'>
+              <h4 className='Note-header ui dividing teal header'>
+                圍觀筆記
+              </h4>
+              <p className='Note-content'>
+              {content.note}
+              </p>
+            </div>
+          )
+        }
+
         return (
           <article key={index} id={index}>
           <div className='ui two column stackable grid' >
@@ -208,20 +225,13 @@ class App extends Component {
               {renderQuote(content.quote)}
             </div>
             </div>
-            <div className='five wide column'>
-              <h4 className='Note-header ui dividing teal header'>
-                圍觀筆記
-              </h4>
-              <p className='Note-content'>
-              {content.note}
-              </p>
-            </div>
+            {Note}
           </div>
           </article>
         )
       })
       body = (
-        <div ref={this.handleContextRef} style={{marginLeft: '4rem', paddingLeft: '2rem', position: 'relative'}} >
+        <div className='Relation-wrapper' ref={this.handleContextRef}>
           <Rail position='left' style={{width: '4rem', padding: '0', margin: '1rem 0 0 0'}} >
           <Sticky context={this.state.contextRef} pushing={true}>
             <nav className='ui vertical fluid secondary tiny pointing pink menu'>
@@ -242,7 +252,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className='App-header'>
-        <div className='ui container' style={{display: 'flex'}} >
+        <div className='wrapper ui container' style={{display: 'flex'}} >
           <a href='/storyliner/' style={{flex: 'none'}}>
           <img src={logo} alt="logo" className='ui image App-logo' />
           </a>
@@ -265,7 +275,7 @@ class App extends Component {
         <hr className='ui divider' />
         <footer className='App-footer' >
         <div className='ui center aligned container'>
-          <div style={{margin: '0 auto', padding: '0 4rem 2rem 4rem'}}>
+          <div className='wrapper'>
             <p>
             Yet another open data experiment by ETBlue.
             <br />

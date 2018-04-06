@@ -45,17 +45,29 @@
 
 .App-footer {
   color: rgba(0,0,0,0.5);
+  font-size: 0.85rem;
 }
 
 .App-footer a {
   margin: 0 0.5rem;
   opacity: 0.7;
+  display: inline-block;
+}
+.App-footer .wrapper {
+  margin: 0 auto;
+  padding: 0 4rem 2rem 4rem; 
 }
 
 .Menu-timestamp {
   font-size: 0.85em;
   display: inline-block;
   opacity: 0.7;
+}
+
+.Relation-wrapper {
+  margin-left: 4rem;
+  padding-left: 2rem;
+  position: relative;
 }
 
 .Relation.active {
@@ -118,6 +130,38 @@ blockquote i.icon.left.quote {
 
 blockquote i.icon.right.quote {
   right: -1.5em;
+}
+
+
+@media only screen and (max-width: 767px) {
+html, body {
+  font-size: 14px;
+}
+.Relation-wrapper {
+  padding-left: 0;
+  margin-left: 3rem;
+  margin-right: -1rem;
+}
+.Note-header {
+  margin-top: -1rem!important;
+  margin-bottom: 0.25rem!important;
+  border-bottom: none!important;
+}
+.Note-content {
+  margin-bottom: 1rem!important;
+  padding-left: 1rem;
+  border-left: 2px solid #00b5ad;
+}
+.Relation-wrapper article:last-child .Note-content {
+  margin-bottom: -1rem!important;
+}
+.App-footer .wrapper {
+  padding-left: 0;
+  padding-right: 0;
+}
+.App-header .wrapper {
+  margin-left: 0!important;
+}
 }
 
 @keyframes App-logo-spin {
