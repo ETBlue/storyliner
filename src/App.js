@@ -101,9 +101,17 @@ class App extends Component {
       title = 'Storyliner'
       subtitle = 'The Interactive Gossip Viewer'
       body = (
-        <div className='ui fluid action input' style={{margin: '2rem auto', maxWidth: '50rem', width: '100%'}} >
-          <input type='text' placeholder='Your data source here...' onChange={e => {this.onInput(e)}} value={this.state.input} />
-          <button className='ui teal button' onClick={e => {this.onSubmit()}}>Submit</button>
+        <div style={{display: 'flex'}} >
+          <div style={{width: '4rem', flex: 'none'}}>
+          </div>
+          <div style={{margin: '2rem auto', flexGrow: '1'}} >
+          <div className='ui fluid action input' >
+            <input type='text' placeholder='Your data source here...' onChange={e => {this.onInput(e)}} value={this.state.input} />
+            <button className='ui teal button' onClick={e => {this.onSubmit()}}>Submit</button>
+          </div>
+          </div>
+          <div style={{flex: 'none', width: '3rem'}} >
+          </div>
         </div>
       )
 
