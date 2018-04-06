@@ -16,7 +16,8 @@ class App extends Component {
       subtitle: '',
       input: window.location.search.replace('?source=',''),
       source: window.location.search.replace('?source=',''),
-      contextRef: null
+      contextRef: null,
+      scroll: parseInt(window.location.hash.replace('#', ''), 10)
     }
 
     this.handleContextRef = this.handleContextRef.bind(this)
@@ -81,7 +82,6 @@ class App extends Component {
       })
       .catch(error => console.error(error))
     }
-
   }
 
   onInput(e) {
@@ -92,12 +92,26 @@ class App extends Component {
     window.location.assign(`?source=${this.state.input}`)
   }
 
-  componentDidMount() {
-    this.getData()
+  scroll(index) {
+    this.setState({scroll: index})
+  }
+
+  scrollReset(direction) {
+    this.setState({scroll: ''})
+    window.history.pushState({}, '', window.location.pathname + window.location.search)
+    if (direction === 'top') {
+      window.scrollTo(0, 0)
+    } else if (direction === 'bottom') {
+      window.scrollTo(0, window.document.body.scrollHeight)
+    }
   }
 
   handleContextRef(contextRef) {
     this.setState({ contextRef })
+  }
+
+  componentDidMount() {
+    this.getData()
   }
 
   render() {
@@ -143,7 +157,11 @@ class App extends Component {
           </div>
         )
       }
+
       Relation = this.state.data.map((content, index) => {
+
+        const isActive = this.state.scroll === index ? 'active': ''
+
         let time = ''
         if (content.time.length > 0) {
           time = (
@@ -153,17 +171,17 @@ class App extends Component {
           )
         }
         Menu.push(
-          <a key={index} className='item'>
+          <a key={index} href={`#${index}`} className={`item ${isActive}`} onClick={() => this.scroll(index)} >
             {content.date}
             {time}
           </a>
         )
 
         return (
-          <article key={index}>
+          <article key={index} id={index}>
           <div className='ui two column stackable grid' >
             <div className='eleven wide column'>
-            <div className='ui segments'>
+            <div className={`ui segments ${isActive}`}>
               <div className='ui segment'>
                 <p>
                   <a className='ui large horizontal label' data-role={content._subject}>
@@ -181,7 +199,7 @@ class App extends Component {
                 </p>
                 <p style={{marginTop: '-0.5rem', opacity: '0.85', fontSize: '0.85em'}} >
                   {content.via}{content.channel}{content.content_carrier} — 
-                  <a href={content["ref_url"]} target='_blank'>
+                  <a href={content["ref_url"]} target='_blank' rel='noopener noreferrer'>
                   {content.ref_title.length > 0 ?
                     content.ref_title : content.ref_url}
                   </a>
@@ -206,8 +224,14 @@ class App extends Component {
         <div ref={this.handleContextRef} style={{marginLeft: '4rem', paddingLeft: '2rem', position: 'relative'}} >
           <Rail position='left' style={{width: '4rem', padding: '0', margin: '1rem 0 0 0'}} >
           <Sticky context={this.state.contextRef}>
-            <nav className='ui vertical fluid secondary tiny pointing menu'>
+            <nav className='ui vertical fluid secondary tiny pointing pink menu'>
+              <a className='item' onClick={() => this.scrollReset('bottom')} >
+                <i className='icon down chevron' style={{float: 'none', opacity: '0.5'}} />
+              </a>
               {Menu}
+              <a className='item' onClick={() => this.scrollReset('top')} >
+                <i className='icon up chevron' style={{float: 'none', opacity: '0.5'}} />
+              </a>
             </nav>
           </Sticky>
           </Rail>
@@ -245,15 +269,15 @@ class App extends Component {
             <p>
             Yet another open data experiment by ETBlue.
             <br />
-            <a href='https://github.com/ETBlue/storyliner' target='_blank'>
+            <a href='https://github.com/ETBlue/storyliner' target='_blank' rel='noopener noreferrer'>
               <i className='icon code' />
               Source code
             </a>
-            <a href='https://etblue.github.io/storyliner/?source=https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8ukLhLNcPLc20_7J2ju6_e_KSLW2RW0LDu_1_4__IvaVUCO1BhZ9RGwefcWkOVRQ8XjlYv6MSe8oA/pub?output=csv' target='_blank'>
+            <a href='https://etblue.github.io/storyliner/?source=https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8ukLhLNcPLc20_7J2ju6_e_KSLW2RW0LDu_1_4__IvaVUCO1BhZ9RGwefcWkOVRQ8XjlYv6MSe8oA/pub?output=csv' target='_blank' rel='noopener noreferrer'>
               <i className='icon globe' />
               Sample page
             </a>
-            <a href='https://docs.google.com/spreadsheets/d/1w8IAAl2JZhqpmLIxJ8GWNO6KT0CQxM4wCnnIPpGvLPM/edit?usp=sharing' target='_blank'>
+            <a href='https://docs.google.com/spreadsheets/d/1w8IAAl2JZhqpmLIxJ8GWNO6KT0CQxM4wCnnIPpGvLPM/edit?usp=sharing' target='_blank' rel='noopener noreferrer'>
               <i className='icon table' />
               Sample data
             </a>

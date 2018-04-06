@@ -62,6 +62,10 @@
   margin-right: 0;
 }
 
+.ui.active.segments {
+  border: 2px #e03997 solid;
+}
+
 blockquote {
   margin: 1rem 1.5rem;
   position: relative;
