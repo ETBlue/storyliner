@@ -223,14 +223,14 @@ class App extends Component {
       body = (
         <div ref={this.handleContextRef} style={{marginLeft: '4rem', paddingLeft: '2rem', position: 'relative'}} >
           <Rail position='left' style={{width: '4rem', padding: '0', margin: '1rem 0 0 0'}} >
-          <Sticky context={this.state.contextRef}>
+          <Sticky context={this.state.contextRef} pushing={true}>
             <nav className='ui vertical fluid secondary tiny pointing pink menu'>
-              <a className='item' onClick={() => this.scrollReset('bottom')} >
-                <i className='icon down chevron' style={{float: 'none', opacity: '0.5'}} />
-              </a>
-              {Menu}
               <a className='item' onClick={() => this.scrollReset('top')} >
                 <i className='icon up chevron' style={{float: 'none', opacity: '0.5'}} />
+              </a>
+              {Menu}
+              <a className='item' onClick={() => this.scrollReset('bottom')} >
+                <i className='icon down chevron' style={{float: 'none', opacity: '0.5'}} />
               </a>
             </nav>
           </Sticky>

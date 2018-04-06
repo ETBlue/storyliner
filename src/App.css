@@ -64,6 +64,7 @@
 
 .ui.active.segments {
   border: 2px #e03997 solid;
+  margin: -1px;
 }
 
 blockquote {
