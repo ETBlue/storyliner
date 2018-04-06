@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Rail, Sticky } from 'semantic-ui-react'
 import logo from './logo.svg';
 import './App.css';
 
@@ -14,8 +15,11 @@ class App extends Component {
       title: '',
       subtitle: '',
       input: window.location.search.replace('?source=',''),
-      source: window.location.search.replace('?source=','')
+      source: window.location.search.replace('?source=',''),
+      contextRef: null
     }
+
+    this.handleContextRef = this.handleContextRef.bind(this)
 
   }
 
@@ -88,8 +92,12 @@ class App extends Component {
     window.location.assign(`?source=${this.state.input}`)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getData()
+  }
+
+  handleContextRef(contextRef) {
+    this.setState({ contextRef })
   }
 
   render() {
@@ -195,15 +203,15 @@ class App extends Component {
         )
       })
       body = (
-        <div style={{display: 'flex'}} >
-          <div style={{width: '4rem', flex: 'none'}}>
+        <div ref={this.handleContextRef} style={{marginLeft: '4rem', paddingLeft: '2rem', position: 'relative'}} >
+          <Rail position='left' style={{width: '4rem', padding: '0', margin: '1rem 0 0 0'}} >
+          <Sticky context={this.state.contextRef}>
             <nav className='ui vertical fluid secondary tiny pointing menu'>
               {Menu}
             </nav>
-          </div>
-          <div style={{paddingLeft: '2rem'}} >
-            {Relation}
-          </div>
+          </Sticky>
+          </Rail>
+          {Relation}
         </div>
       )
     }
