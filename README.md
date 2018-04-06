@@ -1,5 +1,5 @@
-# storyliner
-turn gossip events into filterable timeline
+# Storyliner
+The Interactive Gossip Viewer
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
