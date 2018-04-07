@@ -80,7 +80,7 @@
 .Menu-timestamp {
   font-size: 0.85em;
   display: inline-block;
-  color: rgba(0,0,0,0.7);
+  opacity: 0.7;
 }
 
 .Filter-message {
