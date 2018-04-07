@@ -39,6 +39,25 @@
   margin-bottom: 1rem;
 }
 
+.App-header .icon {
+  margin: 0.7rem 0 0 0;
+  opacity: 0.5;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.App-header .green.icon,
+.App-header .red.icon,
+.App-header .blue.icon,
+.App-header .yellow.icon {
+  opacity: 1;
+  cursor: default;
+}
+
+.App-header .blue.icon {
+  cursor: progress;
+}
+
 .App-body {
   padding-bottom: 2rem;
 }

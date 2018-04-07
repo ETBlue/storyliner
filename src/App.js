@@ -28,27 +28,44 @@ class App extends Component {
       input: window.location.search.replace('?source=',''),
       source: window.location.search.replace('?source=',''),
       contextRef: null,
-      scroll: parseInt(window.location.hash.replace('#', ''), 10)
+      scroll: parseInt(window.location.hash.replace('#', ''), 10),
+      status: 'standby'
     }
 
     this.handleContextRef = this.handleContextRef.bind(this)
 
   }
 
+  resetStatus() {
+    window.setTimeout(() => {
+      this.setState({status: 'standby'})
+    }, 5000)
+  }
+
   getData() {
     if (this.state.source.length > 0) {
-    fetch(this.state.source)
-      .then((respond) => {
-        respond.text().then(text => {
-          this.setState({
-            title: csv2Title(text).title,
-            subtitle: csv2Title(text).subtitle,
-            data: csv2Obj(text),
-            isLoaded: true
-          })
+      this.setState({status: 'loading'}, () => {
+        fetch(this.state.source).then((response) => {
+          if (response.type === 'cors') {
+            response.text().then(text => {
+              this.setState({
+                title: csv2Title(text).title,
+                subtitle: csv2Title(text).subtitle,
+                data: csv2Obj(text),
+                isLoaded: true,
+                status: 'success'
+              }, this.resetStatus())
+            })
+          } else {
+            this.setState({status: 'error'})
+          }
+        })
+        .catch(error => {
+          this.setState({status: 'error'})
         })
       })
-      .catch(error => console.error(error))
+    } else {
+      this.setState({status: 'invalid'})
     }
   }
 
@@ -93,7 +110,7 @@ class App extends Component {
       body = (
         <section className='Home-body' >
           <div className='ui fluid action input' >
-            <input type='text' placeholder='Your data source here... (.csv file)' onChange={e => {this.onInput(e)}} value={this.state.input} />
+            <input type='text' placeholder='Your data source here... (.csv file)' onChange={e => {this.onInput(e)}} value={this.state.input} autoFocus />
             <button className='ui teal button' onClick={e => {this.onSubmit()}}>Submit</button>
           </div>
         </section>
@@ -103,7 +120,7 @@ class App extends Component {
       title = this.state.title
       subtitle = this.state.subtitle
       const renderQuote = (quotes) => {
-        if (quotes.length === 0) {
+        if (quotes && quotes.length === 0) {
           return
         }
         const quotesJSX = quotes.map((data, index) => (
@@ -126,7 +143,7 @@ class App extends Component {
         const isActive = this.state.scroll === index ? 'active': ''
 
         let time = ''
-        if (content.time.length > 0) {
+        if (content.time && content.time.length > 0) {
           time = (
           <span className='Menu-timestamp'>
           {content.time}
@@ -144,7 +161,7 @@ class App extends Component {
           <div className='five wide column'>
           </div>
         )
-        if (content.note.length > 0) {
+        if (content.note && content.note.length > 0) {
           Note = (
             <div className='five wide column'>
               <h4 className='Note-header ui dividing teal header'>
@@ -179,7 +196,7 @@ class App extends Component {
                 </p>
                 <p className='description'>
                   {content.via}{content.channel}{content.content_carrier} — <a href={content["ref_url"]} target='_blank' rel='noopener noreferrer'>
-                  {content.ref_title.length > 0 ?
+                  {content.ref_title && content.ref_title.length > 0 ?
                     content.ref_title : content.ref_url}
                   </a>
                 </p>
@@ -213,7 +230,7 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <Header logo={logo} title={title} subtitle={subtitle} />
+        <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status} onClick={() => this.getData()}/>
         <main className="App-body ui container">
           {body}
         </main>
