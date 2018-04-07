@@ -47,7 +47,7 @@ class App extends Component {
     if (this.state.source.length > 0) {
       this.setState({status: 'loading'}, () => {
         fetch(this.state.source).then((response) => {
-          if (response.type === 'cors') {
+          if (response.headers.get('Content-Type') === 'text/csv') {
             response.text().then(text => {
               const titles = csv2Title(text)
               const parsed = csv2Obj(text)
