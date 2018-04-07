@@ -142,8 +142,9 @@ blockquote {
 blockquote .Author {
   font-size: 0.85rem;
   color: rgba(0,0,0,0.5);
-  display: inline-block;
-  margin-left: 0.5em;
+  text-align: right;
+  margin-right: -1rem;
+  margin-top: 1em;
 }
 
 blockquote i.icon.quote {

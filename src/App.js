@@ -128,7 +128,7 @@ class App extends Component {
             <i className='quote left icon' />
             <i className='quote right icon' />
             {data.content}
-            <span className='Author'>— {data.author}</span>
+            {data.author.length > 0 ? <p className='Author'>— {data.author}</p> : null}
           </blockquote>
         ))
         return(

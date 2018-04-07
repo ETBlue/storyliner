@@ -19,8 +19,9 @@ export default (text) => {
       } else if (header === 'quote_content') {
         if (columns[index] && columns[index].length > 0) {
           obj.quote = columns[index].split(';').map((q) => {
-            return {author: author, content: q}
+            return {author: '', content: q}
           })
+          obj.quote[obj.quote.length - 1].author = author
         }
       } else {
         obj[header] = columns[index] || ''
