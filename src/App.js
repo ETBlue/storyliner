@@ -29,7 +29,8 @@ class App extends Component {
       source: window.location.search.replace('?source=',''),
       contextRef: null,
       scroll: parseInt(window.location.hash.replace('#', ''), 10),
-      status: 'standby'
+      status: 'standby',
+      filter: ''
     }
 
     this.handleContextRef = this.handleContextRef.bind(this)
@@ -94,6 +95,15 @@ class App extends Component {
     }
   }
 
+  setFilter(character) {
+    this.setState((prevState, props) => {
+      if (prevState.filter === character) {
+        return {filter: ''}
+      }
+      return {filter: character}
+    })
+  }
+
   handleContextRef(contextRef) {
     this.setState({ contextRef })
   }
@@ -143,6 +153,12 @@ class App extends Component {
 
       Relation = this.state.data.map((content, index) => {
 
+        if (this.state.filter.length > 0 && this.state.filter !== content._subject && this.state.filter !== content._object) {
+          return null
+        }
+
+
+
         const isActive = this.state.scroll === index ? 'active': ''
 
         let time = ''
@@ -184,13 +200,13 @@ class App extends Component {
             <div className={`Relation ui segments ${isActive}`}>
               <div className='ui segment'>
                 <p>
-                  <a className='ui large horizontal label' data-role={content._subject} style={{backgroundColor: `hsla(${this.state.authorColor[content._subject]}, 50%, 50%, 0.3)`}} >
+                  <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[content._subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(content._subject)} >
                     {content._subject}
                   </a>
                   <span>
                   {content.action}
                   </span>
-                  <a className='ui large horizontal label' data-role={content._object}  style={{backgroundColor: `hsla(${this.state.authorColor[content._object]}, 50%, 50%, 0.3)`}} >
+                  <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[content._object]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(content._object)} >
                     {content._object}
                   </a>
                   <span>
