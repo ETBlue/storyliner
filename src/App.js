@@ -157,8 +157,6 @@ class App extends Component {
           return null
         }
 
-
-
         const isActive = this.state.scroll === index ? 'active': ''
 
         let time = ''
@@ -228,6 +226,15 @@ class App extends Component {
           </article>
         )
       })
+
+      const Filter = (
+        <div className='ui two column stackable grid'>
+          <div className='eleven wide column'>
+            <p className='Filter-message'>Filtered by: {this.state.filter}</p>
+          </div>
+        </div>
+      )
+
       body = (
         <div className='Relation-wrapper' ref={this.handleContextRef}>
           <Rail position='left' style={{width: '4rem', padding: '0', margin: '1rem 0 0 0'}} >
@@ -243,6 +250,7 @@ class App extends Component {
               </nav>
             </Sticky>
           </Rail>
+          {this.state.filter.length > 0 ? Filter : null}
           {Relation}
         </div>
       )

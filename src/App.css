@@ -80,7 +80,13 @@
 .Menu-timestamp {
   font-size: 0.85em;
   display: inline-block;
-  opacity: 0.7;
+  color: rgba(0,0,0,0.7);
+}
+
+.Filter-message {
+  color: rgba(0,0,0,0.7);
+  font-size: 0.85rem;
+  text-align: center;
 }
 
 .Relation-wrapper {
