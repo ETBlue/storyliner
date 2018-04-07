@@ -1,6 +1,11 @@
-export default (text) => {
-  const lines = text.split('\n')
+const colors = new Set([0,1,2,3,4,5,6,7,8])
+const space = 40
 
+const authors = new Set()
+
+export default (text) => {
+
+  const lines = text.split('\n')
   if (lines.length < 2) {
     return []
   }
@@ -25,17 +30,28 @@ export default (text) => {
         }
       } else {
         obj[header] = columns[index] || ''
+        if (header === '_object' || header === '_subject') {
+          authors.add(columns[index])
+        }
       }
     })
 
     // when the date colume is empty, merge quotes
-    if (obj.date && obj.date.length === 0) {
+    if (obj.date === '') {
       result[result.length - 1].quote = result[result.length - 1].quote.concat(obj.quote)
     } else {
       result.push(obj)
     }
   }
 
-  return result
+  let authorColor = {}
+  authors.delete('')
+  authors.forEach(author => {
+    const index = Math.floor(Math.random() * colors.size)
+    const color = Array.from(colors)[index]
+    authorColor[author] = color * space
+    colors.delete(color)
+  })
+  return {data: result, authorColor: authorColor}
 }
 

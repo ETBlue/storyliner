@@ -48,10 +48,13 @@ class App extends Component {
         fetch(this.state.source).then((response) => {
           if (response.type === 'cors') {
             response.text().then(text => {
+              const titles = csv2Title(text)
+              const parsed = csv2Obj(text)
               this.setState({
-                title: csv2Title(text).title,
-                subtitle: csv2Title(text).subtitle,
-                data: csv2Obj(text),
+                title: titles.title,
+                subtitle: titles.subtitle,
+                data: parsed.data,
+                authorColor: parsed.authorColor,
                 isLoaded: true,
                 status: 'success'
               }, this.resetStatus())
@@ -181,13 +184,13 @@ class App extends Component {
             <div className={`Relation ui segments ${isActive}`}>
               <div className='ui segment'>
                 <p>
-                  <a className='ui large horizontal label' data-role={content._subject}>
+                  <a className='ui large horizontal label' data-role={content._subject} style={{backgroundColor: `hsla(${this.state.authorColor[content._subject]}, 50%, 50%, 0.3)`}} >
                     {content._subject}
                   </a>
                   <span>
                   {content.action}
                   </span>
-                  <a className='ui large horizontal label' data-role={content._object}>
+                  <a className='ui large horizontal label' data-role={content._object}  style={{backgroundColor: `hsla(${this.state.authorColor[content._object]}, 50%, 50%, 0.3)`}} >
                     {content._object}
                   </a>
                   <span>

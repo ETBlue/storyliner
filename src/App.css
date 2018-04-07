@@ -108,6 +108,19 @@
   opacity: 0.85;
 }
 
+.Relation .ui.horizontal.label {
+  margin: 0 0.3em;
+  color: inherit;
+}
+
+.Relation .ui.horizontal.label:first-child {
+  margin-left: 0;
+}
+
+.Relation .ui.horizontal.label:last-child {
+  margin-right: 0;
+}
+
 .Note-header {
   font-size: 0.85rem!important;
   font-weight: normal!important;
@@ -119,18 +132,6 @@
 
 .Home-body {
   margin: 2rem 3rem 2rem 4rem;
-}
-
-.ui.horizontal.label {
-  margin: 0 0.3em;
-}
-
-.ui.horizontal.label:first-child {
-  margin-left: 0;
-}
-
-.ui.horizontal.label:last-child {
-  margin-right: 0;
 }
 
 blockquote {
