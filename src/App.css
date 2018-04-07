@@ -70,6 +70,10 @@
   position: relative;
 }
 
+.Relation-wrapper article:last-child .Relation {
+  margin-bottom: -1rem;
+}
+
 .Relation.active {
   border: 2px #e03997 solid;
   margin: -1px!important;
@@ -92,6 +96,10 @@
 
 .Note-content {
   color: rgba(0,0,0,0.7);
+}
+
+.Home-body {
+  margin: 2rem 3rem 2rem 4rem;
 }
 
 .ui.horizontal.label {
@@ -142,6 +150,12 @@ html, body {
   margin-left: 3rem;
   margin-right: -1rem;
 }
+.Relation-wrapper article:last-child .Relation {
+  margin-bottom: 0;
+}
+.Relation-wrapper article:last-child .Note-content {
+  margin-bottom: -1rem!important;
+}
 .Note-header {
   margin-top: -1rem!important;
   margin-bottom: 0.25rem!important;
@@ -152,15 +166,15 @@ html, body {
   padding-left: 1rem;
   border-left: 2px solid #00b5ad;
 }
-.Relation-wrapper article:last-child .Note-content {
-  margin-bottom: -1rem!important;
-}
 .App-footer .wrapper {
   padding-left: 0;
   padding-right: 0;
 }
 .App-header .wrapper {
   margin-left: 0!important;
+}
+.Home-body {
+  margin: 2rem 2rem 2rem 3rem;
 }
 }
 
