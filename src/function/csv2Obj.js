@@ -3,7 +3,7 @@ let defaultColors = []
 for (let i = 0; i < 360 / space; i++) {
   defaultColors.push(i)
 }
-const colors = new Set(defaultColors)
+let colors = new Set(defaultColors)
 const authors = new Set()
 
 export default (text) => {
@@ -54,6 +54,9 @@ export default (text) => {
     const color = Array.from(colors)[index]
     authorColor[author] = color * space
     colors.delete(color)
+    if (colors.size === 0) {
+      colors = new Set(defaultColors)
+    }
   })
   return {data: result, authorColor: authorColor}
 }
