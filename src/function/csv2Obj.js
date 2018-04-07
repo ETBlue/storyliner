@@ -1,6 +1,9 @@
-const colors = new Set([0,1,2,3,4,5,6,7,8])
 const space = 40
-
+let defaultColors = []
+for (let i = 0; i < 360 / space; i++) {
+  defaultColors.push(i)
+}
+const colors = new Set(defaultColors)
 const authors = new Set()
 
 export default (text) => {
