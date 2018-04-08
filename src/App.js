@@ -68,12 +68,13 @@ class App extends Component {
         response.text().then(text => {
 
           const titles = csv2Title(text)
-          const history = {
+          let allHistory = JSON.parse(storage.getItem(settings.title))
+          allHistory[this.state.source] = {
             title: titles.title,
             subtitle: titles.subtitle,
             time: Date.now()
           }
-          storage.setItem(this.state.source, JSON.stringify(history))
+          storage.setItem(settings.title, JSON.stringify(allHistory))
 
           const parsed = csv2Obj(text)
 

@@ -18,21 +18,20 @@ export default ({onCurrentClick}) => {
   }
 
   let sorted = []
-  for (let i = 0; i < storage.length; i++) {
-    const key = storage.key(i)
-    const data = JSON.parse(storage.getItem(key))
+  const history = JSON.parse(storage.getItem(settings.title))
+  Object.keys(history).forEach((key, index) => {
     sorted.push({
       key: key,
-      title: data.title,
-      subtitle: data.subtitle,
-      time: data.time
+      title: history[key].title,
+      subtitle: history[key].subtitle,
+      time: history[key].time
     })
-  }
+  })
   sorted.sort((a, b) => {
     return b.time - a.time
   })
 
-  const history = sorted.map((item, index) => {
+  const historyJSX = sorted.map((item, index) => {
 
     let attributes = {
       href: `${settings.baseUrl}/${settings.query}${item.key}`,
@@ -73,7 +72,7 @@ export default ({onCurrentClick}) => {
         <i className='icon home' />
         Home
       </a>
-      {history}
+      {historyJSX}
       </nav>
     </aside>
   )
