@@ -153,7 +153,7 @@ class App extends Component {
 
       Relation = this.state.data.map((content, index) => {
 
-        if (this.state.filter.length > 0 && this.state.filter !== content._subject && this.state.filter !== content._object) {
+        if (this.state.filter.length > 0 && this.state.filter !== content.subject && this.state.filter !== content.object) {
           return null
         }
 
@@ -198,14 +198,14 @@ class App extends Component {
             <div className={`Relation ui segments ${isActive}`}>
               <div className='ui segment'>
                 <p>
-                  <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[content._subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(content._subject)} >
-                    {content._subject}
+                  <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[content.subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(content.subject)} >
+                    {content.subject}
                   </a>
                   <span>
                   {content.action}
                   </span>
-                  <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[content._object]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(content._object)} >
-                    {content._object}
+                  <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[content.object]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(content.object)} >
+                    {content.object}
                   </a>
                   <span>
                   {content.content_topic}

@@ -22,7 +22,7 @@ export default (text) => {
     const columns = lines[i].split(',')
 
     headers.forEach((header, index) => {
-      if (header === '_quote_author') {
+      if (header === 'quote_author') {
         author = columns[index] || ''
       } else if (header === 'quote_content') {
         if (columns[index] && columns[index].length > 0) {
@@ -33,7 +33,7 @@ export default (text) => {
         }
       } else {
         obj[header] = columns[index] || ''
-        if (header === '_object' || header === '_subject') {
+        if (header === 'object' || header === 'subject') {
           authors.add(columns[index])
         }
       }
