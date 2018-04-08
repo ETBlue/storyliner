@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({logo, title, subtitle, onClick, status}) => {
+export default ({logo, title, subtitle, onIconClick, onLogoClick, status}) => {
   let icon = 'redo'
   switch (status) {
     case 'success':
@@ -21,19 +21,19 @@ export default ({logo, title, subtitle, onClick, status}) => {
   return (
     <header className='App-header'>
       <div className='wrapper ui container' style={{display: 'flex'}} >
-        <a href='/storyliner/' style={{flex: 'none'}}>
-          <img src={logo} alt="logo" className='ui image App-logo' />
+        <a style={{flex: 'none'}}>
+          <img src={logo} alt="logo" className='ui image App-logo' onClick={onLogoClick}/>
         </a>
         <h1 className="ui header" style={{flexGrow: '1', margin: '0'}} >
-            <span className='App-name' >
-              {title}
-            </span>
-            <div className='sub header App-description'>
-              {subtitle}
-            </div>
+          <span className='App-name' >
+            {title}
+          </span>
+          <div className='sub header App-description'>
+            {subtitle}
+          </div>
         </h1>
         <div style={{flex: 'none'}} >
-          <i className={`icon ${icon}`} onClick={onClick} />
+          { icon === '' ? null : (<i className={`icon ${icon}`} onClick={onIconClick} />)}
         </div>
       </div>
     </header>

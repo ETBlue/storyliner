@@ -4,4 +4,5 @@ html, body {
   font-size: 16px;
   background-color: #eee;
   color: rgba(0,0,0,0.85);
+  min-height: 100vh;
 }

@@ -3,16 +3,15 @@ import { Rail, Sticky } from 'semantic-ui-react'
 
 import csv2Obj from './function/csv2Obj'
 import csv2Title from './function/csv2Title'
+import Meta from './component/Meta'
 import Header from './component/Header'
 import Footer from './component/Footer'
+import storage from './component/history'
+import location from './component/location'
+import settings from './settings'
 
 import logo from './logo.svg';
 import './App.css';
-
-const settings = {
-  title: 'Storyliner',
-  subtitle: 'The Interactive Gossip Viewer'
-}
 
 class App extends Component {
 
@@ -25,12 +24,13 @@ class App extends Component {
       data: [],
       title: '',
       subtitle: '',
-      input: window.location.search.replace('?source=',''),
-      source: window.location.search.replace('?source=',''),
+      input: location.search.replace('?source=',''),
+      source: location.search.replace('?source=',''),
       contextRef: null,
-      scroll: parseInt(window.location.hash.replace('#', ''), 10),
+      scroll: parseInt(location.hash.replace('#', ''), 10),
       status: 'standby',
-      filter: ''
+      filter: '',
+      showMeta: false
     }
 
     this.handleContextRef = this.handleContextRef.bind(this)
@@ -43,34 +43,56 @@ class App extends Component {
     }, 5000)
   }
 
+  toggleMeta() {
+    this.setState((prevState, props) => {
+      return {showMeta: !prevState.showMeta}
+    })
+  }
+
   getData() {
-    if (this.state.source.length > 0) {
-      this.setState({status: 'loading'}, () => {
-        fetch(this.state.source).then((response) => {
-          if (response.headers.get('Content-Type') === 'text/csv') {
-            response.text().then(text => {
-              const titles = csv2Title(text)
-              const parsed = csv2Obj(text)
-              this.setState({
-                title: titles.title,
-                subtitle: titles.subtitle,
-                data: parsed.data,
-                authorColor: parsed.authorColor,
-                isLoaded: true,
-                status: 'success'
-              }, this.resetStatus())
-            })
-          } else {
-            this.setState({status: 'error'})
+
+    if (this.state.source.length === 0) {
+      this.setState({status: 'invalid', isLoaded: false})
+      return
+    }
+
+    this.setState({status: 'loading', isLoaded: false}, () => {
+
+      fetch(this.state.source).then((response) => {
+
+        if (response.headers.get('Content-Type') !== 'text/csv') {
+          this.setState({status: 'error', isLoaded: false})
+          return
+        }
+
+        response.text().then(text => {
+
+          const titles = csv2Title(text)
+          const history = {
+            title: titles.title,
+            subtitle: titles.subtitle,
+            time: Date.now()
           }
-        })
-        .catch(error => {
-          this.setState({status: 'error'})
+          storage.setItem(this.state.source, JSON.stringify(history))
+
+          const parsed = csv2Obj(text)
+
+          this.setState({
+            title: titles.title,
+            subtitle: titles.subtitle,
+            data: parsed.data,
+            authorColor: parsed.authorColor,
+            isLoaded: true,
+            status: 'success'
+          }, this.resetStatus())
+
         })
       })
-    } else {
-      this.setState({status: 'invalid'})
-    }
+      .catch(error => {
+        this.setState({status: 'error', isLoaded: false})
+      })
+
+    })
   }
 
   onInput(e) {
@@ -78,7 +100,7 @@ class App extends Component {
   }
 
   onSubmit() {
-    window.location.assign(`?source=${this.state.input}`)
+    location.assign(`?source=${this.state.input}`)
   }
 
   scroll(index) {
@@ -87,7 +109,7 @@ class App extends Component {
 
   scrollReset(direction) {
     this.setState({scroll: ''})
-    window.history.pushState({}, '', window.location.pathname + window.location.search)
+    window.history.pushState({}, '', location.pathname + location.search)
     if (direction === 'top') {
       window.scrollTo(0, 0)
     } else if (direction === 'bottom') {
@@ -255,14 +277,18 @@ class App extends Component {
         </div>
       )
     }
+
     return (
-      <div className="App">
-        <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status} onClick={() => this.getData()}/>
-        <main className="App-body ui container">
-          {body}
+      <div className="App" style={this.state.showMeta ? {left: '20rem'} : {}} >
+        <Meta onCurrentClick={() => this.toggleMeta()} />
+        <main className='App-main'>
+          <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status} onIconClick={() => this.getData()} onLogoClick={() => this.toggleMeta()} />
+          <section className="App-body ui container">
+            {body}
+          </section>
+          <hr className='ui divider' />
+          <Footer />
         </main>
-        <hr className='ui divider' />
-        <Footer />
       </div>
     );
   }

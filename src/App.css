@@ -1,9 +1,29 @@
 .App {
+  display: flex;
+  position: relative;
+  left: 0;
+  margin-left: -20rem;
+  min-height: 100vh;
+}
+
+.App .App-meta {
+  padding: 1rem;
+  background-color: hsla(45,95%,95%,1);
+  box-shadow: inset 0 0 2rem hsla(45,50%,80%,1);
+  border-right: 1px #fff solid;
+  box-sizing: border-box;
+  width: 80%;
+  max-width: 20rem;
+  flex: none;
+}
+
+.App .App-main {
+  flex-grow: 1;
 }
 
 .App-name {
-  color: rgba(0,0,0,0.85);
   /*
+  color: rgba(0,0,0,0.85);
   font-family: 'Love Ya Like A Sister', cursive;
   font-family: 'Fredericka the Great', cursive;
   font-family: 'Special Elite', cursive;
@@ -23,7 +43,6 @@
   font-family: 'Copse', serif;
   font-family: 'Belgrano', serif;
   */
-  color: rgba(0,0,0,0.85);
   font-family: 'Arvo', serif;
 }
 
@@ -31,6 +50,7 @@
   animation: App-logo-spin infinite 20s linear;
   width: 4rem;
   height: 3rem;
+  cursor: pointer;
 }
 
 .App-header {
@@ -72,6 +92,7 @@
   opacity: 0.7;
   display: inline-block;
 }
+
 .App-footer .wrapper {
   margin: 0 auto;
   padding: 0 4rem 2rem 4rem; 
@@ -87,6 +108,10 @@
   color: rgba(0,0,0,0.7);
   font-size: 0.85rem;
   text-align: center;
+}
+
+.Home-body {
+  margin: 2rem 3rem 2rem 4rem;
 }
 
 .Relation-wrapper {
@@ -134,10 +159,6 @@
 
 .Note-content {
   color: rgba(0,0,0,0.7);
-}
-
-.Home-body {
-  margin: 2rem 3rem 2rem 4rem;
 }
 
 blockquote {
