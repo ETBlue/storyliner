@@ -19,11 +19,20 @@ export default () => (
         <i className='icon table' />
         Sample data
       </a>
+      <br />
       <a href='https://etblue.blogspot.com/2018/04/storyliner-interactive-gossip-viewer.html' target='_blank' rel='noopener noreferrer'>
         <i className='icon blogger b' />
         Release note
       </a>
-      
+      <a href='https://twitter.com/ETBlue/status/981475770836049922' target='_blank' rel='noopener noreferrer'>
+        <i className='icon twitter' />
+        Dev log
+      </a>
+      <a href='https://www.facebook.com/ETBlue/media_set?set=a.10212507248088923.1073741901.1014354995' target='_blank' rel='noopener noreferrer'>
+        <i className='icon facebook f' />
+        Dev log
+      </a>
+
       </p>
     </div>
   </div>
