@@ -11,7 +11,7 @@ export default () => (
         <i className='icon code' />
         Source code
       </a>
-      <a href='https://etblue.github.io/storyliner/?source=https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8ukLhLNcPLc20_7J2ju6_e_KSLW2RW0LDu_1_4__IvaVUCO1BhZ9RGwefcWkOVRQ8XjlYv6MSe8oA/pub?output=csv' target='_blank' rel='noopener noreferrer'>
+      <a href='https://etblue.github.io/storyliner/?source=https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8ukLhLNcPLc20_7J2ju6_e_KSLW2RW0LDu_1_4__IvaVUCO1BhZ9RGwefcWkOVRQ8XjlYv6MSe8oA/pub?output=csv'>
         <i className='icon globe' />
         Sample page
       </a>
@@ -19,6 +19,11 @@ export default () => (
         <i className='icon table' />
         Sample data
       </a>
+      <a href='https://etblue.blogspot.com/2018/04/storyliner-interactive-gossip-viewer.html' target='_blank' rel='noopener noreferrer'>
+        <i className='icon blogger b' />
+        Release note
+      </a>
+      
       </p>
     </div>
   </div>
