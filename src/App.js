@@ -24,8 +24,8 @@ class App extends Component {
       data: [],
       title: '',
       subtitle: '',
-      input: location.search.replace('?source=',''),
-      source: location.search.replace('?source=',''),
+      input: decodeURIComponent(location.search.replace('?source=','')),
+      source: decodeURIComponent(location.search.replace('?source=','')),
       contextRef: null,
       scroll: parseInt(location.hash.replace('#', ''), 10),
       status: 'standby',
@@ -97,7 +97,7 @@ class App extends Component {
   }
 
   onInput(e) {
-    this.setState({input: e.target.value})
+    this.setState({input: decodeURIComponent(e.target.value)})
   }
 
   onSubmit() {
