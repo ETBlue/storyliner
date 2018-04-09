@@ -298,7 +298,12 @@ class App extends Component {
       const Filter = (
         <div className='ui two column stackable grid'>
           <div className='eleven wide column'>
-            <p className='Filter-message'>Filtered by: {this.state.filter}</p>
+            <p className='Filter-message'>Filtered by
+              <span className='ui horizontal label' style={{margin: '0 0.5rem'}} >
+                {this.state.filter}
+                <i className='icon delete' onClick={() => this.setFilter(this.state.filter)} />
+              </span>
+            </p>
           </div>
         </div>
       )
