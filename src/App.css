@@ -73,18 +73,9 @@
   display: flex;
 }
 
-.App-body .Body-wrapper .Menu-wrapper {
+.App-body .Menu-wrapper {
   flex: none;
   width: 4rem;
-}
-
-.App-body .Body-wrapper .Relation-wrapper {
-  flex-grow: 1;
-  padding-left: 2rem;
-}
-
-.App-body .Relation-wrapper article:last-child .Relation {
-  margin-bottom: -1rem;
 }
 
 .App-body .Filter-message {
@@ -97,6 +88,11 @@
   font-size: 0.85em;
   display: inline-block;
   opacity: 0.7;
+}
+
+.App-body .Relation-wrapper {
+  flex-grow: 1;
+  padding-left: 2rem;
 }
 
 .App-body .Relation.active {
@@ -188,15 +184,13 @@ html, body {
   margin: 2rem 2rem 2rem 3rem;
 }
 .App-body .Body-wrapper {
+  margin: 0 -1rem;
+}
+.App-body .Relation-wrapper {
   padding-left: 0;
-  margin-left: 3rem;
-  margin-right: -1rem;
 }
-.App-body .Relation-wrapper article:last-child .Relation {
-  margin-bottom: 0;
-}
-.App-body .Relation-wrapper article:last-child .Note-content {
-  margin-bottom: -1rem!important;
+.App-body .Relation-wrapper article:last-child {
+  margin-bottom: -2rem;
 }
 .App-body .Note-header {
   margin-top: -1rem!important;
