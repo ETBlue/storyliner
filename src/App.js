@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Rail, Sticky } from 'semantic-ui-react'
+import { Sticky } from 'semantic-ui-react'
 
 import csv2Obj from './function/csv2Obj'
 import csv2Title from './function/csv2Title'
@@ -309,9 +309,9 @@ class App extends Component {
       )
 
       body = (
-        <div className='Relation-wrapper' ref={this.handleContextRef}>
-          <Rail position='left' style={{width: '4rem', padding: '0', margin: '1rem 0 0 0'}} >
-            <Sticky context={this.state.contextRef} pushing={true}>
+        <div className='Body-wrapper'>
+          <div className='Menu-wrapper' ref={this.handleContextRef}>
+            <Sticky context={this.state.contextRef}>
               <nav className='ui vertical fluid secondary tiny pointing pink menu'>
                 <a className='item' onClick={() => this.scrollReset('top')} >
                   <i className='icon up chevron' style={{float: 'none', opacity: '0.5'}} />
@@ -322,9 +322,11 @@ class App extends Component {
                 </a>
               </nav>
             </Sticky>
-          </Rail>
-          {this.state.filter.length > 0 ? Filter : null}
-          {Relation}
+          </div>
+          <div className='Relation-wrapper'>
+            {this.state.filter.length > 0 ? Filter : null}
+            {Relation}
+          </div>
         </div>
       )
     }

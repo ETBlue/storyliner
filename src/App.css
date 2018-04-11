@@ -21,42 +21,25 @@
   flex-grow: 1;
 }
 
-.App-name {
-  /*
-  color: rgba(0,0,0,0.85);
-  font-family: 'Love Ya Like A Sister', cursive;
-  font-family: 'Fredericka the Great', cursive;
-  font-family: 'Special Elite', cursive;
-
-  font-family: 'Unkempt', cursive;
-  font-family: 'Life Savers', cursive;
-  font-family: 'Kranky', cursive;
-  font-family: 'Miltonian', cursive;
-  font-family: 'Ribeye Marrow', cursive;
-  */
-  font-family: 'Jacques Francois Shadow', cursive;
-}
-
-.App-description {
-  /*
-  font-family: 'Glegoo', serif;
-  font-family: 'Copse', serif;
-  font-family: 'Belgrano', serif;
-  */
-  font-family: 'Arvo', serif;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  width: 4rem;
-  height: 3rem;
-  cursor: pointer;
-}
-
 .App-header {
   padding: 1rem 0;
   background-color: #fff;
   margin-bottom: 1rem;
+}
+
+.App-header .App-name {
+  font-family: 'Jacques Francois Shadow', cursive;
+}
+
+.App-header .App-description {
+  font-family: 'Arvo', serif;
+}
+
+.App-header .App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  width: 4rem;
+  height: 3rem;
+  cursor: pointer;
 }
 
 .App-header .icon {
@@ -82,6 +65,104 @@
   padding-bottom: 2rem;
 }
 
+.App-body .Home-body {
+  margin: 2rem 3rem 2rem 4rem;
+}
+
+.App-body .Body-wrapper {
+  display: flex;
+}
+
+.App-body .Body-wrapper .Menu-wrapper {
+  flex: none;
+  width: 4rem;
+}
+
+.App-body .Body-wrapper .Relation-wrapper {
+  flex-grow: 1;
+  padding-left: 2rem;
+}
+
+.App-body .Relation-wrapper article:last-child .Relation {
+  margin-bottom: -1rem;
+}
+
+.App-body .Filter-message {
+  color: rgba(0,0,0,0.7);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.App-body .Menu-timestamp {
+  font-size: 0.85em;
+  display: inline-block;
+  opacity: 0.7;
+}
+
+.App-body .Relation.active {
+  border: 2px #e03997 solid;
+  margin: -1px!important;
+}
+
+.App-body .Relation .description {
+  margin-top: -0.5em;
+  color: rgba(0,0,0,0.7);
+  font-size: 0.85rem;
+}
+
+.App-body .Relation a {
+  opacity: 0.85;
+}
+
+.App-body .Relation .ui.horizontal.label {
+  margin: 0 0.3em;
+  color: inherit;
+}
+
+.App-body .Relation .ui.horizontal.label:first-child {
+  margin-left: 0;
+}
+
+.App-body .Relation .ui.horizontal.label:last-child {
+  margin-right: 0;
+}
+
+.App-body .Relation blockquote {
+  margin: 1rem 1.5rem;
+  position: relative;
+  color: rgba(0,0,0,0.7);
+}
+
+.App-body .Relation blockquote .Author {
+  font-size: 0.85rem;
+  color: rgba(0,0,0,0.5);
+  text-align: right;
+  margin-right: -1rem;
+  margin-top: 1em;
+}
+
+.App-body .Relation blockquote i.icon.quote {
+  position: absolute;
+  opacity: 0.3;
+}
+
+.App-body .Relation blockquote i.icon.left.quote {
+  left: -1.5em;
+}
+
+.App-body .Relation blockquote i.icon.right.quote {
+  right: -1.5em;
+}
+
+.App-body .Note-header {
+  font-size: 0.85rem!important;
+  font-weight: normal!important;
+}
+
+.App-body .Note-content {
+  color: rgba(0,0,0,0.7);
+}
+
 .App-footer {
   color: rgba(0,0,0,0.5);
   font-size: 0.85rem;
@@ -98,118 +179,31 @@
   padding: 0 4rem 2rem 4rem; 
 }
 
-.Menu-timestamp {
-  font-size: 0.85em;
-  display: inline-block;
-  opacity: 0.7;
-}
-
-.Filter-message {
-  color: rgba(0,0,0,0.7);
-  font-size: 0.85rem;
-  text-align: center;
-}
-
-.Home-body {
-  margin: 2rem 3rem 2rem 4rem;
-}
-
-.Relation-wrapper {
-  margin-left: 4rem;
-  padding-left: 2rem;
-  position: relative;
-}
-
-.Relation-wrapper article:last-child .Relation {
-  margin-bottom: -1rem;
-}
-
-.Relation.active {
-  border: 2px #e03997 solid;
-  margin: -1px!important;
-}
-
-.Relation .description {
-  margin-top: -0.5em;
-  color: rgba(0,0,0,0.7);
-  font-size: 0.85rem;
-}
-
-.Relation a {
-  opacity: 0.85;
-}
-
-.Relation .ui.horizontal.label {
-  margin: 0 0.3em;
-  color: inherit;
-}
-
-.Relation .ui.horizontal.label:first-child {
-  margin-left: 0;
-}
-
-.Relation .ui.horizontal.label:last-child {
-  margin-right: 0;
-}
-
-.Note-header {
-  font-size: 0.85rem!important;
-  font-weight: normal!important;
-}
-
-.Note-content {
-  color: rgba(0,0,0,0.7);
-}
-
-blockquote {
-  margin: 1rem 1.5rem;
-  position: relative;
-  color: rgba(0,0,0,0.7);
-}
-
-blockquote .Author {
-  font-size: 0.85rem;
-  color: rgba(0,0,0,0.5);
-  text-align: right;
-  margin-right: -1rem;
-  margin-top: 1em;
-}
-
-blockquote i.icon.quote {
-  position: absolute;
-  opacity: 0.3;
-}
-
-blockquote i.icon.left.quote {
-  left: -1.5em;
-}
-
-blockquote i.icon.right.quote {
-  right: -1.5em;
-}
-
 
 @media only screen and (max-width: 767px) {
 html, body {
   font-size: 14px;
 }
-.Relation-wrapper {
+.App-body .Home-body {
+  margin: 2rem 2rem 2rem 3rem;
+}
+.App-body .Body-wrapper {
   padding-left: 0;
   margin-left: 3rem;
   margin-right: -1rem;
 }
-.Relation-wrapper article:last-child .Relation {
+.App-body .Relation-wrapper article:last-child .Relation {
   margin-bottom: 0;
 }
-.Relation-wrapper article:last-child .Note-content {
+.App-body .Relation-wrapper article:last-child .Note-content {
   margin-bottom: -1rem!important;
 }
-.Note-header {
+.App-body .Note-header {
   margin-top: -1rem!important;
   margin-bottom: 0.25rem!important;
   border-bottom: none!important;
 }
-.Note-content {
+.App-body .Note-content {
   margin-bottom: 1rem!important;
   padding-left: 1rem;
   border-left: 2px solid #00b5ad;
@@ -220,9 +214,6 @@ html, body {
 }
 .App-header .wrapper {
   margin-left: 0!important;
-}
-.Home-body {
-  margin: 2rem 2rem 2rem 3rem;
 }
 }
 
