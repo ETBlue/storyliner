@@ -6,6 +6,14 @@
   min-height: 100vh;
 }
 
+.App .App-name {
+  font-family: 'Jacques Francois Shadow', cursive;
+}
+
+.App .App-description {
+  font-family: 'Arvo', serif;
+}
+
 .App .App-meta {
   padding: 1rem;
   background-color: hsla(45,95%,95%,1);
@@ -25,14 +33,6 @@
   padding: 1rem 0;
   background-color: #fff;
   margin-bottom: 1rem;
-}
-
-.App-header .App-name {
-  font-family: 'Jacques Francois Shadow', cursive;
-}
-
-.App-header .App-description {
-  font-family: 'Arvo', serif;
 }
 
 .App-header .App-logo {
