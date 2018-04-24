@@ -312,7 +312,7 @@ class App extends Component {
         <div className='Body-wrapper'>
           <div className='Menu-wrapper' ref={this.handleContextRef}>
             <Sticky context={this.state.contextRef}>
-              <nav className='ui vertical fluid secondary tiny pointing pink menu'>
+              <nav className='ui vertical fluid secondary mini pointing pink menu'>
                 <a className='item' onClick={() => this.scrollReset('top')} >
                   <i className='icon up chevron' style={{float: 'none', opacity: '0.5'}} />
                 </a>
