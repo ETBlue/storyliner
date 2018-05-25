@@ -32,7 +32,10 @@ export default () => (
         <i className='icon facebook f' />
         Dev log
       </a>
-
+      <a href='https://www.playpcesor.com/2018/04/storyliner-google.html' target='_blank' rel='noopener noreferrer'>
+        <i className='icon blogger b' />
+        Tutorial (by 電腦玩物)
+      </a>
       </p>
     </div>
   </div>
