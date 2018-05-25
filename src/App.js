@@ -138,7 +138,6 @@ class App extends Component {
   render() {
 
     let title, subtitle, body 
-    let Menu = [], Relation = []
 
     if (this.state.data.length === 0) {
       title = settings.title
@@ -200,6 +199,9 @@ class App extends Component {
     } else {
       title = this.state.title
       subtitle = this.state.subtitle
+
+      let Menu = [], Relation = []
+
       const renderQuote = (quotes) => {
         if (quotes && quotes.length === 0) {
           return
@@ -227,7 +229,7 @@ class App extends Component {
 
         const isActive = this.state.scroll === index ? 'active': ''
 
-        let time = ''
+        let time = null
         if (content.time && content.time.length > 0) {
           time = (
           <span className='Menu-timestamp'>
@@ -242,10 +244,7 @@ class App extends Component {
           </a>
         )
 
-        let Note = (
-          <div className='five wide column'>
-          </div>
-        )
+        let Note = null
         if (content.note && content.note.length > 0) {
           Note = (
             <div className='five wide column'>
@@ -256,6 +255,21 @@ class App extends Component {
               {content.note}
               </p>
             </div>
+          )
+        }
+
+        let Description = null
+        if (
+          (content.channel && content.channel.length > 0) ||
+          (content.channel_carrier && content.channel_carrier.length > 0)
+        ) {
+          Description = (
+            <p className='description'>
+              {content.via}{content.channel}{content.content_carrier} — <a href={content["ref_url"]} target='_blank' rel='noopener noreferrer'>
+              {content.ref_title && content.ref_title.length > 0 ?
+                content.ref_title : content.ref_url}
+              </a>
+            </p>
           )
         }
 
@@ -279,12 +293,7 @@ class App extends Component {
                   {content.content_topic}
                   </span>
                 </p>
-                <p className='description'>
-                  {content.via}{content.channel}{content.content_carrier} — <a href={content["ref_url"]} target='_blank' rel='noopener noreferrer'>
-                  {content.ref_title && content.ref_title.length > 0 ?
-                    content.ref_title : content.ref_url}
-                  </a>
-                </p>
+                {Description}
               </div>
               {renderQuote(content.quote)}
             </div>

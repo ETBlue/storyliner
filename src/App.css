@@ -196,8 +196,8 @@ html, body {
 .App-body .Relation-wrapper {
   padding-left: 0;
 }
-.App-body .Relation-wrapper article:last-child {
-  margin-bottom: -2rem;
+.App-body .Relation-wrapper article:last-child .grid .five.wide.column {
+  margin-bottom: -1rem!important;
 }
 .App-body .Note-header {
   margin-top: -1rem!important;
