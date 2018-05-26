@@ -204,16 +204,24 @@ class App extends Component {
 
       const renderQuote = (quotes) => {
         if (quotes && quotes.length === 0) {
-          return
+          return null
         }
-        const quotesJSX = quotes.map((data, index) => (
-          <blockquote key={index} >
-            <i className='quote left icon' />
-            <i className='quote right icon' />
-            {data.content}
-            {data.author.length > 0 ? <p className='Author'>— {data.author}</p> : null}
-          </blockquote>
-        ))
+        const quotesJSX = quotes.map((data, index) => {
+          let Author = null
+          if (data.author.length > 0) {
+            if (!quotes[index + 1] || data.author !== quotes[index + 1].author) {
+              Author = <p className='Author'>— {data.author}</p>
+            }
+          }
+          return (
+            <blockquote key={index} >
+              <i className='quote left icon' />
+              <i className='quote right icon' />
+              {data.content}
+              {Author}
+            </blockquote>
+          )
+        })
         return(
           <div className='ui secondary segment'>
             {quotesJSX}
