@@ -1,7 +1,8 @@
 import React from 'react'
+
 import settings from '../settings'
-import storage from '../component/history'
-import location from '../component/location'
+import storage from '../function/getStorage'
+import location from '../function/getLocation'
 
 export default ({onCurrentClick}) => {
 
@@ -58,7 +59,7 @@ export default ({onCurrentClick}) => {
   })
 
   return (
-    <aside className='App-meta'>
+    <aside className='Sidebar'>
       <h1 className='ui header'>
         <span className='App-name' >
           {settings.title}

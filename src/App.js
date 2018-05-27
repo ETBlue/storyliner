@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Sticky } from 'semantic-ui-react'
 
-import csv2Obj from './function/csv2Obj'
-import csv2Title from './function/csv2Title'
-import Meta from './component/Meta'
+import Sidebar from './component/Sidebar'
+import Home from './component/Home'
 import Header from './component/Header'
 import Footer from './component/Footer'
-import storage from './component/history'
-import location from './component/location'
+
+import csv2Obj from './function/csv2Obj'
+import csv2Title from './function/csv2Title'
+import storage from './function/getStorage'
+import location from './function/getLocation'
+
 import settings from './settings'
 
 import logo from './logo.svg';
@@ -30,10 +33,12 @@ class App extends Component {
       scroll: parseInt(location.hash.replace('#', ''), 10),
       status: 'standby',
       filter: '',
-      showMeta: false
+      showSidebar: false
     }
 
     this.handleContextRef = this.handleContextRef.bind(this)
+    this.onInput = this.onInput.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
 
   }
 
@@ -43,9 +48,9 @@ class App extends Component {
     }, 5000)
   }
 
-  toggleMeta() {
+  toggleSidebar() {
     this.setState((prevState, props) => {
-      return {showMeta: !prevState.showMeta}
+      return {showSidebar: !prevState.showSidebar}
     })
   }
 
@@ -65,9 +70,9 @@ class App extends Component {
           return
         }
 
-        response.text().then(text => {
+        response.text().then(csvFile => {
 
-          const titles = csv2Title(text)
+          const titles = csv2Title(csvFile)
           let allHistory = JSON.parse(storage.getItem(settings.title))
           allHistory[this.state.source] = {
             title: titles.title,
@@ -76,7 +81,7 @@ class App extends Component {
           }
           storage.setItem(settings.title, JSON.stringify(allHistory))
 
-          const parsed = csv2Obj(text)
+          const parsed = csv2Obj(csvFile)
 
           this.setState({
             title: titles.title,
@@ -104,8 +109,8 @@ class App extends Component {
     location.assign(`?source=${this.state.input}`)
   }
 
-  scroll(index) {
-    this.setState({scroll: index})
+  scroll(relationDataIndex) {
+    this.setState({scroll: relationDataIndex})
   }
 
   scrollReset(direction) {
@@ -137,82 +142,55 @@ class App extends Component {
 
   render() {
 
-    let title, subtitle, body 
+    let title, subtitle, Body
 
+    // render welcome page when there is no data found
     if (this.state.data.length === 0) {
+
+      // set up page titles
       title = settings.title
       subtitle = settings.subtitle
-      body = (
-        <section className='Home-body' >
-          <div className='ui fluid action input' >
-            <input type='text' placeholder='Your data source here... (.csv file)' onChange={e => {this.onInput(e)}} value={this.state.input} autoFocus />
-            <button className='ui teal button' onClick={() => {this.onSubmit()}}>Submit</button>
-          </div>
-          <hr className='ui hidden section divider' />
-          <div className='ui center aligned basic segment'>
-            <h2 className='ui bottom pointing black label' style={{marginBottom: '2rem'}} >
-              Create your own .csv file in 1 minute!
-            </h2>
-            <hr className='ui hidden fitted divider' />
-            <span className='ui horizontal black label'>Step 1</span>
-            <h3 className='ui tiny header' style={{margin: '1rem 0'}} >
-              Make a copy
-              <div className='sub header'>
-                of this <a href='https://docs.google.com/spreadsheets/d/1w8IAAl2JZhqpmLIxJ8GWNO6KT0CQxM4wCnnIPpGvLPM/edit?usp=sharing' target='_blank' rel='noopener noreferrer'>Google Spreadsheet</a>
-              </div>
-            </h3>
-            <span className='ui horizontal black label'>Step 2</span>
-            <h3 className='ui tiny header' style={{margin: '1rem 0'}} >
-              Publish it by clicking
-              <div className='sub header'>
-                <code className='ui horizontal basic label'>File</code> > <code className='ui horizontal basic label'>Publish to the web...</code>
-              </div>
-            </h3>
-            <span className='ui horizontal black label'>Step 3</span>
-            <h3 className='ui tiny header' style={{margin: '1rem 0'}} >
-              Select the format of
-              <div className='sub header'>
-                <code className='ui horizontal basic label'>Comma-seperated values (.csv)</code>
-              </div>
-            </h3>
-            <span className='ui horizontal black label'>Step 4</span>
-            <h3 className='ui tiny header' style={{margin: '1rem 0'}} >
-              Click the
-              <div className='sub header'>
-                <code className='ui horizontal basic label'>Publish</code> button
-              </div>
-            </h3>
-            <span className='ui horizontal black label'>Step 5</span>
-            <h3 className='ui tiny header' style={{margin: '1rem 0'}} >
-              Copy the provided URL
-              <div className='sub header'>
-                and paste here
-              </div>
-            </h3>
-            <h3 className='ui top pointing black label'>
-              And you are done!
-            </h3>
-          </div>
-        </section>
-      )
 
+      // set up page body
+      Body = <Home onInput={this.onInput} onSubmit={this.onSubmit} input={this.state.input} />
+
+    // render data when available
     } else {
+
+      // set up page titles
       title = this.state.title
       subtitle = this.state.subtitle
 
+      // get ready to set up page body
       let Menu = [], Relation = []
 
-      const renderQuote = (quotes) => {
-        if (quotes && quotes.length === 0) {
+      // get ready to render quotes
+      const renderQuote = (quotesArray) => {
+
+        // in case something goes wrong...
+        if (!quotesArray) {
           return null
         }
-        const quotesJSX = quotes.map((data, index) => {
+
+        // render nothing when data is empty
+        if (quotesArray.length === 0) {
+          return null
+        }
+
+        // render quotes normally
+        const quotesJSX = quotesArray.map((data, index) => {
+
+          // not showing author by default
           let Author = null
+
+          // show author if necessary
           if (data.author.length > 0) {
-            if (!quotes[index + 1] || data.author !== quotes[index + 1].author) {
+            if (!quotesArray[index + 1] || data.author !== quotesArray[index + 1].author) {
               Author = <p className='Author'>— {data.author}</p>
             }
           }
+
+          // generate one quote
           return (
             <blockquote key={index} >
               <i className='quote left icon' />
@@ -222,6 +200,8 @@ class App extends Component {
             </blockquote>
           )
         })
+
+        // generate the quote section
         return(
           <div className='ui secondary segment'>
             {quotesJSX}
@@ -229,104 +209,152 @@ class App extends Component {
         )
       }
 
-      Relation = this.state.data.map((content, index) => {
+      // render relations
+      Relation = this.state.data.map((relationData, relationDataIndex) => {
 
-        if (this.state.filter.length > 0 && this.state.filter !== content.subject && this.state.filter !== content.object) {
+        // render nothing if this relation is filtered out
+        if (this.state.filter.length > 0 && this.state.filter !== relationData.subject && this.state.filter !== relationData.object) {
           return null
         }
 
-        const isActive = this.state.scroll === index ? 'active': ''
+        // set up status of this relation
+        const isActive = this.state.scroll === relationDataIndex ? 'active': ''
 
-        let time = null
-        if (content.time && content.time.length > 0) {
-          time = (
-          <span className='Menu-timestamp'>
-          {content.time}
-          </span>
+        // render no timestamp by default
+        let Time = null
+
+        // render timestamp if necessary
+        if (relationData.time && relationData.time.length > 0) {
+          Time = (
+            <span className='Time'>
+              {relationData.time}
+            </span>
           )
         }
+
+        // normalize date
+        const dateTime = new Date(relationData.date)
+        const year = dateTime.getFullYear()
+        const month = dateTime.getMonth() > 0 ? dateTime.getMonth() : '?'
+        const date = month === '?' ? '?' : dateTime.getDate()
+
+        // set up year mark on top of the first menu item
+        if (!this.state.data[relationDataIndex - 1]) {
+          Menu.push(
+            <div key={`year-of-${relationDataIndex}`} className='YearMark item'>
+              {year}
+            </div>
+          )
+
+        // set up year mark on top of the first menu item from the same year
+        } else {
+          const prevDateTime = new Date(this.state.data[relationDataIndex - 1].date)
+          const prevYear = prevDateTime.getFullYear()
+          if (year !== prevYear) {
+            Menu.push(
+              <div key={`year-of-${relationDataIndex}`} className='YearMark item'>
+                {year}
+              </div>
+            )
+          }
+        }
+
+        // set up menu item for this relation
         Menu.push(
-          <a key={index} href={`#${index}`} className={`item ${isActive}`} onClick={() => this.scroll(index)} >
-            {content.date}
-            {time}
+          <a key={relationDataIndex} href={`#${relationDataIndex}`} className={`Menu item ${isActive}`} onClick={() => this.scroll(relationDataIndex)} >
+            {`${month}/${date}`}
+            {Time}
           </a>
         )
 
+        // render no note by default
         let Note = null
-        if (content.note && content.note.length > 0) {
+
+        // render note if necessary
+        if (relationData.note && relationData.note.length > 0) {
           Note = (
             <div className='five wide column'>
               <h4 className='Note-header ui dividing teal header'>
                 圍觀筆記
               </h4>
               <p className='Note-content'>
-              {content.note}
+              {relationData.note}
               </p>
             </div>
           )
         }
 
+        // render no description by default
         let Description = null
+
+        // render description if necessary
         if (
-          (content.channel && content.channel.length > 0) ||
-          (content.channel_carrier && content.channel_carrier.length > 0)
+          (relationData.channel && relationData.channel.length > 0) ||
+          (relationData.channel_carrier && relationData.channel_carrier.length > 0)
         ) {
           Description = (
             <p className='description'>
-              {content.via}{content.channel}{content.content_carrier} — <a href={content["ref_url"]} target='_blank' rel='noopener noreferrer'>
-              {content.ref_title && content.ref_title.length > 0 ?
-                content.ref_title : content.ref_url}
+              {relationData.via}{relationData.channel}{relationData.content_carrier} — <a href={relationData["ref_url"]} target='_blank' rel='noopener noreferrer'>
+              {relationData.ref_title && relationData.ref_title.length > 0 ?
+                relationData.ref_title : relationData.ref_url}
               </a>
             </p>
           )
         }
 
+        // produce the relation section
         return (
-          <article key={index} id={index}>
-          <div className='ui two column stackable grid' >
-            <div className='eleven wide column'>
-            <div className={`Relation ui segments ${isActive}`}>
-              <div className='ui segment'>
-                <p>
-                  <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[content.subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(content.subject)} >
-                    {content.subject}
-                  </a>
-                  <span>
-                  {content.action}
-                  </span>
-                  <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[content.object]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(content.object)} >
-                    {content.object}
-                  </a>
-                  <span>
-                  {content.content_topic}
-                  </span>
-                </p>
-                {Description}
+          <article key={relationDataIndex} id={relationDataIndex} className='Relation' >
+            <div className='ui two column stackable grid' >
+              <div className='eleven wide column'>
+              <div className={`Relation-block ui segments ${isActive}`}>
+                <div className='ui segment'>
+                  <p>
+                    <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[relationData.subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(relationData.subject)} >
+                      {relationData.subject}
+                    </a>
+                    <span>
+                    {relationData.action}
+                    </span>
+                    <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[relationData.object]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(relationData.object)} >
+                      {relationData.object}
+                    </a>
+                    <span>
+                    {relationData.content_topic}
+                    </span>
+                  </p>
+                  {Description}
+                </div>
+                {renderQuote(relationData.quote)}
               </div>
-              {renderQuote(content.quote)}
+              </div>
+              {Note}
             </div>
-            </div>
-            {Note}
-          </div>
           </article>
         )
       })
 
-      const Filter = (
-        <div className='ui two column stackable grid'>
-          <div className='eleven wide column'>
-            <p className='Filter-message'>Filtered by
-              <span className='ui horizontal label' style={{margin: '0 0.5rem'}} >
-                {this.state.filter}
-                <i className='icon delete' onClick={() => this.setFilter(this.state.filter)} />
-              </span>
-            </p>
-          </div>
-        </div>
-      )
+      // render no filter by default
+      let Filter = null
 
-      body = (
-        <div className='Body-wrapper'>
+      // render filter if necessary
+      if (this.state.filter.length > 0) {
+        Filter = (
+          <div className='Filter ui two column stackable grid'>
+            <div className='eleven wide column'>
+              <p className='Filter-message'>Filtered by
+                <span className='ui horizontal label' style={{margin: '0 0.5rem'}} >
+                  {this.state.filter}
+                  <i className='icon delete' onClick={() => this.setFilter(this.state.filter)} />
+                </span>
+              </p>
+            </div>
+          </div>
+        )
+      }
+
+      Body = (
+        <div className='Body'>
           <div className='Menu-wrapper' ref={this.handleContextRef}>
             <Sticky context={this.state.contextRef}>
               <nav className='ui vertical fluid secondary mini pointing pink menu'>
@@ -341,7 +369,7 @@ class App extends Component {
             </Sticky>
           </div>
           <div className='Relation-wrapper'>
-            {this.state.filter.length > 0 ? Filter : null}
+            {Filter}
             {Relation}
           </div>
         </div>
@@ -349,12 +377,12 @@ class App extends Component {
     }
 
     return (
-      <div className="App" style={this.state.showMeta ? {left: '20rem'} : {}} >
-        <Meta onCurrentClick={() => this.toggleMeta()} />
+      <div className="App" style={this.state.showSidebar ? {left: '20rem'} : {}} >
+        <Sidebar onCurrentClick={() => this.toggleSidebar()} />
         <main className='App-main'>
-          <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status} onIconClick={() => this.getData()} onLogoClick={() => this.toggleMeta()} />
-          <section className="App-body ui container">
-            {body}
+          <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status} onIconClick={() => this.getData()} onLogoClick={() => this.toggleSidebar()} />
+          <section className='Body-wrapper ui container'>
+            {Body}
           </section>
           <hr className='ui divider' />
           <Footer />

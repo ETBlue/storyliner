@@ -19,7 +19,7 @@ export default ({logo, title, subtitle, onIconClick, onLogoClick, status}) => {
       icon = 'redo'
   }
   return (
-    <header className='App-header'>
+    <header className='Header'>
       <div className='wrapper ui container' style={{display: 'flex'}} >
         <a style={{flex: 'none'}}>
           <img src={logo} alt="logo" className='ui image App-logo' onClick={onLogoClick}/>
