@@ -78,13 +78,14 @@
   width: 4rem;
 }
 
-.Menu, .YearMark {
+.Menu-wrapper .Menu,
+.Menu-wrapper .YearMark {
   padding-left: 0!important;
   text-align: right!important;
   font-family: monospace;
 }
 
-.Menu .Time {
+.Menu-wrapper .Menu .Time {
   font-size: 0.85em;
   opacity: 0.7;
   margin-left: -1rem;
@@ -92,7 +93,7 @@
   display: block;
 }
 
-.YearMark {
+.Menu-wrapper .YearMark {
   font-weight: bold!important;
   padding-top: 0.5em!important;
   padding-bottom: 0.5em!important;
@@ -106,7 +107,7 @@
   padding-left: 2rem;
 }
 
-.Filter-message {
+.Relation-wrapper .Filter-message {
   color: rgba(0,0,0,0.7);
   font-size: 0.85rem;
   text-align: center;
@@ -124,36 +125,36 @@
   margin: -1px!important;
 }
 
-.Relation-block .description {
+.Relation-wrapper .Relation-block .description {
   margin-top: -0.5em;
   color: rgba(0,0,0,0.7);
   font-size: 0.85rem;
 }
 
-.Relation-block a {
+.Relation-wrapper .Relation-block a {
   opacity: 0.85;
 }
 
-.Relation-block .ui.horizontal.label {
+.Relation-wrapper .Relation-block .ui.horizontal.label {
   margin: 0 0.3em;
   color: inherit;
 }
 
-.Relation-block .ui.horizontal.label:first-child {
+.Relation-wrapper .Relation-block .ui.horizontal.label:first-child {
   margin-left: 0;
 }
 
-.Relation-block .ui.horizontal.label:last-child {
+.Relation-wrapper .Relation-block .ui.horizontal.label:last-child {
   margin-right: 0;
 }
 
-.Relation-block blockquote {
+.Relation-wrapper .Relation-block blockquote {
   margin: 1rem 1.5rem;
   position: relative;
   color: rgba(0,0,0,0.7);
 }
 
-.Relation-block blockquote .Author {
+.Relation-wrapper .Relation-block blockquote .Author {
   font-size: 0.85rem;
   color: rgba(0,0,0,0.5);
   text-align: right;
@@ -161,25 +162,25 @@
   margin-top: 1em;
 }
 
-.Relation-block blockquote i.icon.quote {
+.Relation-wrapper .Relation-block blockquote i.icon.quote {
   position: absolute;
   opacity: 0.3;
 }
 
-.Relation-block blockquote i.icon.left.quote {
+.Relation-wrapper .Relation-block blockquote i.icon.left.quote {
   left: -1.5em;
 }
 
-.Relation-block blockquote i.icon.right.quote {
+.Relation-wrapper .Relation-block blockquote i.icon.right.quote {
   right: -1.5em;
 }
 
-.Note-header {
+.Relation-wrapper .Note-header {
   font-size: 0.85rem!important;
   font-weight: normal!important;
 }
 
-.Note-content {
+.Relation-wrapper .Note-content {
   color: rgba(0,0,0,0.7);
 }
 
@@ -216,12 +217,12 @@ html, body {
 .Relation-wrapper article:last-child .grid .five.wide.column {
   margin-bottom: -1rem!important;
 }
-.Note-header {
+.Relation-wrapper .Note-header {
   margin-top: -1rem!important;
   margin-bottom: 0.25rem!important;
   border-bottom: none!important;
 }
-.Note-content {
+.Relation-wrapper .Note-content {
   margin-bottom: 1rem!important;
   padding-left: 1rem;
   border-left: 2px solid #00b5ad;
