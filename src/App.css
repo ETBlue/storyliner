@@ -81,6 +81,7 @@
 .Menu, .YearMark {
   padding-left: 0!important;
   text-align: right!important;
+  font-family: monospace;
 }
 
 .Menu .Time {
@@ -111,7 +112,14 @@
   text-align: center;
 }
 
-.Relation-block.active {
+.Relation-wrapper .Timestamp {
+  font-size: 0.85rem!important;
+  font-family: monospace;
+  padding-top: 0!important;
+  padding-bottom: 0!important;
+}
+
+.Relation-wrapper .Relation-block.active {
   border: 2px #e03997 solid;
   margin: -1px!important;
 }

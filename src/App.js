@@ -221,10 +221,11 @@ class App extends Component {
         const isActive = this.state.scroll === relationDataIndex ? 'active': ''
 
         // render no timestamp by default
-        let Time = null
+        let Time = null, time = null
 
         // render timestamp if necessary
         if (relationData.time && relationData.time.length > 0) {
+          time = relationData.time
           Time = (
             <span className='Time'>
               {relationData.time}
@@ -237,6 +238,13 @@ class App extends Component {
         const year = dateTime.getFullYear()
         const month = dateTime.getMonth() > 0 ? dateTime.getMonth() : '?'
         const date = month === '?' ? '?' : dateTime.getDate()
+
+        // setup timestamp for relation block
+        const Timestamp = (
+          <div className='Timestamp ui secondary right aligned segment'>
+            {year}-{month}-{date} {time}
+          </div>
+        )
 
         // set up year mark on top of the first menu item
         if (!this.state.data[relationDataIndex - 1]) {
@@ -308,6 +316,7 @@ class App extends Component {
             <div className='ui two column stackable grid' >
               <div className='eleven wide column'>
               <div className={`Relation-block ui segments ${isActive}`}>
+                {Timestamp}
                 <div className='ui segment'>
                   <p>
                     <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[relationData.subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(relationData.subject)} >
