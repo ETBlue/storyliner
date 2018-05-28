@@ -114,10 +114,13 @@
 }
 
 .Relation-wrapper .Timestamp {
-  font-size: 0.85rem!important;
+  color: rgba(0,0,0,0.5);
+  font-size: 0.7rem;
   font-family: monospace;
-  padding-top: 0!important;
-  padding-bottom: 0!important;
+  text-align: right;
+  position: absolute;
+  top: 0;
+  right: 1rem;
 }
 
 .Relation-wrapper .Relation-block.active {

@@ -241,9 +241,9 @@ class App extends Component {
 
         // setup timestamp for relation block
         const Timestamp = (
-          <div className='Timestamp ui secondary right aligned segment'>
+          <p className='Timestamp'>
             {year}-{month}-{date} {time}
-          </div>
+          </p>
         )
 
         // set up year mark on top of the first menu item
@@ -316,8 +316,8 @@ class App extends Component {
             <div className='ui two column stackable grid' >
               <div className='eleven wide column'>
               <div className={`Relation-block ui segments ${isActive}`}>
-                {Timestamp}
                 <div className='ui segment'>
+                  {Timestamp}
                   <p>
                     <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[relationData.subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(relationData.subject)} >
                       {relationData.subject}
