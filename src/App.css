@@ -157,6 +157,13 @@
   color: rgba(0,0,0,0.7);
 }
 
+.Relation-wrapper .Relation-block blockquote:first-child {
+}
+
+.Relation-wrapper .Relation-block blockquote:last-child {
+  margin-bottom: 0;
+}
+
 .Relation-wrapper .Relation-block blockquote .Author {
   font-size: 0.85rem;
   color: rgba(0,0,0,0.5);
