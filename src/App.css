@@ -102,6 +102,21 @@
   background-color: #d4d4d5!important;
 }
 
+.Menu-wrapper .in-viewport:not(.active) {
+  border-color: hsla(0,0%,0%,0.3)!important;
+}
+
+.Menu-wrapper .not-staged:not(.active) {
+  padding: 0!important;
+  margin-top: 0.5rem!important;
+  margin-bottom: 0.5rem!important;
+  border-top: 2px #d4d4d5 solid!important;
+  height: 0;
+  color: transparent!important;
+  transition: margin 0.5s ease-out!important;
+  transition: padding 0.5s ease-out!important;
+}
+
 .Relation-wrapper {
   flex-grow: 1;
   padding-left: 2rem;

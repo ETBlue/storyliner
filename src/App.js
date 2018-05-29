@@ -8,6 +8,7 @@ import Footer from './component/Footer'
 
 import csv2Obj from './function/csv2Obj'
 import csv2Title from './function/csv2Title'
+import isInViewport from './function/isInViewport'
 import storage from './function/getStorage'
 import location from './function/getLocation'
 
@@ -23,17 +24,28 @@ class App extends Component {
     super(props)
 
     this.state = {
+
+      // API related
+      input: decodeURIComponent(location.search.replace('?source=','')),
+      source: decodeURIComponent(location.search.replace('?source=','')),
       isLoaded: false,
+      status: 'standby',
+
+      // data related
       data: [],
       title: '',
       subtitle: '',
-      input: decodeURIComponent(location.search.replace('?source=','')),
-      source: decodeURIComponent(location.search.replace('?source=','')),
-      contextRef: null,
-      scroll: parseInt(location.hash.replace('#', ''), 10),
-      status: 'standby',
+
+      // view related
       filter: '',
-      showSidebar: false
+      showSidebar: false,
+      visibleRelationIDs: new Set(),
+      firstStagedRelationID: 0,
+      lastStagedRelationID: 10,
+
+      // sticky menu related
+      contextRef: null,
+      scrollToRelation: parseInt(location.hash.replace('#', ''), 10),
     }
 
     this.handleContextRef = this.handleContextRef.bind(this)
@@ -42,9 +54,39 @@ class App extends Component {
 
   }
 
+  componentDidMount() {
+    this.getData()
+    window.addEventListener('scroll', (e) => {
+      this.updateVisibleRelationIDs()
+    })
+  }
+
+  updateVisibleRelationIDs() {
+    let visibleRelationIDs = new Set()
+    const stagedRelationAmount = 5
+    let firstStagedRelationID, lastStagedRelationID
+    let firstCounted = false, lastCounted = false
+    const relationElementList = window.document.getElementsByClassName('Relation')
+    Array.from(relationElementList).forEach((elem, elemIndex) => {
+      if (isInViewport(elem)) {
+        if (!firstCounted) {
+          firstStagedRelationID = parseInt(elem.id, 10) - stagedRelationAmount
+          firstCounted = true
+        }
+        visibleRelationIDs.add(elem.id)
+      } else {
+        if (firstCounted && !lastCounted) {
+          lastStagedRelationID = parseInt(elem.id, 10) + stagedRelationAmount - 1
+          lastCounted = true
+        }
+      }
+    })
+    this.setState({visibleRelationIDs, firstStagedRelationID, lastStagedRelationID})
+  }
+
   resetStatus() {
     window.setTimeout(() => {
-      this.setState({status: 'standby'})
+      this.setState({status: 'standby'}, this.updateVisibleRelationIDs())
     }, 5000)
   }
 
@@ -109,12 +151,12 @@ class App extends Component {
     location.assign(`?source=${this.state.input}`)
   }
 
-  scroll(relationDataIndex) {
-    this.setState({scroll: relationDataIndex})
+  scrollToRelation(relationDataIndex) {
+    this.setState({scrollToRelation: relationDataIndex})
   }
 
   scrollReset(direction) {
-    this.setState({scroll: ''})
+    this.setState({scrollToRelation: ''})
     window.history.pushState({}, '', location.pathname + location.search)
     if (direction === 'top') {
       window.scrollTo(0, 0)
@@ -134,10 +176,6 @@ class App extends Component {
 
   handleContextRef(contextRef) {
     this.setState({ contextRef })
-  }
-
-  componentDidMount() {
-    this.getData()
   }
 
   render() {
@@ -218,7 +256,7 @@ class App extends Component {
         }
 
         // set up status of this relation
-        const isActive = this.state.scroll === relationDataIndex ? 'active': ''
+        const isActive = this.state.scrollToRelation === relationDataIndex ? 'active': ''
 
         // render no timestamp by default
         let Time = null, time = null
@@ -267,9 +305,21 @@ class App extends Component {
           }
         }
 
+        // change menu style when correlated relations are in viewport
+        let classInViewport = ''
+        if (this.state.visibleRelationIDs.has(relationDataIndex.toString())) {
+          classInViewport = 'in-viewport'
+        }
+
+        // change menu style when correlated relations are unstaged
+        let notStaged = ''
+        if (relationDataIndex < this.state.firstStagedRelationID || relationDataIndex > this.state.lastStagedRelationID){
+          notStaged = 'not-staged'
+        }
+
         // set up menu item for this relation
         Menu.push(
-          <a key={relationDataIndex} href={`#${relationDataIndex}`} className={`Menu item ${isActive}`} onClick={() => this.scroll(relationDataIndex)} >
+          <a key={relationDataIndex} href={`#${relationDataIndex}`} className={`Menu item ${isActive} ${classInViewport} ${notStaged}`} onClick={() => this.scrollToRelation(relationDataIndex)} >
             {`${month}/${date}`}
             {Time}
           </a>
