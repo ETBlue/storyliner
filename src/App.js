@@ -279,9 +279,9 @@ class App extends Component {
 
         // setup timestamp for relation block
         const Timestamp = (
-          <p className='Timestamp'>
+          <a className='Timestamp' href={`#${relationDataIndex}`} onClick={() => this.scrollToRelation(relationDataIndex)} >
             {year}-{month}-{date} {time}
-          </p>
+          </a>
         )
 
         // set up year mark on top of the first menu item

@@ -136,6 +136,7 @@
   position: absolute;
   top: 0;
   right: 1rem;
+  cursor: pointer;
 }
 
 .Relation-wrapper .Relation-block.active {
