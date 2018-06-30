@@ -274,7 +274,7 @@ class App extends Component {
         // normalize date
         const dateTime = new Date(relationData.date)
         const year = dateTime.getFullYear()
-        const month = dateTime.getMonth() > 0 ? (dateTime.getMonth() + 1) : '?'
+        const month = dateTime.getMonth() >= 0 ? (dateTime.getMonth() + 1) : '?'
         const date = month === '?' ? '?' : dateTime.getDate()
 
         // setup timestamp for relation block
