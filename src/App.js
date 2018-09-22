@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Sticky } from 'semantic-ui-react'
+import Papa from 'papaparse'
 
 import Sidebar from './component/Sidebar'
 import Home from './component/Home'
@@ -106,14 +107,10 @@ class App extends Component {
 
     this.setState({status: 'loading', isLoaded: false}, () => {
 
-      fetch(this.state.source).then((response) => {
-
-        if (response.headers.get('Content-Type') !== 'text/csv') {
-          this.setState({status: 'error', isLoaded: false})
-          return
-        }
-
-        response.text().then(csvFile => {
+      Papa.parse(this.state.source, {
+        download: true,
+        complete: (result) => {
+          const csvFile = result.data
 
           const titles = csv2Title(csvFile)
           let allHistory = JSON.parse(storage.getItem(settings.title))
@@ -125,7 +122,6 @@ class App extends Component {
           storage.setItem(settings.title, JSON.stringify(allHistory))
 
           const parsed = csv2Obj(csvFile)
-
           this.setState({
             title: titles.title,
             subtitle: titles.subtitle,
@@ -134,9 +130,10 @@ class App extends Component {
             isLoaded: true,
             status: 'success'
           }, this.resetStatus())
-        })
-      }).catch(error => {
-        this.setState({status: 'error', isLoaded: false})
+        },
+        error: (error) => {
+          console.error(error)
+        }
       })
 
     })

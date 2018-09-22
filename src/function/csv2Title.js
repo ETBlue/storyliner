@@ -1,8 +1,7 @@
-export default (csvFile) => {
-  const titles = csvFile.split('\n')[0].split(',')
+export default (csvArray) => {
+  const titles = csvArray[0]
   return {
     title: titles[0],
     subtitle: titles[1]
   }
 }
-
