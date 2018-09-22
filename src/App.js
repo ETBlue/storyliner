@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Sticky } from 'semantic-ui-react'
 
 import Sidebar from './component/Sidebar'
@@ -14,20 +14,20 @@ import location from './function/getLocation'
 
 import settings from './settings'
 
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'
+import './App.css'
 
 class App extends Component {
 
-  constructor(props) {
+  constructor (props) {
 
     super(props)
 
     this.state = {
 
       // API related
-      input: decodeURIComponent(location.search.replace('?source=','')),
-      source: decodeURIComponent(location.search.replace('?source=','')),
+      input: decodeURIComponent(location.search.replace('?source=', '')),
+      source: decodeURIComponent(location.search.replace('?source=', '')),
       isLoaded: false,
       status: 'standby',
 
@@ -45,7 +45,7 @@ class App extends Component {
 
       // sticky menu related
       contextRef: null,
-      scrollToRelation: parseInt(location.hash.replace('#', ''), 10),
+      scrollToRelation: parseInt(location.hash.replace('#', ''), 10)
     }
 
     this.handleContextRef = this.handleContextRef.bind(this)
@@ -54,18 +54,19 @@ class App extends Component {
 
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getData()
     window.addEventListener('scroll', (e) => {
       this.updateVisibleRelationIDs()
     })
   }
 
-  updateVisibleRelationIDs() {
+  updateVisibleRelationIDs () {
     let visibleRelationIDs = new Set()
     const stagedRelationAmount = 5
     let firstStagedRelationID, lastStagedRelationID
-    let firstCounted = false, lastCounted = false
+    let firstCounted = false
+    let lastCounted = false
     const relationElementList = window.document.getElementsByClassName('Relation')
     Array.from(relationElementList).forEach((elem, elemIndex) => {
       if (isInViewport(elem)) {
@@ -84,19 +85,19 @@ class App extends Component {
     this.setState({visibleRelationIDs, firstStagedRelationID, lastStagedRelationID})
   }
 
-  resetStatus() {
+  resetStatus () {
     window.setTimeout(() => {
       this.setState({status: 'standby'}, this.updateVisibleRelationIDs())
     }, 5000)
   }
 
-  toggleSidebar() {
+  toggleSidebar () {
     this.setState((prevState, props) => {
       return {showSidebar: !prevState.showSidebar}
     })
   }
 
-  getData() {
+  getData () {
 
     if (this.state.source.length === 0) {
       this.setState({status: 'invalid', isLoaded: false})
@@ -133,29 +134,27 @@ class App extends Component {
             isLoaded: true,
             status: 'success'
           }, this.resetStatus())
-
         })
-      })
-      .catch(error => {
+      }).catch(error => {
         this.setState({status: 'error', isLoaded: false})
       })
 
     })
   }
 
-  onInput(e) {
+  onInput (e) {
     this.setState({input: decodeURIComponent(e.target.value)})
   }
 
-  onSubmit() {
+  onSubmit () {
     location.assign(`?source=${this.state.input}`)
   }
 
-  scrollToRelation(relationDataIndex) {
+  scrollToRelation (relationDataIndex) {
     this.setState({scrollToRelation: relationDataIndex})
   }
 
-  scrollReset(direction) {
+  scrollReset (direction) {
     this.setState({scrollToRelation: ''})
     window.history.pushState({}, '', location.pathname + location.search)
     if (direction === 'top') {
@@ -165,7 +164,7 @@ class App extends Component {
     }
   }
 
-  setFilter(character) {
+  setFilter (character) {
     this.setState((prevState, props) => {
       if (prevState.filter === character) {
         return {filter: ''}
@@ -178,7 +177,7 @@ class App extends Component {
     this.setState({ contextRef })
   }
 
-  render() {
+  render () {
 
     let title, subtitle, Body
 
@@ -240,7 +239,7 @@ class App extends Component {
         })
 
         // generate the quote section
-        return(
+        return (
           <div className='ui secondary segment'>
             {quotesJSX}
           </div>
@@ -256,10 +255,11 @@ class App extends Component {
         }
 
         // set up status of this relation
-        const isActive = this.state.scrollToRelation === relationDataIndex ? 'active': ''
+        const isActive = this.state.scrollToRelation === relationDataIndex ? 'active' : ''
 
         // render no timestamp by default
-        let Time = null, time = null
+        let Time = null
+        let time = null
 
         // render timestamp if necessary
         if (relationData.time && relationData.time.length > 0) {
@@ -313,7 +313,7 @@ class App extends Component {
 
         // change menu style when correlated relations are unstaged
         let notStaged = ''
-        if (relationDataIndex < this.state.firstStagedRelationID || relationDataIndex > this.state.lastStagedRelationID){
+        if (relationDataIndex < this.state.firstStagedRelationID || relationDataIndex > this.state.lastStagedRelationID) {
           notStaged = 'not-staged'
         }
 
@@ -336,7 +336,7 @@ class App extends Component {
                 圍觀筆記
               </h4>
               <p className='Note-content'>
-              {relationData.note}
+                {relationData.note}
               </p>
             </div>
           )
@@ -352,9 +352,8 @@ class App extends Component {
         ) {
           Description = (
             <p className='description'>
-              {relationData.via}{relationData.channel}{relationData.content_carrier} — <a href={relationData["ref_url"]} target='_blank' rel='noopener noreferrer'>
-              {relationData.ref_title && relationData.ref_title.length > 0 ?
-                relationData.ref_title : relationData.ref_url}
+              {relationData.via}{relationData.channel}{relationData.content_carrier} — <a href={relationData.ref_url} target='_blank' rel='noopener noreferrer'>
+              {relationData.ref_title && relationData.ref_title.length > 0 ? relationData.ref_title : relationData.ref_url}
               </a>
             </p>
           )
@@ -365,27 +364,27 @@ class App extends Component {
           <article key={relationDataIndex} id={relationDataIndex} className='Relation' >
             <div className='ui two column stackable grid' >
               <div className='eleven wide column'>
-              <div className={`Relation-block ui segments ${isActive}`}>
-                <div className='ui segment'>
-                  {Timestamp}
-                  <p>
-                    <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[relationData.subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(relationData.subject)} >
-                      {relationData.subject}
-                    </a>
-                    <span>
-                    {relationData.action}
-                    </span>
-                    <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[relationData.object]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(relationData.object)} >
-                      {relationData.object}
-                    </a>
-                    <span>
-                    {relationData.content_topic}
-                    </span>
-                  </p>
-                  {Description}
+                <div className={`Relation-block ui segments ${isActive}`}>
+                  <div className='ui segment'>
+                    {Timestamp}
+                    <p>
+                      <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[relationData.subject]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(relationData.subject)} >
+                        {relationData.subject}
+                      </a>
+                      <span>
+                        {relationData.action}
+                      </span>
+                      <a className='ui large horizontal label' style={{backgroundColor: `hsla(${this.state.authorColor[relationData.object]}, 50%, 50%, 0.3)`}} onClick={() => this.setFilter(relationData.object)} >
+                        {relationData.object}
+                      </a>
+                      <span>
+                        {relationData.content_topic}
+                      </span>
+                    </p>
+                    {Description}
+                  </div>
+                  {renderQuote(relationData.quote)}
                 </div>
-                {renderQuote(relationData.quote)}
-              </div>
               </div>
               {Note}
             </div>
@@ -401,7 +400,8 @@ class App extends Component {
         Filter = (
           <div className='Filter ui two column stackable grid'>
             <div className='eleven wide column'>
-              <p className='Filter-message'>Filtered by
+              <p className='Filter-message'>
+                Filtered by
                 <span className='ui horizontal label' style={{margin: '0 0.5rem'}} >
                   {this.state.filter}
                   <i className='icon delete' onClick={() => this.setFilter(this.state.filter)} />
@@ -436,7 +436,7 @@ class App extends Component {
     }
 
     return (
-      <div className="App" style={this.state.showSidebar ? {left: '20rem'} : {}} >
+      <div className='App' style={this.state.showSidebar ? {left: '20rem'} : {}} >
         <Sidebar onCurrentClick={() => this.toggleSidebar()} />
         <main className='App-main'>
           <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status} onIconClick={() => this.getData()} onLogoClick={() => this.toggleSidebar()} />
@@ -447,8 +447,8 @@ class App extends Component {
           <Footer />
         </main>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
