@@ -1,25 +1,26 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 
-import settings from '../settings'
-import storage from '../function/getStorage'
-import location from '../function/getLocation'
+import {SETTINGS, getStorage} from '../_shared'
 
-export default ({onCurrentClick}) => {
+import './Sidebar.css'
+
+const Sidebar = (props) => {
 
   let attributes = {
-    href: settings.baseUrl,
+    href: SETTINGS.baseUrl,
     className: 'item'
   }
-  if (location.search === '') {
+  if (props.location.search === '') {
     attributes = {
       className: 'active item',
-      onClick: onCurrentClick,
+      onClick: props.onCurrentClick,
       style: {cursor: 'default'}
     }
   }
 
   let sorted = []
-  const history = JSON.parse(storage.getItem(settings.title))
+  const history = JSON.parse(getStorage.getItem(SETTINGS.title))
   Object.keys(history).forEach((key, index) => {
     sorted.push({
       key: key,
@@ -35,13 +36,13 @@ export default ({onCurrentClick}) => {
   const historyJSX = sorted.map((item, index) => {
 
     let attributes = {
-      href: `${settings.baseUrl}/${settings.query}${item.key}`,
+      href: `${SETTINGS.baseUrl}/${SETTINGS.query}${item.key}`,
       className: 'item'
     }
-    if (location.search === `${settings.query}${item.key}`) {
+    if (props.location.search === `${SETTINGS.query}${item.key}`) {
       attributes = {
         className: 'active item',
-        onClick: onCurrentClick,
+        onClick: props.onCurrentClick,
         style: {cursor: 'default'}
       }
     }
@@ -62,10 +63,10 @@ export default ({onCurrentClick}) => {
     <aside className='Sidebar'>
       <h1 className='ui header'>
         <span className='App-name' >
-          {settings.title}
+          {SETTINGS.title}
         </span>
         <div className='sub header App-description'>
-          {settings.subtitle}
+          {SETTINGS.subtitle}
         </div>
       </h1>
       <nav className='ui vertical secondary fluid menu' style={{margin: '0'}} >
@@ -78,3 +79,5 @@ export default ({onCurrentClick}) => {
     </aside>
   )
 }
+
+export default withRouter(Sidebar)

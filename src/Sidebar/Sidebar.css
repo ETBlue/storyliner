@@ -1,0 +1,10 @@
+.Sidebar {
+  padding: 1rem;
+  background-color: hsla(45,95%,95%,1);
+  box-shadow: inset 0 0 2rem hsla(45,50%,80%,1);
+  border-right: 1px #fff solid;
+  box-sizing: border-box;
+  width: 80%;
+  max-width: 20rem;
+  flex: none;
+}

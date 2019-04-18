@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './Header.css'
+
 export default ({logo, title, subtitle, onIconClick, onLogoClick, status}) => {
   let icon = 'redo'
   switch (status) {
@@ -21,9 +23,9 @@ export default ({logo, title, subtitle, onIconClick, onLogoClick, status}) => {
   return (
     <header className='Header'>
       <div className='wrapper ui container' style={{display: 'flex'}} >
-        <a style={{flex: 'none'}}>
+        <span style={{flex: 'none'}}>
           <img src={logo} alt="logo" className='ui image App-logo' onClick={onLogoClick}/>
-        </a>
+        </span>
         <h1 className="ui header" style={{flexGrow: '1', margin: '0'}} >
           <span className='App-name' >
             {title}

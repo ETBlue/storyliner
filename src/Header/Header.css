@@ -1,0 +1,42 @@
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.Header {
+  padding: 1rem 0;
+  background-color: #fff;
+  margin-bottom: 1rem;
+}
+
+.Header .App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  width: 4rem;
+  height: 3rem;
+  cursor: pointer;
+}
+
+.Header .icon {
+  margin: 0.7rem 0 0 0;
+  opacity: 0.5;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.Header .green.icon,
+.Header .red.icon,
+.Header .blue.icon,
+.Header .yellow.icon {
+  opacity: 1;
+  cursor: default;
+}
+
+.Header .blue.icon {
+  cursor: progress;
+}
+
+@media only screen and (max-width: 767px) {
+.Header .wrapper {
+  margin-left: 0!important;
+}
+}

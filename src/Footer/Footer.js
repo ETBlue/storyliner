@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './Footer.css'
+
 export default () => (
   <footer className='Footer' >
     <div className='ui center aligned container'>

@@ -1,0 +1,37 @@
+.App {
+  display: flex;
+  position: relative;
+  left: 0;
+  margin-left: -20rem;
+  min-height: 100vh;
+}
+
+.App .App-name {
+  font-family: 'Jacques Francois Shadow', cursive;
+}
+
+.App .App-description {
+  font-family: 'Arvo', serif;
+}
+
+.App .App-main {
+  flex-grow: 1;
+}
+
+.Body-wrapper {
+  padding-bottom: 2rem;
+}
+
+.Body-wrapper .Body {
+  display: flex;
+}
+
+
+@media only screen and (max-width: 767px) {
+html, body {
+  font-size: 14px;
+}
+.Body {
+  margin: 0 -1rem;
+}
+}
