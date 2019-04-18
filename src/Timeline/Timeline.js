@@ -1,6 +1,7 @@
 import React from 'react'
 import {withRouter} from 'react-router-dom'
 import {Sticky} from 'semantic-ui-react'
+import moment from 'moment'
 
 import {getEventIndex} from '../_shared'
 
@@ -21,17 +22,20 @@ const Timeline = (props) => {
 
   // render relations
   props.data.forEach((event, eventIndex) => {
-    const ymd = event.date.split('/')
-    const year = ymd[0] || '?'
-    const month = ymd[1] || '?'
-    const date = ymd[2] || '?'
+
+    const eventDate = moment(event.date)
+    const isStandard = event.date.includes('/') || event.date.includes('-') || event.date.length > 5
+    const year = isStandard ? eventDate.year() : event.date
+    const month = isStandard ? eventDate.month() + 1 : '?'
+    const date = isStandard ? eventDate.date() : '?'
     const time = event.time && event.time.length > 0 ? event.time : null
     const isActive = getEventIndex(props.location.hash) === eventIndex
 
     if (isEventListed({filter: props.filter, event})) {
       EventList.push(
         <Event key={eventIndex} eventIndex={eventIndex} event={event}
-          isActive={isActive} props={props} ymd={ymd} time={time} />
+          isActive={isActive} props={props}
+          year={year} month={month} date={date} time={time} />
       )
     }
 

@@ -3,7 +3,7 @@ import React from 'react'
 import renderQuote from './renderQuote'
 import isDescriptionAvailable from './isDescriptionAvailable'
 
-export default ({event, eventIndex, isActive, props, ymd, time}) => {
+export default ({event, eventIndex, isActive, props, year, month, date, time}) => {
   return (
     <article key={eventIndex} id={eventIndex} className='Event' >
       <div className='ui two column stackable grid' >
@@ -12,7 +12,7 @@ export default ({event, eventIndex, isActive, props, ymd, time}) => {
             <div className='ui segment'>
               {
                 <a className='Timestamp' href={`#${eventIndex}`}>
-                  {ymd[0] || '?'}-{ymd[1] || '?'}-{ymd[2] || '?'} {time || null}
+                  {year}-{month}-{date} {time || null}
                 </a>
               }
               <p>
@@ -70,6 +70,11 @@ export default ({event, eventIndex, isActive, props, ymd, time}) => {
                   {event.via}{event.channel}{event.content_carrier} — <a href={event.ref_url} target='_blank' rel='noopener noreferrer'>
                     {event.ref_title && event.ref_title.length > 0 ? event.ref_title : event.ref_url}
                   </a>
+                </p>
+              ) : null}
+              {event.summary ? (
+                <p className='description'>
+                  {event.summary}
                 </p>
               ) : null}
             </div>
