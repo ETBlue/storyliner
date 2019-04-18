@@ -1,5 +1,5 @@
 // define a set of author correlated colors
-const colorSpace = 40
+const colorSpace = 30
 let defaultColors = []
 for (let i = 0; i < 360 / colorSpace; i++) {
   defaultColors.push(i)
@@ -57,7 +57,7 @@ export default (csvArray) => {
       } else {
         currentLineObject[header] = columns[columnIndex] || ''
         // for authors related cells
-        if (header === 'object' || header === 'subject') {
+        if (header === 'object' || header === 'subject' || header === 'object_1' || header === 'subject_1') {
           authors.add(columns[columnIndex])
         }
       }
