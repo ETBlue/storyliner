@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './Header.css'
+
 export default ({logo, title, subtitle, onIconClick, onLogoClick, status}) => {
   let icon = 'redo'
   switch (status) {

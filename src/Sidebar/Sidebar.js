@@ -3,6 +3,8 @@ import React from 'react'
 import {SETTINGS, getLocation, getStorage} from '../_shared'
 
 export default ({onCurrentClick}) => {
+import './Sidebar.css'
+
 
   let attributes = {
     href: SETTINGS.baseUrl,

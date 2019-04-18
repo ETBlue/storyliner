@@ -2,6 +2,7 @@ import React from 'react'
 import { Sticky } from 'semantic-ui-react'
 
 import renderQuote from './renderQuote'
+import './Timeline.css'
 
 export default (props) => {
   // get ready to set up page body

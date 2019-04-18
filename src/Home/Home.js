@@ -38,6 +38,8 @@ export default ({onInput, onSubmit, input}) => (
         Click the
         <div className='sub header'>
           <code className='ui horizontal basic label'>Publish</code> button
+import './Home.css'
+
         </div>
       </h3>
       <span className='ui horizontal black label'>Step 5</span>
