@@ -22,6 +22,9 @@ const Timeline = (props) => {
 
   // render relations
   props.data.forEach((event, eventIndex) => {
+    if (!event.date) {
+      return null
+    }
 
     const eventDate = moment(event.date)
     const isStandard = event.date.includes('/') || event.date.includes('-') || event.date.length > 5
