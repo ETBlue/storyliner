@@ -23,6 +23,18 @@ export default ({event, eventIndex, isActive, props, ymd, time}) => {
                     {event.subject}
                   </span>
                 ) : null}
+                {event.subject_1_prep && event.subject_1_prep.length > 0 ? (
+                  <span>
+                    {event.subject_1_prep}
+                  </span>
+                ) : null}
+                {event.subject_1 && event.subject_1.length > 0 ? (
+                  <span className='ui large horizontal label'
+                    style={{backgroundColor: `hsla(${props.authorColor[event.subject_1]}, 50%, 50%, 0.3)`}}
+                    onClick={() => props.setFilter(event.subject_1)} >
+                    {event.subject_1}
+                  </span>
+                ) : null}
                 {event.action && event.action.length > 0 ? (
                   <span>
                     {event.action}
@@ -33,6 +45,18 @@ export default ({event, eventIndex, isActive, props, ymd, time}) => {
                     style={{backgroundColor: `hsla(${props.authorColor[event.object]}, 50%, 50%, 0.3)`}}
                     onClick={() => props.setFilter(event.object)} >
                     {event.object}
+                  </span>
+                ) : null}
+                {event.object_1_prep && event.object_1_prep.length > 0 ? (
+                  <span>
+                    {event.object_1_prep}
+                  </span>
+                ) : null}
+                {event.object_1 && event.object_1.length > 0 ? (
+                  <span className='ui large horizontal label'
+                    style={{backgroundColor: `hsla(${props.authorColor[event.object_1]}, 50%, 50%, 0.3)`}}
+                    onClick={() => props.setFilter(event.object_1)} >
+                    {event.object_1}
                   </span>
                 ) : null}
                 {event.content_topic && event.content_topic.length > 0 ? (
