@@ -3,14 +3,14 @@
   width: 4rem;
 }
 
-.Menu-wrapper .Menu,
-.Menu-wrapper .YearMark {
+.Menu-wrapper .MenuItem,
+.Menu-wrapper .MenuYearMark {
   padding-left: 0!important;
   text-align: right!important;
   font-family: monospace;
 }
 
-.Menu-wrapper .Menu .Time {
+.Menu-wrapper .MenuItem .Time {
   font-size: 0.85em;
   opacity: 0.7;
   margin-left: -1rem;
@@ -18,7 +18,7 @@
   display: block;
 }
 
-.Menu-wrapper .YearMark {
+.Menu-wrapper .MenuYearMark {
   font-weight: bold!important;
   padding-top: 0.5em!important;
   padding-bottom: 0.5em!important;
@@ -27,17 +27,24 @@
   background-color: #d4d4d5!important;
 }
 
-.Menu-wrapper .in-viewport:not(.active) {
+.Menu-wrapper .MenuItem.in-viewport:not(.active) {
   border-color: hsla(0,0%,0%,0.3)!important;
 }
 
-.Menu-wrapper .not-staged:not(.active) {
+.Menu-wrapper .MenuItem.not-staged:not(.active) {
   padding: 0!important;
   margin-top: 0.5rem!important;
   margin-bottom: 0.5rem!important;
   border-top: 2px #d4d4d5 solid!important;
   height: 0;
   color: transparent!important;
+  transition: margin 0.5s ease-out!important;
+  transition: padding 0.5s ease-out!important;
+}
+
+.Menu-wrapper .MenuYearMark.not-staged:not(.active) {
+  padding-top: 0!important;
+  padding-bottom: 0!important;
   transition: margin 0.5s ease-out!important;
   transition: padding 0.5s ease-out!important;
 }

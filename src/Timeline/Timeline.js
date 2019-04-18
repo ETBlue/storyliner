@@ -5,8 +5,13 @@ import {Sticky} from 'semantic-ui-react'
 import {getEventIndex} from '../_shared'
 
 import isEventListed from './isEventListed'
-import Event from './Event'
+import isEventInViewPort from './isEventInViewPort'
+import isEventStaged from './isEventStaged'
+import isFirstEventOfYear from './isFirstEventOfYear'
 import Filter from './Filter'
+import Event from './Event'
+import MenuYearMark from './MenuYearMark'
+import MenuItem from './MenuItem'
 import './Timeline.css'
 
 const Timeline = (props) => {
@@ -16,61 +21,40 @@ const Timeline = (props) => {
 
   // render relations
   props.data.forEach((event, eventIndex) => {
+    const ymd = event.date.split('/')
+    const year = ymd[0] || '?'
+    const month = ymd[1] || '?'
+    const date = ymd[2] || '?'
+    const time = event.time && event.time.length > 0 ? event.time : null
     const isActive = getEventIndex(props.location.hash) === eventIndex
 
     if (isEventListed({filter: props.filter, event})) {
       EventList.push(
-        <Event key={eventIndex} eventIndex={eventIndex} event={event} isActive={isActive} props={props} />
+        <Event key={eventIndex} eventIndex={eventIndex} event={event}
+          isActive={isActive} props={props} ymd={ymd} time={time} />
       )
     }
 
-    let Time = null
-    if (event.time && event.time.length > 0) {
-      Time = (
-        <span className='Time'>
-          {event.time}
-        </span>
-      )
-    }
-    const dateTime = new Date(event.date)
-    const year = isNaN(dateTime.getFullYear()) ? '?' : dateTime.getFullYear()
-    const month = dateTime.getMonth() >= 0 ? (dateTime.getMonth() + 1) : '?'
-    const date = month === '?' ? '?' : dateTime.getDate()
-
-    // set up year mark on top of the first menu item
-    if (!props.data[eventIndex - 1]) {
+    if (eventIndex === 0) {
       Menu.push(
-        <div key={`year-of-${eventIndex}`} className='YearMark item'>
-          {year}
-        </div>
+        <MenuYearMark key={`year-of-${eventIndex}`} eventIndex={eventIndex}
+          isStaged={isEventStaged({firstStagedEventID: props.firstStagedEventID, lastStagedEventID: props.lastStagedEventID, eventIndex})}
+          year={year} />
       )
-    // set up year mark on top of the first menu item from the same year
-    } else {
-      const prevDateTime = new Date(props.data[eventIndex - 1].date)
-      const prevYear = prevDateTime.getFullYear()
-      if (year !== prevYear) {
-        Menu.push(
-          <div key={`year-of-${eventIndex}`} className='YearMark item'>
-            {year}
-          </div>
-        )
-      }
+    } else if (isFirstEventOfYear({data: props.data, year, eventIndex})) {
+      Menu.push(
+        <MenuYearMark key={`year-of-${eventIndex}`} eventIndex={eventIndex}
+          isStaged={isEventStaged({firstStagedEventID: props.firstStagedEventID, lastStagedEventID: props.lastStagedEventID, eventIndex})}
+          year={year} />
+      )
     }
 
-    let classInViewport = ''
-    if (props.visibleEventIDs.has(eventIndex.toString())) {
-      classInViewport = 'in-viewport'
-    }
-    let notStaged = ''
-    if (eventIndex < props.firstStagedEventID || eventIndex > props.lastStagedEventID) {
-      notStaged = 'not-staged'
-    }
     Menu.push(
-      <a key={eventIndex} href={`#${eventIndex}`}
-        className={`Menu item ${isActive ? 'active' : ''} ${classInViewport} ${notStaged}`}>
-        {`${month}/${date}`}
-        {Time}
-      </a>
+      <MenuItem key={eventIndex} eventIndex={eventIndex}
+        isActive={isActive}
+        isInViewPort={isEventInViewPort({visibleEventIDs: props.visibleEventIDs, eventIndex})}
+        isStaged={isEventStaged({firstStagedEventID: props.firstStagedEventID, lastStagedEventID: props.lastStagedEventID, eventIndex})}
+        month={month} date={date} time={time} />
     )
   })
 
@@ -92,7 +76,9 @@ const Timeline = (props) => {
         </Sticky>
       </div>
       <div className='Event-wrapper'>
-        {props.filter.length > 0 ? <Filter {...props} /> : null}
+        {props.filter.length > 0 ? (
+          <Filter {...props} />
+        ) : null}
         {EventList}
       </div>
     </div>
