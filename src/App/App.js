@@ -17,6 +17,7 @@ import {SETTINGS, getStorage} from '../_shared'
 import logo from './logo.svg'
 import './App.css'
 
+
 class App extends React.Component {
   queries = queryString.parse(this.props.location.search)
 
@@ -55,7 +56,7 @@ class App extends React.Component {
     contextRef: null
   }
 
-  updateVisibleEventIDs () {
+  updateVisibleEventIDs = () => {
     let visibleEventIDs = new Set()
     const stagedEventAmount = 5
     let firstStagedEventID, lastStagedEventID
@@ -79,19 +80,19 @@ class App extends React.Component {
     this.setState({visibleEventIDs, firstStagedEventID, lastStagedEventID})
   }
 
-  resetStatus () {
+  resetStatus = () => {
     window.setTimeout(() => {
       this.setState({status: 'standby'}, this.updateVisibleEventIDs())
     }, 5000)
   }
 
-  toggleSidebar () {
+  toggleSidebar = () => {
     this.setState((prevState, props) => {
       return {showSidebar: !prevState.showSidebar}
     })
   }
 
-  startApp () {
+  startApp = () => {
     if (!this.queries.source || decodeURIComponent(this.queries.source).length === 0) {
       this.setState({status: 'invalid', isLoaded: false})
       return
@@ -113,6 +114,13 @@ class App extends React.Component {
             title: titles.title,
             subtitle: titles.subtitle,
             time: Date.now()
+          }
+          for (const entry in allHistory) {
+            if (!entry.match(/^http/) ||
+              allHistory[entry].title.includes('<!DOCTYPE html>')
+            ) {
+              delete allHistory[entry]
+            }
           }
           getStorage.setItem(SETTINGS.title, JSON.stringify(allHistory))
 
@@ -178,11 +186,11 @@ class App extends React.Component {
 
     return (
       <div className='App' style={this.state.showSidebar ? {left: '20rem'} : {}} >
-        <Sidebar onCurrentClick={() => this.toggleSidebar()} />
+        <Sidebar onCurrentClick={this.toggleSidebar} />
         <main className='App-main'>
           <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status}
-            onIconClick={() => this.startApp()}
-            onLogoClick={() => this.toggleSidebar()} />
+            onIconClick={this.startApp}
+            onLogoClick={this.toggleSidebar} />
           <section className='Body-wrapper ui container'>
             {Body}
           </section>
