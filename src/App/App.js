@@ -2,18 +2,15 @@ import React, { Component } from 'react'
 import { Sticky } from 'semantic-ui-react'
 import Papa from 'papaparse'
 
-import Sidebar from './component/Sidebar'
-import Home from './component/Home'
-import Header from './component/Header'
-import Footer from './component/Footer'
+import {Sidebar} from '../Sidebar'
+import {Home} from '../Home'
+import {Header} from '../Header'
+import {Footer} from '../Footer'
 
-import csv2Obj from './function/csv2Obj'
-import csv2Title from './function/csv2Title'
-import isInViewport from './function/isInViewport'
-import storage from './function/getStorage'
-import location from './function/getLocation'
-
-import settings from './settings'
+import csv2Obj from './csv2Obj'
+import csv2Title from './csv2Title'
+import isInViewport from './isInViewport'
+import {SETTINGS, getStorage, getLocation} from '../_shared'
 
 import logo from './logo.svg'
 import './App.css'
@@ -27,8 +24,8 @@ class App extends Component {
     this.state = {
 
       // API related
-      input: decodeURIComponent(location.search.replace('?source=', '')),
-      source: decodeURIComponent(location.search.replace('?source=', '')),
+      input: decodeURIComponent(getLocation.search.replace('?source=', '')),
+      source: decodeURIComponent(getLocation.search.replace('?source=', '')),
       isLoaded: false,
       status: 'standby',
 
@@ -46,7 +43,7 @@ class App extends Component {
 
       // sticky menu related
       contextRef: null,
-      scrollToRelation: parseInt(location.hash.replace('#', ''), 10)
+      scrollToRelation: parseInt(getLocation.hash.replace('#', ''), 10)
     }
 
     this.handleContextRef = this.handleContextRef.bind(this)
@@ -113,13 +110,13 @@ class App extends Component {
           const csvFile = result.data
 
           const titles = csv2Title(csvFile)
-          let allHistory = JSON.parse(storage.getItem(settings.title))
+          let allHistory = JSON.parse(getStorage.getItem(SETTINGS.title))
           allHistory[this.state.source] = {
             title: titles.title,
             subtitle: titles.subtitle,
             time: Date.now()
           }
-          storage.setItem(settings.title, JSON.stringify(allHistory))
+          getStorage.setItem(SETTINGS.title, JSON.stringify(allHistory))
 
           const parsed = csv2Obj(csvFile)
           this.setState({
@@ -144,7 +141,7 @@ class App extends Component {
   }
 
   onSubmit () {
-    location.assign(`?source=${this.state.input}`)
+    getLocation.assign(`?source=${this.state.input}`)
   }
 
   scrollToRelation (relationDataIndex) {
@@ -153,7 +150,7 @@ class App extends Component {
 
   scrollReset (direction) {
     this.setState({scrollToRelation: ''})
-    window.history.pushState({}, '', location.pathname + location.search)
+    window.history.pushState({}, '', getLocation.pathname + getLocation.search)
     if (direction === 'top') {
       window.scrollTo(0, 0)
     } else if (direction === 'bottom') {
@@ -182,8 +179,8 @@ class App extends Component {
     if (this.state.data.length === 0) {
 
       // set up page titles
-      title = settings.title
-      subtitle = settings.subtitle
+      title = SETTINGS.title
+      subtitle = SETTINGS.subtitle
 
       // set up page body
       Body = <Home onInput={this.onInput} onSubmit={this.onSubmit} input={this.state.input} />

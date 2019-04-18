@@ -4,4 +4,3 @@ export default {
   baseUrl: '/storyliner',
   query: '?source='
 }
-
