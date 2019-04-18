@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { Sticky } from 'semantic-ui-react'
+import React from 'react'
+import {withRouter} from 'react-router-dom'
+import queryString from 'query-string'
 import Papa from 'papaparse'
 
 import {Sidebar} from '../Sidebar'
@@ -11,82 +12,76 @@ import {Timeline} from '../Timeline'
 import csv2Obj from './csv2Obj'
 import csv2Title from './csv2Title'
 import isInViewport from './isInViewport'
-import {SETTINGS, getStorage, getLocation} from '../_shared'
+import {SETTINGS, getStorage} from '../_shared'
 
 import logo from './logo.svg'
 import './App.css'
 
-class App extends Component {
-
-  constructor (props) {
-
-    super(props)
-
-    this.state = {
-
-      // API related
-      input: decodeURIComponent(getLocation.search.replace('?source=', '')),
-      source: decodeURIComponent(getLocation.search.replace('?source=', '')),
-      isLoaded: false,
-      status: 'standby',
-
-      // data related
-      data: [],
-      title: '',
-      subtitle: '',
-
-      // view related
-      filter: '',
-      showSidebar: false,
-      visibleRelationIDs: new Set(),
-      firstStagedRelationID: 0,
-      lastStagedRelationID: 10,
-
-      // sticky menu related
-      contextRef: null,
-      scrollToRelation: parseInt(getLocation.hash.replace('#', ''), 10)
-    }
-
-    this.handleContextRef = this.handleContextRef.bind(this)
-    this.onInput = this.onInput.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-
-  }
+class App extends React.Component {
+  queries = queryString.parse(this.props.location.search)
 
   componentDidMount () {
-    this.getData()
+    this.startApp()
     window.addEventListener('scroll', (e) => {
-      this.updateVisibleRelationIDs()
+      this.updateVisibleEventIDs()
     })
   }
 
-  updateVisibleRelationIDs () {
-    let visibleRelationIDs = new Set()
-    const stagedRelationAmount = 5
-    let firstStagedRelationID, lastStagedRelationID
+  componentDidUpdate (prevProps) {
+    if (this.props.location.search !== prevProps.location.search) {
+      this.queries = queryString.parse(this.props.location.search)
+      this.startApp()
+    }
+  }
+
+  state = {
+    // API related
+    isLoaded: false,
+    status: 'standby',
+
+    // data related
+    data: [],
+    title: '',
+    subtitle: '',
+
+    // view related
+    filter: '',
+    showSidebar: false,
+    visibleEventIDs: new Set(),
+    firstStagedEventID: 0,
+    lastStagedEventID: 10,
+
+    // sticky menu related
+    contextRef: null
+  }
+
+  updateVisibleEventIDs () {
+    let visibleEventIDs = new Set()
+    const stagedEventAmount = 5
+    let firstStagedEventID, lastStagedEventID
     let firstCounted = false
     let lastCounted = false
-    const relationElementList = window.document.getElementsByClassName('Relation')
+    const relationElementList = window.document.getElementsByClassName('Event')
     Array.from(relationElementList).forEach((elem, elemIndex) => {
       if (isInViewport(elem)) {
         if (!firstCounted) {
-          firstStagedRelationID = parseInt(elem.id, 10) - stagedRelationAmount
+          firstStagedEventID = parseInt(elem.id, 10) - stagedEventAmount
           firstCounted = true
         }
-        visibleRelationIDs.add(elem.id)
+        visibleEventIDs.add(elem.id)
       } else {
         if (firstCounted && !lastCounted) {
-          lastStagedRelationID = parseInt(elem.id, 10) + stagedRelationAmount - 1
+          lastStagedEventID = parseInt(elem.id, 10) + stagedEventAmount - 1
           lastCounted = true
         }
       }
     })
-    this.setState({visibleRelationIDs, firstStagedRelationID, lastStagedRelationID})
+    this.setState({visibleEventIDs, firstStagedEventID, lastStagedEventID})
   }
 
   resetStatus () {
     window.setTimeout(() => {
-      this.setState({status: 'standby'}, this.updateVisibleRelationIDs())
+      this.setState({status: 'standby'}, this.updateVisibleEventIDs())
     }, 5000)
   }
 
@@ -96,23 +91,25 @@ class App extends Component {
     })
   }
 
-  getData () {
-
-    if (this.state.source.length === 0) {
+  startApp () {
+    if (!this.queries.source || decodeURIComponent(this.queries.source).length === 0) {
       this.setState({status: 'invalid', isLoaded: false})
       return
     }
 
-    this.setState({status: 'loading', isLoaded: false}, () => {
+    this.fetchData()
+  }
 
-      Papa.parse(this.state.source, {
+  fetchData = () => {
+    this.setState({status: 'loading', isLoaded: false}, () => {
+      Papa.parse(this.queries.source, {
         download: true,
         complete: (result) => {
           const csvFile = result.data
 
           const titles = csv2Title(csvFile)
           let allHistory = JSON.parse(getStorage.getItem(SETTINGS.title))
-          allHistory[this.state.source] = {
+          allHistory[this.queries.source] = {
             title: titles.title,
             subtitle: titles.subtitle,
             time: Date.now()
@@ -133,25 +130,11 @@ class App extends Component {
           console.error(error)
         }
       })
-
     })
   }
 
-  onInput (e) {
-    this.setState({input: decodeURIComponent(e.target.value)})
-  }
-
-  onSubmit () {
-    getLocation.assign(`?source=${this.state.input}`)
-  }
-
-  scrollToRelation (relationDataIndex) {
-    this.setState({scrollToRelation: relationDataIndex})
-  }
-
-  scrollReset (direction) {
-    this.setState({scrollToRelation: ''})
-    window.history.pushState({}, '', getLocation.pathname + getLocation.search)
+  scrollReset = (direction) => {
+    this.props.history.push(`${this.props.location.pathname}${this.props.location.search}`)
     if (direction === 'top') {
       window.scrollTo(0, 0)
     } else if (direction === 'bottom') {
@@ -159,7 +142,7 @@ class App extends Component {
     }
   }
 
-  setFilter (character) {
+  setFilter = (character) => {
     this.setState((prevState, props) => {
       if (prevState.filter === character) {
         return {filter: ''}
@@ -168,34 +151,27 @@ class App extends Component {
     })
   }
 
-  handleContextRef(contextRef) {
+  handleContextRef = (contextRef) => {
     this.setState({ contextRef })
   }
 
   render () {
-
+    const queries = queryString.parse(this.props.location.search)
     let title, subtitle, Body
 
     // render welcome page when there is no data found
-    if (this.state.data.length === 0) {
-
-      // set up page titles
+    if (!queries.source || this.state.data.length === 0) {
       title = SETTINGS.title
       subtitle = SETTINGS.subtitle
-
-      // set up page body
-      Body = <Home onInput={this.onInput} onSubmit={this.onSubmit} input={this.state.input} />
+      Body = <Home />
 
     // render data when available
     } else {
-
-      // set up page titles
       title = this.state.title
       subtitle = this.state.subtitle
       Body = <Timeline
         handleContextRef={this.handleContextRef}
         scrollReset={this.scrollReset}
-        scrollToRelation={this.scrollToRelation}
         setFilter={this.setFilter}
         {...this.state} />
     }
@@ -204,7 +180,9 @@ class App extends Component {
       <div className='App' style={this.state.showSidebar ? {left: '20rem'} : {}} >
         <Sidebar onCurrentClick={() => this.toggleSidebar()} />
         <main className='App-main'>
-          <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status} onIconClick={() => this.getData()} onLogoClick={() => this.toggleSidebar()} />
+          <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status}
+            onIconClick={() => this.startApp()}
+            onLogoClick={() => this.toggleSidebar()} />
           <section className='Body-wrapper ui container'>
             {Body}
           </section>
@@ -216,4 +194,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default withRouter(App)

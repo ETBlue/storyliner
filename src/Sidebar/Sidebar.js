@@ -1,19 +1,20 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 
-import {SETTINGS, getLocation, getStorage} from '../_shared'
+import {SETTINGS, getStorage} from '../_shared'
 
-export default ({onCurrentClick}) => {
 import './Sidebar.css'
 
+const Sidebar = (props) => {
 
   let attributes = {
     href: SETTINGS.baseUrl,
     className: 'item'
   }
-  if (getLocation.search === '') {
+  if (props.location.search === '') {
     attributes = {
       className: 'active item',
-      onClick: onCurrentClick,
+      onClick: props.onCurrentClick,
       style: {cursor: 'default'}
     }
   }
@@ -38,10 +39,10 @@ import './Sidebar.css'
       href: `${SETTINGS.baseUrl}/${SETTINGS.query}${item.key}`,
       className: 'item'
     }
-    if (getLocation.search === `${SETTINGS.query}${item.key}`) {
+    if (props.location.search === `${SETTINGS.query}${item.key}`) {
       attributes = {
         className: 'active item',
-        onClick: onCurrentClick,
+        onClick: props.onCurrentClick,
         style: {cursor: 'default'}
       }
     }
@@ -78,3 +79,5 @@ import './Sidebar.css'
     </aside>
   )
 }
+
+export default withRouter(Sidebar)

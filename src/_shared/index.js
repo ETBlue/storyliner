@@ -1,9 +1,9 @@
-import getLocation from './getLocation'
 import getStorage from './getStorage'
+import getEventIndex from './getEventIndex'
 import SETTINGS from './SETTINGS'
 
 export {
-  getLocation,
   getStorage,
+  getEventIndex,
   SETTINGS
 }
