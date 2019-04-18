@@ -1,5 +1,5 @@
 {
-  "main.css": "/storyliner/static/css/main.ff3d4bb6.chunk.css",
+  "main.css": "/storyliner/static/css/main.13798cbc.chunk.css",
   "main.js": "/storyliner/static/js/main.1ac32712.chunk.js",
   "main.js.map": "/storyliner/static/js/main.1ac32712.chunk.js.map",
   "runtime~main.js": "/storyliner/static/js/runtime~main.2f6f50a4.js",
@@ -8,10 +8,10 @@
   "static/js/2.9242af2e.chunk.js": "/storyliner/static/js/2.9242af2e.chunk.js",
   "static/js/2.9242af2e.chunk.js.map": "/storyliner/static/js/2.9242af2e.chunk.js.map",
   "index.html": "/storyliner/index.html",
-  "precache-manifest.3ca873ae91b70485d9ea98ded0c12d01.js": "/storyliner/precache-manifest.3ca873ae91b70485d9ea98ded0c12d01.js",
+  "precache-manifest.ee01d5199de20018bee312da63c56b90.js": "/storyliner/precache-manifest.ee01d5199de20018bee312da63c56b90.js",
   "service-worker.js": "/storyliner/service-worker.js",
   "static/css/2.84a727ca.chunk.css.map": "/storyliner/static/css/2.84a727ca.chunk.css.map",
-  "static/css/main.ff3d4bb6.chunk.css.map": "/storyliner/static/css/main.ff3d4bb6.chunk.css.map",
+  "static/css/main.13798cbc.chunk.css.map": "/storyliner/static/css/main.13798cbc.chunk.css.map",
   "static/media/semantic.min.css": "/storyliner/static/media/outline-icons.ef60a4f6.woff",
   "static/media/logo.svg": "/storyliner/static/media/logo.5d5d9eef.svg"
 }
