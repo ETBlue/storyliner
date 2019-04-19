@@ -1,9 +1,15 @@
-export default ({filter, event}) => {
-  const isFilteredOut = filter.length > 0 &&
-    filter !== event.subject &&
-    filter !== event.object &&
-    filter !== event.subject_1 &&
-    filter !== event.object_1
+import {LABELS} from '../_shared'
 
-  return !isFilteredOut
+export default ({filter, event}) => {
+  if (filter.length === 0) {
+    return true
+  }
+
+  for (const label of LABELS) {
+    if (filter === event[label]) {
+      return true
+    }
+  }
+
+  return false
 }

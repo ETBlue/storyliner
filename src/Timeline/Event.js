@@ -18,7 +18,7 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
               <p>
                 {event.subject && event.subject.length > 0 ? (
                   <span className='ui large horizontal label'
-                    style={{backgroundColor: `hsla(${props.authorColor[event.subject]}, 50%, 50%, 0.3)`}}
+                    style={{backgroundColor: `hsla(${props.labelColor[event.subject]}, 50%, 50%, 0.3)`}}
                     onClick={() => props.setFilter(event.subject)} >
                     {event.subject}
                   </span>
@@ -30,7 +30,7 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
                 ) : null}
                 {event.subject_1 && event.subject_1.length > 0 ? (
                   <span className='ui large horizontal label'
-                    style={{backgroundColor: `hsla(${props.authorColor[event.subject_1]}, 50%, 50%, 0.3)`}}
+                    style={{backgroundColor: `hsla(${props.labelColor[event.subject_1]}, 50%, 50%, 0.3)`}}
                     onClick={() => props.setFilter(event.subject_1)} >
                     {event.subject_1}
                   </span>
@@ -42,7 +42,7 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
                 ) : null}
                 {event.object && event.object.length > 0 ? (
                   <span className='ui large horizontal label'
-                    style={{backgroundColor: `hsla(${props.authorColor[event.object]}, 50%, 50%, 0.3)`}}
+                    style={{backgroundColor: `hsla(${props.labelColor[event.object]}, 50%, 50%, 0.3)`}}
                     onClick={() => props.setFilter(event.object)} >
                     {event.object}
                   </span>
@@ -54,7 +54,7 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
                 ) : null}
                 {event.object_1 && event.object_1.length > 0 ? (
                   <span className='ui large horizontal label'
-                    style={{backgroundColor: `hsla(${props.authorColor[event.object_1]}, 50%, 50%, 0.3)`}}
+                    style={{backgroundColor: `hsla(${props.labelColor[event.object_1]}, 50%, 50%, 0.3)`}}
                     onClick={() => props.setFilter(event.object_1)} >
                     {event.object_1}
                   </span>

@@ -129,7 +129,7 @@ class App extends React.Component {
             title: titles.title,
             subtitle: titles.subtitle,
             data: parsed.data,
-            authorColor: parsed.authorColor,
+            labelColor: parsed.labelColor,
             isLoaded: true,
             status: 'success'
           }, this.resetStatus())

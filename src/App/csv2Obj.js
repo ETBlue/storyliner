@@ -1,101 +1,78 @@
-// define a set of author correlated colors
-const colorSpace = 30
-let defaultColors = []
-for (let i = 0; i < 360 / colorSpace; i++) {
-  defaultColors.push(i)
+import {LABELS} from '../_shared'
+import COLORS from './COLORS'
+
+let colors = new Set(COLORS)
+const labels = new Set()
+
+let currentEvent = {quote: []}
+let currentAuthor = ''
+const resetCurrentEvent = () => {
+  currentEvent = {quote: []}
+  currentAuthor = ''
 }
-let colors = new Set(defaultColors)
 
-// define a set of authors
-const authors = new Set()
-
-export default (csvArray) => {
-  // break csv into lines
-  const lines = csvArray
+export default (lines) => {
   if (lines.length < 2) {
     return []
   }
 
-  // use the second line as object keys
+  const events = []
   const headers = lines[1]
-
-  // set up the array to be returned
-  let result = []
-
-  // remember the theoratical length of each line
   const lastColumnIndex = headers.length - 1
 
-  // get ready to turn lines into objects
-  // these vars are for objects from more than one line (caused by in-cell line break in google spreadsheet)
-  let currentLineObject, currentAuthor
-  const resetRelationObject = () => {
-    currentLineObject = {quote: []}
-    currentAuthor = ''
-  }
-  resetRelationObject()
-
-  // go through each line
   for (let lineIndex = 2; lineIndex < lines.length; lineIndex++) {
     const columns = lines[lineIndex]
 
-    // go through each cell in each line
     for (let columnIndex = 0; columnIndex < columns.length; columnIndex++) {
-
-      // for all cells
       const header = headers[columnIndex]
 
-      // for quotes related cells
-      if (header === 'quote_author') {
-        currentAuthor = columns[columnIndex] || ''
-      } else if (header === 'quote_content') {
-        if (columns[columnIndex] && columns[columnIndex].length > 0) {
-          columns[columnIndex].split('\n').forEach((quote) => {
-            currentLineObject.quote.push({author: currentAuthor, content: quote})
-          })
-        }
-      // for non-quotes related cells
-      } else {
-        currentLineObject[header] = columns[columnIndex] || ''
-        // for authors related cells
-        if (header === 'object' || header === 'subject' || header === 'object_1' || header === 'subject_1') {
-          authors.add(columns[columnIndex])
-        }
+      switch (header) {
+        case 'quote_author':
+          currentAuthor = columns[columnIndex] || ''
+          break
+        case 'quote_content':
+          if (columns[columnIndex] && columns[columnIndex].length > 0) {
+            columns[columnIndex].split('\n').forEach((quote) => {
+              currentEvent.quote.push({
+                author: currentAuthor,
+                content: quote
+              })
+            })
+          }
+          break
+        default:
+          currentEvent[header] = columns[columnIndex] || ''
+          if (LABELS.includes(header)) {
+            labels.add(columns[columnIndex])
+          }
       }
 
-      // for the last cell of the object
       if (columnIndex === lastColumnIndex) {
-        // when the date colume is empty, merge quotes into latest object
-        if (currentLineObject.date === '') {
-          result[result.length - 1].quote = result[result.length - 1].quote.concat(currentLineObject.quote)
-
-        // or normally submit the object to the result array
+        if (currentEvent.date === '') {
+          // when the date colume is empty, merge quotes into latest object
+          events[events.length - 1].quote = events[events.length - 1].quote.concat(currentEvent.quote)
         } else {
-          result.push(currentLineObject)
+          // or normally submit the object to the events array
+          events.push(currentEvent)
         }
 
-        // reset everything for the next object
-        resetRelationObject()
+        resetCurrentEvent()
       }
     }
   }
 
-  // get ready to set up colors for all authors
-  let authorColor = {}
+  let labelColor = {}
 
-  // remove empty authors
-  authors.delete('')
-
-  // randomly choose colors for authors
-  authors.forEach(author => {
+  labels.delete('')
+  labels.forEach(label => {
     const index = Math.floor(Math.random() * colors.size)
     const color = Array.from(colors)[index]
-    authorColor[author] = color * colorSpace
+    labelColor[label] = color
     colors.delete(color)
     if (colors.size === 0) {
-      colors = new Set(defaultColors)
+      colors = new Set(COLORS)
     }
   })
 
-  // done
-  return {data: result, authorColor: authorColor}
+  return {data: events, labelColor: labelColor}
 }
