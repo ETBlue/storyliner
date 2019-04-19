@@ -60,9 +60,9 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
                     {event.object_1}
                   </span>
                 ) : null}
-                {event.content_topic && event.content_topic.length > 0 ? (
+                {event.topic && event.topic.length > 0 ? (
                   <span>
-                    {event.content_topic}
+                    {event.topic}
                   </span>
                 ) : null}
               </p>
@@ -96,14 +96,14 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
               ) : null}
               {isDescriptionAvailable({event}) ? (
                 <p className='description'>
-                  {event.via}{event.channel}{event.content_carrier} — <a href={event.ref_url} target='_blank' rel='noopener noreferrer'>
+                  {event.channel_prep}{event.channel}{event.content_carrier} — <a href={event.ref_url} target='_blank' rel='noopener noreferrer'>
                     {event.ref_title && event.ref_title.length > 0 ? event.ref_title : event.ref_url}
                   </a>
                 </p>
               ) : null}
-              {event.summary ? (
+              {event.description ? (
                 <p className='description'>
-                  {event.summary}
+                  {event.description}
                 </p>
               ) : null}
             </div>

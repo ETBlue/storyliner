@@ -40,6 +40,14 @@ export default (lines) => {
             })
           }
           break
+        case 'via':
+          // alias from old version
+          currentEvent.channel_prep = columns[columnIndex] || ''
+          break
+        case 'content_topic':
+          // alias from old version
+          currentEvent.topic = columns[columnIndex] || ''
+          break
         default:
           currentEvent[header] = columns[columnIndex] || ''
           if (LABELS.includes(header)) {
