@@ -133,15 +133,15 @@
   right: -1.5em;
 }
 
-.Event-wrapper .Note-header {
-  font-size: 0.85rem!important;
-  font-weight: normal!important;
+.Event-wrapper .Note .horizontal.divider>.icon {
+  opacity: 0.3;
+  font-size: 0.75rem;
 }
 
 .Event-wrapper .Note-content {
   color: rgba(0,0,0,0.7);
+  margin-top: 0.5rem;
 }
-
 
 @media only screen and (max-width: 767px) {
 .Event-wrapper {
@@ -150,14 +150,23 @@
 .Event-wrapper article:last-child .grid .five.wide.column {
   margin-bottom: -1rem!important;
 }
-.Event-wrapper .Note-header {
-  margin-top: -1rem!important;
-  margin-bottom: 0.25rem!important;
-  border-bottom: none!important;
+.Event-wrapper .Note .horizontal.divider {
+  display: none;
 }
 .Event-wrapper .Note-content {
-  margin-bottom: 1rem!important;
-  padding-left: 1rem;
-  border-left: 2px solid #00b5ad;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  margin-left: 1.5rem;
+  position: relative;
 }
+.Event-wrapper .Note-content:before {
+  content: '\f0f4';
+  font-family: Icons;
+  font-size: 0.75rem;
+  opacity: 0.3;
+  position: absolute;
+  left: -1.5rem;
+  top: 0;
+}
+
 }

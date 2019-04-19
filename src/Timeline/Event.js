@@ -112,12 +112,14 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
         </div>
         {event.note && event.note.length > 0 ? (
           <div className='five wide column'>
-            <h4 className='Note-header ui dividing teal header'>
-              圍觀筆記
-            </h4>
-            <p className='Note-content'>
-              {event.note}
-            </p>
+            <div className='Note'>
+              <div className='ui horizontal fitted divider'>
+                <i className='icon coffee' />
+              </div>
+              <p className='Note-content'>
+                {event.note}
+              </p>
+            </div>
           </div>
         ) : null}
       </div>
