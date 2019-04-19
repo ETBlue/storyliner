@@ -1,3 +1,3 @@
-export default ({firstStagedEventID, lastStagedEventID, eventIndex}) => {
-  return eventIndex >= firstStagedEventID && eventIndex <= lastStagedEventID
+export default ({firstStagedEventIndex, lastStagedEventIndex, eventIndex}) => {
+  return eventIndex >= firstStagedEventIndex && eventIndex <= lastStagedEventIndex
 }

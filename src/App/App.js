@@ -11,7 +11,7 @@ import {Timeline} from '../Timeline'
 
 import csv2Obj from './csv2Obj'
 import csv2Title from './csv2Title'
-import isInViewport from './isInViewport'
+import getVisibleEventIDs from './getVisibleEventIDs'
 import {SETTINGS, getStorage} from '../_shared'
 
 import logo from './logo.svg'
@@ -48,41 +48,28 @@ class App extends React.Component {
     // view related
     filter: '',
     showSidebar: false,
-    visibleEventIDs: new Set(),
-    firstStagedEventID: 0,
-    lastStagedEventID: 10,
+    visibleEventIDs: [],
+    firstStagedEventIndex: 0,
+    lastStagedEventIndex: 10,
 
     // sticky menu related
     contextRef: null
   }
 
   updateVisibleEventIDs = () => {
-    let visibleEventIDs = new Set()
-    const stagedEventAmount = 5
-    let firstStagedEventID, lastStagedEventID
-    let firstCounted = false
-    let lastCounted = false
-    const relationElementList = window.document.getElementsByClassName('Event')
-    Array.from(relationElementList).forEach((elem, elemIndex) => {
-      if (isInViewport(elem)) {
-        if (!firstCounted) {
-          firstStagedEventID = parseInt(elem.id, 10) - stagedEventAmount
-          firstCounted = true
-        }
-        visibleEventIDs.add(elem.id)
-      } else {
-        if (firstCounted && !lastCounted) {
-          lastStagedEventID = parseInt(elem.id, 10) + stagedEventAmount - 1
-          lastCounted = true
-        }
-      }
+    const STAGECAPACITY = 5
+    const visibleIDs = getVisibleEventIDs(this.eventElements)
+
+    this.setState({
+      visibleEventIDs: visibleIDs,
+      firstStagedEventIndex: visibleIDs[0] - STAGECAPACITY,
+      lastStagedEventIndex: visibleIDs[visibleIDs.length - 1] + STAGECAPACITY
     })
-    this.setState({visibleEventIDs, firstStagedEventID, lastStagedEventID})
   }
 
   resetStatus = () => {
     window.setTimeout(() => {
-      this.setState({status: 'standby'}, this.updateVisibleEventIDs())
+      this.setState({status: 'standby'})
     }, 5000)
   }
 
@@ -107,7 +94,6 @@ class App extends React.Component {
         download: true,
         complete: (result) => {
           const csvFile = result.data
-
           const titles = csv2Title(csvFile)
           let allHistory = JSON.parse(getStorage.getItem(SETTINGS.title))
           allHistory[this.queries.source] = {
@@ -132,7 +118,11 @@ class App extends React.Component {
             labelColor: parsed.labelColor,
             isLoaded: true,
             status: 'success'
-          }, this.resetStatus())
+          }, () => {
+            this.eventElements = window.document.getElementsByClassName('Event')
+            this.updateVisibleEventIDs()
+            this.resetStatus()
+          })
         },
         error: (error) => {
           console.error(error)

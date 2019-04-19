@@ -1,5 +1,6 @@
+import getDateTime from './getDateTime'
+
 export default ({data, year, eventIndex}) => {
-  const prevYmd = data[eventIndex - 1].date.split('/')
-  const prevYear = prevYmd[0]
-  return year !== prevYear
+  const prevDateTime = getDateTime(data[eventIndex - 1])
+  return year !== prevDateTime.year
 }

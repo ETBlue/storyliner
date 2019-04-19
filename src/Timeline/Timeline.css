@@ -22,12 +22,11 @@
   font-weight: bold!important;
   padding-top: 0.5em!important;
   padding-bottom: 0.5em!important;
-  margin-top: 0.5em!important;
-  margin-bottom: 0.5em!important;
   background-color: #d4d4d5!important;
 }
 
-.Menu-wrapper .MenuItem.in-viewport:not(.active) {
+.Menu-wrapper .MenuItem.in-viewport:not(.active),
+.Menu-wrapper .MenuYearMark.in-viewport {
   border-color: hsla(0,0%,0%,0.3)!important;
 }
 

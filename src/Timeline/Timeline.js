@@ -1,7 +1,6 @@
 import React from 'react'
 import {withRouter} from 'react-router-dom'
 import {Sticky} from 'semantic-ui-react'
-import moment from 'moment'
 
 import {getEventIndex} from '../_shared'
 
@@ -9,6 +8,7 @@ import isEventListed from './isEventListed'
 import isEventInViewPort from './isEventInViewPort'
 import isEventStaged from './isEventStaged'
 import isFirstEventOfYear from './isFirstEventOfYear'
+import getDateTime from './getDateTime'
 import Filter from './Filter'
 import Event from './Event'
 import MenuYearMark from './MenuYearMark'
@@ -26,42 +26,40 @@ const Timeline = (props) => {
       return null
     }
 
-    const eventDate = moment(event.date)
-    const isStandard = event.date.includes('/') || event.date.includes('-') || event.date.length > 5
-    const year = isStandard ? eventDate.year() : event.date
-    const month = isStandard ? eventDate.month() + 1 : '?'
-    const date = isStandard ? eventDate.date() : '?'
-    const time = event.time && event.time.length > 0 ? event.time : null
+    const dateTime = getDateTime(event)
     const isActive = getEventIndex(props.location.hash) === eventIndex
 
     if (isEventListed({filter: props.filter, event})) {
       EventList.push(
         <Event key={eventIndex} eventIndex={eventIndex} event={event}
           isActive={isActive} props={props}
-          year={year} month={month} date={date} time={time} />
+          year={dateTime.year} month={dateTime.month} date={dateTime.date} time={dateTime.time} />
       )
     }
-
+    const isStaged = isEventStaged({firstStagedEventIndex: props.firstStagedEventIndex, lastStagedEventIndex: props.lastStagedEventIndex, eventIndex})
+    const isInViewPort = isEventInViewPort({visibleEventIDs: props.visibleEventIDs, eventIndex})
     if (eventIndex === 0) {
       Menu.push(
         <MenuYearMark key={`year-of-${eventIndex}`} eventIndex={eventIndex}
-          isStaged={isEventStaged({firstStagedEventID: props.firstStagedEventID, lastStagedEventID: props.lastStagedEventID, eventIndex})}
-          year={year} />
+          isInViewPort={isInViewPort}
+          isStaged={isStaged}
+          year={dateTime.year} />
       )
-    } else if (isFirstEventOfYear({data: props.data, year, eventIndex})) {
+    } else if (isFirstEventOfYear({data: props.data, year: dateTime.year, eventIndex})) {
       Menu.push(
         <MenuYearMark key={`year-of-${eventIndex}`} eventIndex={eventIndex}
-          isStaged={isEventStaged({firstStagedEventID: props.firstStagedEventID, lastStagedEventID: props.lastStagedEventID, eventIndex})}
-          year={year} />
+          isInViewPort={isInViewPort}
+          isStaged={isStaged}
+          year={dateTime.year} />
       )
     }
 
     Menu.push(
       <MenuItem key={eventIndex} eventIndex={eventIndex}
         isActive={isActive}
-        isInViewPort={isEventInViewPort({visibleEventIDs: props.visibleEventIDs, eventIndex})}
-        isStaged={isEventStaged({firstStagedEventID: props.firstStagedEventID, lastStagedEventID: props.lastStagedEventID, eventIndex})}
-        month={month} date={date} time={time} />
+        isInViewPort={isInViewPort}
+        isStaged={isStaged}
+        month={dateTime.month} date={dateTime.date} time={dateTime.time} />
     )
   })
 
