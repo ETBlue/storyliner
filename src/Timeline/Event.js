@@ -2,6 +2,7 @@ import React from 'react'
 
 import renderQuote from './renderQuote'
 import isDescriptionAvailable from './isDescriptionAvailable'
+import isLocationAvailable from './isLocationAvailable'
 
 export default ({event, eventIndex, isActive, props, year, month, date, time}) => {
   return (
@@ -65,6 +66,34 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
                   </span>
                 ) : null}
               </p>
+              {isLocationAvailable({event}) ? (
+                <p className='description'>
+                  {event.location_prep && event.location_prep.length > 0 ? (
+                    <span>
+                      {event.location_prep}
+                    </span>
+                  ) : null}
+                  {event.location && event.location.length > 0 ? (
+                    <span className='ui small horizontal label'
+                      style={{backgroundColor: `hsla(${props.labelColor[event.location]}, 20%, 70%, 0.3)`}}
+                      onClick={() => props.setFilter(event.location)} >
+                      {event.location}
+                    </span>
+                  ) : null}
+                  {event.location_1_prep && event.location_1_prep.length > 0 ? (
+                    <span>
+                      {event.location_1_prep}
+                    </span>
+                  ) : null}
+                  {event.location_1 && event.location_1.length > 0 ? (
+                    <span className='ui small horizontal label'
+                      style={{backgroundColor: `hsla(${props.labelColor[event.location_1]}, 20%, 70%, 0.3)`}}
+                      onClick={() => props.setFilter(event.location_1)} >
+                      {event.location_1}
+                    </span>
+                  ) : null}
+                </p>
+              ) : null}
               {isDescriptionAvailable({event}) ? (
                 <p className='description'>
                   {event.via}{event.channel}{event.content_carrier} — <a href={event.ref_url} target='_blank' rel='noopener noreferrer'>
