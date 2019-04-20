@@ -1,4 +1,7 @@
 import {LABELS, SETTINGS} from '../_shared'
+
+import getDateTime from './getDateTime'
+
 import COLORS from './COLORS'
 
 export default (lines) => {
@@ -52,15 +55,22 @@ export default (lines) => {
       // when the date colume is empty, merge quotes into latest object
       events[events.length - 1].quote = events[events.length - 1].quote.concat(event.quote)
     } else {
-      events.push(event)
+      const polishedEvent = Object.assign(event, getDateTime(event))
+      events.push(polishedEvent)
     }
   })
 
   const labelColor = {}
+  let colors = new Set(COLORS)
   labels.delete('')
   labels.forEach((label) => {
-    const index = Math.floor(Math.random() * COLORS.length)
-    labelColor[label] = COLORS[index]
+    const index = Math.floor(Math.random() * colors.size)
+    const color = Array.from(colors)[index]
+    labelColor[label] = color
+    colors.delete(color)
+    if (colors.size === 0) {
+      colors = new Set(COLORS)
+    }
   })
 
   return {title, subtitle, events, labelColor}

@@ -1,21 +1,41 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
+import queryString from 'query-string'
 
-import renderQuote from './renderQuote'
+import QuoteList from './QuoteList'
 import isDescriptionAvailable from './isDescriptionAvailable'
 import isLocationAvailable from './isLocationAvailable'
+import getRefMsg from './getRefMsg'
 
-export default ({event, eventIndex, isActive, props, year, month, date, time}) => {
+export default ({event, eventIndex, isActive, props, refEventIndex, refEvent, refEventTitle}) => {
+  const isQuoteExists = event.quote && event.quote.length > 0
+  const isEventReferenced = refEventIndex === eventIndex
+  const queries = Object.assign({}, props.queries)
+  if (isEventReferenced) {
+    delete queries.ref
+  } else {
+    queries.ref = eventIndex.toString()
+  }
+  const refMeUrl = `${props.location.pathname}?${queryString.stringify(queries)}${props.location.hash}`
   return (
     <article key={eventIndex} id={eventIndex} className='Event' >
       <div className='ui two column stackable grid' >
         <div className='eleven wide column'>
+          {refEvent && !isEventReferenced ? (
+            <div className='reference'>
+              <div className='text'>
+                {getRefMsg({event, refEvent, refEventTitle})}
+              </div>
+            </div>
+          ) : null}
           <div className={`Event-block ui segments ${isActive ? 'active' : ''}`}>
             <div className='ui segment'>
-              {
-                <a className='Timestamp' href={`#${eventIndex}`}>
-                  {year}-{month}-{date} {time || null}
-                </a>
-              }
+              <a className='Timestamp' href={`#${eventIndex}`}>
+                {event.year}-{event.month}-{event.date} {event.time || null}
+              </a>
+              <Link to={refMeUrl} className='RefMeButton ui basic mini icon button'>
+                <i className={`${isEventReferenced ? 'teal' : ''} icon thumbtack`} />
+              </Link>
               <p>
                 {event.subject && event.subject.length > 0 ? (
                   <span className='ui large horizontal label'
@@ -107,7 +127,9 @@ export default ({event, eventIndex, isActive, props, year, month, date, time}) =
                 </p>
               ) : null}
             </div>
-            {renderQuote(event.quote)}
+            {isQuoteExists ? (
+              <QuoteList quotes={event.quote} />
+            ) : null}
           </div>
         </div>
         {event.note && event.note.length > 0 ? (

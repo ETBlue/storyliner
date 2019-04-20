@@ -58,7 +58,7 @@
   text-align: center;
 }
 
-.Event-wrapper .Timestamp {
+.Event .Timestamp {
   color: rgba(0,0,0,0.5);
   font-size: 0.7rem;
   font-family: monospace;
@@ -69,48 +69,75 @@
   cursor: pointer;
 }
 
-.Event-wrapper .Event-block.active {
-  border: 2px #e03997 solid;
-  margin: -1px!important;
+.Event .reference {
+  margin-bottom: -1rem;
+  font-size: 0.85rem;
+  opacity: 0.6;
+  position: relative;
+  height: 1.35rem;
 }
 
-.Event-wrapper .Event-block .description {
+.Event .reference .text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  position: absolute;
+  top: 0;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0;
+}
+
+.Event .RefMeButton.ui.button {
+  position: absolute;
+  margin: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: none;
+}
+
+.Event .Event-block.active {
+  box-shadow: 0 0 0 1px #e03997;
+  border-color: #e03997;
+}
+
+.Event .Event-block .description {
   margin-top: -0.5em;
   color: rgba(0,0,0,0.7);
   font-size: 0.85rem;
 }
 
-.Event-wrapper .Event-block a {
+.Event .Event-block a {
   opacity: 0.85;
 }
 
-.Event-wrapper .Event-block .ui.horizontal.label {
+.Event .Event-block .ui.horizontal.label {
   margin: 0 0.3em 0.3em;
   color: inherit;
 }
 
-.Event-wrapper .Event-block .ui.horizontal.label:first-child {
+.Event .Event-block .ui.horizontal.label:first-child {
   margin-left: 0;
 }
 
-.Event-wrapper .Event-block .ui.horizontal.label:last-child {
+.Event .Event-block .ui.horizontal.label:last-child {
   margin-right: 0;
 }
 
-.Event-wrapper .Event-block blockquote {
+.Event .Event-block blockquote {
   margin: 1rem 1.5rem;
   position: relative;
   color: rgba(0,0,0,0.7);
 }
 
-.Event-wrapper .Event-block blockquote:first-child {
+.Event .Event-block blockquote:first-child {
 }
 
-.Event-wrapper .Event-block blockquote:last-child {
+.Event .Event-block blockquote:last-child {
   margin-bottom: 0;
 }
 
-.Event-wrapper .Event-block blockquote .Author {
+.Event .Event-block blockquote .Author {
   font-size: 0.85rem;
   color: rgba(0,0,0,0.5);
   text-align: right;
@@ -118,25 +145,25 @@
   margin-top: 1em;
 }
 
-.Event-wrapper .Event-block blockquote i.icon.quote {
+.Event .Event-block blockquote i.icon.quote {
   position: absolute;
   opacity: 0.3;
 }
 
-.Event-wrapper .Event-block blockquote i.icon.left.quote {
+.Event .Event-block blockquote i.icon.left.quote {
   left: -1.5em;
 }
 
-.Event-wrapper .Event-block blockquote i.icon.right.quote {
+.Event .Event-block blockquote i.icon.right.quote {
   right: -1.5em;
 }
 
-.Event-wrapper .Note .horizontal.divider>.icon {
+.Event .Note .horizontal.divider>.icon {
   opacity: 0.3;
   font-size: 0.75rem;
 }
 
-.Event-wrapper .Note-content {
+.Event .Note-content {
   color: rgba(0,0,0,0.7);
   margin-top: 0.5rem;
 }
@@ -145,19 +172,19 @@
 .Event-wrapper {
   padding-left: 0;
 }
-.Event-wrapper article:last-child .grid .five.wide.column {
+.Event:last-child .grid .five.wide.column {
   margin-bottom: -1rem!important;
 }
-.Event-wrapper .Note .horizontal.divider {
+.Event .Note .horizontal.divider {
   display: none;
 }
-.Event-wrapper .Note-content {
+.Event .Note-content {
   margin-top: -1rem;
   margin-bottom: 1rem;
   margin-left: 1.5rem;
   position: relative;
 }
-.Event-wrapper .Note-content:before {
+.Event .Note-content:before {
   content: '\f0f4';
   font-family: Icons;
   font-size: 0.75rem;

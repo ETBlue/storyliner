@@ -19,9 +19,8 @@ import logo from './logo.svg'
 import './App.css'
 
 class App extends React.Component {
-  queries = queryString.parse(this.props.location.search)
-
   state = {
+    queries: queryString.parse(this.props.location.search),
     isLoaded: false,
     status: 'standby',
 
@@ -48,13 +47,18 @@ class App extends React.Component {
 
   componentDidUpdate (prevProps) {
     if (this.props.location.search !== prevProps.location.search) {
-      this.queries = queryString.parse(this.props.location.search)
-      this.startApp()
+      const prevSource = this.state.queries.source
+      const newQueries = queryString.parse(this.props.location.search)
+      this.setState({queries: newQueries}, () => {
+        if (prevSource !== newQueries.source) {
+          this.startApp()
+        }
+      })
     }
   }
 
   startApp = () => {
-    if (!this.queries.source || decodeURIComponent(this.queries.source).length === 0) {
+    if (!this.state.queries.source || decodeURIComponent(this.state.queries.source).length === 0) {
       this.setState({status: 'invalid', isLoaded: false})
       return
     }
@@ -63,11 +67,11 @@ class App extends React.Component {
 
   fetchData = () => {
     this.setState({status: 'loading', isLoaded: false}, () => {
-      Papa.parse(this.queries.source, {
+      Papa.parse(this.state.queries.source, {
         download: true,
         complete: (result) => {
           const {title, subtitle, events, labelColor} = parseCsvArray(result.data)
-          updateStorage({title, subtitle, storage, source: this.queries.source})
+          updateStorage({title, subtitle, storage, source: this.state.queries.source})
           this.setState({title, subtitle, events, labelColor,
             isLoaded: true,
             status: 'success'
@@ -126,7 +130,7 @@ class App extends React.Component {
   }
 
   render () {
-    const isAvailable = this.queries.source && this.state.events.length > 0
+    const isAvailable = this.state.queries.source && this.state.events.length > 0
     const {title, subtitle} = isAvailable ? this.state : SETTINGS
 
     return (

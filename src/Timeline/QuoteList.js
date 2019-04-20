@@ -1,15 +1,11 @@
 import React from 'react'
 
-export default (quotesArray) => {
-  if (!quotesArray || quotesArray.length === 0) {
-    return null
-  }
-
-  const quotesJSX = quotesArray.map((quote, quoteIndex) => {
+export default ({quotes}) => {
+  const quotesJSX = quotes.map((quote, quoteIndex) => {
     let Author = null
 
     if (quote.author.length > 0) {
-      if (!quotesArray[quoteIndex + 1] || quote.author !== quotesArray[quoteIndex + 1].author) {
+      if (!quotes[quoteIndex + 1] || quote.author !== quotes[quoteIndex + 1].author) {
         Author = <p className='Author'>— {quote.author}</p>
       }
     }

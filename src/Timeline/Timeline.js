@@ -8,7 +8,6 @@ import isEventListed from './isEventListed'
 import isEventInViewPort from './isEventInViewPort'
 import isEventStaged from './isEventStaged'
 import isFirstEventOfYear from './isFirstEventOfYear'
-import getDateTime from './getDateTime'
 import Filter from './Filter'
 import Event from './Event'
 import MenuYearMark from './MenuYearMark'
@@ -20,20 +19,24 @@ const Timeline = (props) => {
   const Menu = []
   const EventList = []
 
+  const refEventIndex = parseInt(props.queries.ref, 10)
+  const refEvent = !isNaN(refEventIndex) ? props.events[refEventIndex] : null
+  const fields = ['subject', 'subject_1_prep', 'subject_1', 'action', 'object', 'object_1_prep', 'object_1', 'topic']
+  const refEventTitle = refEvent ? fields.map((field) => refEvent[field]).join('') : null
+
   // render relations
   props.events.forEach((event, eventIndex) => {
     if (!event.date) {
       return null
     }
 
-    const dateTime = getDateTime(event)
     const isActive = getEventIndex(props.location.hash) === eventIndex
 
     if (isEventListed({filter: props.filter, event})) {
       EventList.push(
         <Event key={eventIndex} eventIndex={eventIndex} event={event}
           isActive={isActive} props={props}
-          year={dateTime.year} month={dateTime.month} date={dateTime.date} time={dateTime.time} />
+          refEventIndex={refEventIndex} refEvent={refEvent} refEventTitle={refEventTitle} />
       )
     }
     const isStaged = isEventStaged({firstStagedEventIndex: props.firstStagedEventIndex, lastStagedEventIndex: props.lastStagedEventIndex, eventIndex})
@@ -43,14 +46,14 @@ const Timeline = (props) => {
         <MenuYearMark key={`year-of-${eventIndex}`} eventIndex={eventIndex}
           isInViewPort={isInViewPort}
           isStaged={isStaged}
-          year={dateTime.year} />
+          year={event.year} />
       )
-    } else if (isFirstEventOfYear({events: props.events, year: dateTime.year, eventIndex})) {
+    } else if (isFirstEventOfYear({events: props.events, eventIndex})) {
       Menu.push(
         <MenuYearMark key={`year-of-${eventIndex}`} eventIndex={eventIndex}
           isInViewPort={isInViewPort}
           isStaged={isStaged}
-          year={dateTime.year} />
+          year={event.year} />
       )
     }
 
@@ -59,7 +62,7 @@ const Timeline = (props) => {
         isActive={isActive}
         isInViewPort={isInViewPort}
         isStaged={isStaged}
-        month={dateTime.month} date={dateTime.date} time={dateTime.time} />
+        month={event.month} date={event.date} time={event.time} />
     )
   })
 
