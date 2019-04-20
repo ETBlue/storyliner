@@ -5,20 +5,20 @@ export default (quotesArray) => {
     return null
   }
 
-  const quotesJSX = quotesArray.map((data, index) => {
+  const quotesJSX = quotesArray.map((quote, quoteIndex) => {
     let Author = null
 
-    if (data.author.length > 0) {
-      if (!quotesArray[index + 1] || data.author !== quotesArray[index + 1].author) {
-        Author = <p className='Author'>— {data.author}</p>
+    if (quote.author.length > 0) {
+      if (!quotesArray[quoteIndex + 1] || quote.author !== quotesArray[quoteIndex + 1].author) {
+        Author = <p className='Author'>— {quote.author}</p>
       }
     }
 
     return (
-      <blockquote key={index} >
+      <blockquote key={quoteIndex} >
         <i className='quote left icon' />
         <i className='quote right icon' />
-        {data.content}
+        {quote.content}
         {Author}
       </blockquote>
     )

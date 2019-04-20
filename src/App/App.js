@@ -3,23 +3,41 @@ import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
 import Papa from 'papaparse'
 
+import {SETTINGS, storage} from '../_shared'
+
 import {Sidebar} from '../Sidebar'
 import {Home} from '../Home'
 import {Header} from '../Header'
 import {Footer} from '../Footer'
 import {Timeline} from '../Timeline'
 
-import csv2Obj from './csv2Obj'
-import csv2Title from './csv2Title'
+import parseCsvArray from './parseCsvArray'
+import updateStorage from './updateStorage'
 import getVisibleEventIDs from './getVisibleEventIDs'
-import {SETTINGS, getStorage} from '../_shared'
 
 import logo from './logo.svg'
 import './App.css'
 
-
 class App extends React.Component {
   queries = queryString.parse(this.props.location.search)
+
+  state = {
+    isLoaded: false,
+    status: 'standby',
+
+    title: '',
+    subtitle: '',
+    events: [],
+
+    filter: '',
+    showSidebar: false,
+    visibleEventIDs: [],
+    firstStagedEventIndex: 0,
+    lastStagedEventIndex: 10,
+
+    // for sticky menu
+    contextRef: null
+  }
 
   componentDidMount () {
     this.startApp()
@@ -35,25 +53,37 @@ class App extends React.Component {
     }
   }
 
-  state = {
-    // API related
-    isLoaded: false,
-    status: 'standby',
+  startApp = () => {
+    if (!this.queries.source || decodeURIComponent(this.queries.source).length === 0) {
+      this.setState({status: 'invalid', isLoaded: false})
+      return
+    }
+    this.fetchData()
+  }
 
-    // data related
-    data: [],
-    title: '',
-    subtitle: '',
-
-    // view related
-    filter: '',
-    showSidebar: false,
-    visibleEventIDs: [],
-    firstStagedEventIndex: 0,
-    lastStagedEventIndex: 10,
-
-    // sticky menu related
-    contextRef: null
+  fetchData = () => {
+    this.setState({status: 'loading', isLoaded: false}, () => {
+      Papa.parse(this.queries.source, {
+        download: true,
+        complete: (result) => {
+          const {title, subtitle, events, labelColor} = parseCsvArray(result.data)
+          updateStorage({title, subtitle, storage, source: this.queries.source})
+          this.setState({title, subtitle, events, labelColor,
+            isLoaded: true,
+            status: 'success'
+          }, () => {
+            this.eventElements = window.document.getElementsByClassName('Event')
+            this.updateVisibleEventIDs()
+            window.setTimeout(() => {
+              this.setState({status: 'standby'})
+            }, 5000)
+          })
+        },
+        error: (error) => {
+          console.error(error)
+        }
+      })
+    })
   }
 
   updateVisibleEventIDs = () => {
@@ -67,67 +97,9 @@ class App extends React.Component {
     })
   }
 
-  resetStatus = () => {
-    window.setTimeout(() => {
-      this.setState({status: 'standby'})
-    }, 5000)
-  }
-
   toggleSidebar = () => {
     this.setState((prevState, props) => {
       return {showSidebar: !prevState.showSidebar}
-    })
-  }
-
-  startApp = () => {
-    if (!this.queries.source || decodeURIComponent(this.queries.source).length === 0) {
-      this.setState({status: 'invalid', isLoaded: false})
-      return
-    }
-
-    this.fetchData()
-  }
-
-  fetchData = () => {
-    this.setState({status: 'loading', isLoaded: false}, () => {
-      Papa.parse(this.queries.source, {
-        download: true,
-        complete: (result) => {
-          const csvFile = result.data
-          const titles = csv2Title(csvFile)
-          let allHistory = JSON.parse(getStorage.getItem(SETTINGS.title))
-          allHistory[this.queries.source] = {
-            title: titles.title,
-            subtitle: titles.subtitle,
-            time: Date.now()
-          }
-          for (const entry in allHistory) {
-            if (!entry.match(/^http/) ||
-              allHistory[entry].title.includes('<!DOCTYPE html>')
-            ) {
-              delete allHistory[entry]
-            }
-          }
-          getStorage.setItem(SETTINGS.title, JSON.stringify(allHistory))
-
-          const parsed = csv2Obj(csvFile)
-          this.setState({
-            title: titles.title,
-            subtitle: titles.subtitle,
-            data: parsed.data,
-            labelColor: parsed.labelColor,
-            isLoaded: true,
-            status: 'success'
-          }, () => {
-            this.eventElements = window.document.getElementsByClassName('Event')
-            this.updateVisibleEventIDs()
-            this.resetStatus()
-          })
-        },
-        error: (error) => {
-          console.error(error)
-        }
-      })
     })
   }
 
@@ -154,25 +126,8 @@ class App extends React.Component {
   }
 
   render () {
-    const queries = queryString.parse(this.props.location.search)
-    let title, subtitle, Body
-
-    // render welcome page when there is no data found
-    if (!queries.source || this.state.data.length === 0) {
-      title = SETTINGS.title
-      subtitle = SETTINGS.subtitle
-      Body = <Home />
-
-    // render data when available
-    } else {
-      title = this.state.title
-      subtitle = this.state.subtitle
-      Body = <Timeline
-        handleContextRef={this.handleContextRef}
-        scrollReset={this.scrollReset}
-        setFilter={this.setFilter}
-        {...this.state} />
-    }
+    const isAvailable = this.queries.source && this.state.events.length > 0
+    const {title, subtitle} = isAvailable ? this.state : SETTINGS
 
     return (
       <div className='App' style={this.state.showSidebar ? {left: '20rem'} : {}} >
@@ -182,7 +137,16 @@ class App extends React.Component {
             onIconClick={this.startApp}
             onLogoClick={this.toggleSidebar} />
           <section className='Body-wrapper ui container'>
-            {Body}
+            {isAvailable ? (
+              <Timeline
+                handleContextRef={this.handleContextRef}
+                scrollReset={this.scrollReset}
+                setFilter={this.setFilter}
+                {...this.state}
+              />
+            ) : (
+              <Home />
+            )}
           </section>
           <hr className='ui divider' />
           <Footer />

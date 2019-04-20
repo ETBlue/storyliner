@@ -1,7 +1,7 @@
 import React from 'react'
 import {withRouter} from 'react-router-dom'
 
-import {SETTINGS, getStorage} from '../_shared'
+import {SETTINGS, storage} from '../_shared'
 
 import './Sidebar.css'
 
@@ -20,7 +20,7 @@ const Sidebar = (props) => {
   }
 
   let sorted = []
-  const history = JSON.parse(getStorage.getItem(SETTINGS.title))
+  const history = JSON.parse(storage.getItem(SETTINGS.title))
   Object.keys(history).forEach((key, index) => {
     sorted.push({
       key: key,

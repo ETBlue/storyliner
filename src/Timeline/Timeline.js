@@ -21,7 +21,7 @@ const Timeline = (props) => {
   const EventList = []
 
   // render relations
-  props.data.forEach((event, eventIndex) => {
+  props.events.forEach((event, eventIndex) => {
     if (!event.date) {
       return null
     }
@@ -45,7 +45,7 @@ const Timeline = (props) => {
           isStaged={isStaged}
           year={dateTime.year} />
       )
-    } else if (isFirstEventOfYear({data: props.data, year: dateTime.year, eventIndex})) {
+    } else if (isFirstEventOfYear({events: props.events, year: dateTime.year, eventIndex})) {
       Menu.push(
         <MenuYearMark key={`year-of-${eventIndex}`} eventIndex={eventIndex}
           isInViewPort={isInViewPort}
