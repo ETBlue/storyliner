@@ -41,8 +41,8 @@ export default ({event, eventIndex, isActive, props, refEventIndex, refEvent, re
               <div className='Content'>
                 {event.image_url ? (
                   <div className='Content-image'>
-                    <a href={event.image_url} target='_blank' className='ui small bordered rounded image'>
-                      <img src={event.image_url} />
+                    <a href={event.image_url} target='_blank' rel='noopener noreferrer' className='ui small bordered rounded image'>
+                      <img src={event.image_url} alt={event.image_alt} />
                     </a>
                   </div>
                 ) : null}
