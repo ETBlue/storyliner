@@ -21,7 +21,7 @@ export default ({quotes}) => {
   })
 
   return (
-    <div className='ui secondary segment'>
+    <div className='QuoteList ui secondary segment'>
       {quotesJSX}
     </div>
   )

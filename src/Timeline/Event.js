@@ -38,22 +38,33 @@ export default ({event, eventIndex, isActive, props, refEventIndex, refEvent, re
               <Link to={refMeUrl} className='RefMeButton ui basic mini icon button'>
                 <i className={`${isEventReferenced ? 'teal' : ''} icon thumbtack`} />
               </Link>
-              <Relation event={event} props={props} />
-              {isLocationAvailable({event}) ? (
-                <Location event={event} props={props} />
-              ) : null}
-              {isMediaAvailable({event}) ? (
-                <p className='description'>
-                  {event.channel_prep}{event.channel}{event.content_carrier} — <a href={event.ref_url} target='_blank' rel='noopener noreferrer'>
-                    {event.ref_title && event.ref_title.length > 0 ? event.ref_title : event.ref_url}
-                  </a>
-                </p>
-              ) : null}
-              {event.description ? (
-                <p className='description'>
-                  {event.description}
-                </p>
-              ) : null}
+              <div className='Content'>
+                {event.image_url ? (
+                  <div className='Content-image'>
+                    <a href={event.image_url} target='_blank' className='ui small bordered rounded image'>
+                      <img src={event.image_url} />
+                    </a>
+                  </div>
+                ) : null}
+                <div className='Content-text'>
+                  <Relation event={event} props={props} />
+                  {event.description ? (
+                    <p className='description'>
+                      {event.description}
+                    </p>
+                  ) : null}
+                  {isLocationAvailable({event}) ? (
+                    <Location event={event} props={props} />
+                  ) : null}
+                  {isMediaAvailable({event}) ? (
+                    <p className='description'>
+                      {event.channel_prep}{event.channel}{event.content_carrier} — <a href={event.ref_url} target='_blank' rel='noopener noreferrer'>
+                        {event.ref_title && event.ref_title.length > 0 ? event.ref_title : event.ref_url}
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+              </div>
             </div>
             {isQuoteExists ? (
               <QuoteList quotes={event.quote} />

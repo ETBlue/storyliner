@@ -58,15 +58,8 @@
   text-align: center;
 }
 
-.Event .Timestamp {
-  color: rgba(0,0,0,0.5);
-  font-size: 0.7rem;
-  font-family: monospace;
-  text-align: right;
-  position: absolute;
-  top: 0;
-  right: 1rem;
-  cursor: pointer;
+.Event a {
+  opacity: 0.85;
 }
 
 .Event .reference {
@@ -101,43 +94,64 @@
   border-color: #e03997;
 }
 
-.Event .Event-block .description {
+.Event .Timestamp {
+  color: rgba(0,0,0,0.5);
+  font-size: 0.7rem;
+  font-family: monospace;
+  text-align: right;
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  cursor: pointer;
+}
+
+.Event .Content {
+  display: flex;
+}
+
+.Event .Content .Content-image {
+  flex-grow: 0;
+  order: 2;
+  padding: 0.5rem 0 1rem 1rem;
+}
+
+.Event .Content .Content-text {
+  flex-grow: 1;
+}
+
+.Event .Content .ui.horizontal.label {
+  margin: 0 0.3em 0.3em;
+  color: inherit;
+}
+
+.Event .Content .ui.horizontal.label:first-child {
+  margin-left: 0;
+}
+
+.Event .Content .ui.horizontal.label:last-child {
+  margin-right: 0;
+}
+
+.Event .Content .description {
   margin-top: -0.5em;
   color: rgba(0,0,0,0.7);
   font-size: 0.85rem;
 }
 
-.Event .Event-block a {
-  opacity: 0.85;
-}
-
-.Event .Event-block .ui.horizontal.label {
-  margin: 0 0.3em 0.3em;
-  color: inherit;
-}
-
-.Event .Event-block .ui.horizontal.label:first-child {
-  margin-left: 0;
-}
-
-.Event .Event-block .ui.horizontal.label:last-child {
-  margin-right: 0;
-}
-
-.Event .Event-block blockquote {
+.Event .QuoteList blockquote {
   margin: 1rem 1.5rem;
   position: relative;
   color: rgba(0,0,0,0.7);
 }
 
-.Event .Event-block blockquote:first-child {
+.Event .QuoteList blockquote:first-child {
 }
 
-.Event .Event-block blockquote:last-child {
+.Event .QuoteList blockquote:last-child {
   margin-bottom: 0;
 }
 
-.Event .Event-block blockquote .Author {
+.Event .QuoteList blockquote .Author {
   font-size: 0.85rem;
   color: rgba(0,0,0,0.5);
   text-align: right;
@@ -145,16 +159,16 @@
   margin-top: 1em;
 }
 
-.Event .Event-block blockquote i.icon.quote {
+.Event .QuoteList blockquote i.icon.quote {
   position: absolute;
   opacity: 0.3;
 }
 
-.Event .Event-block blockquote i.icon.left.quote {
+.Event .QuoteList blockquote i.icon.left.quote {
   left: -1.5em;
 }
 
-.Event .Event-block blockquote i.icon.right.quote {
+.Event .QuoteList blockquote i.icon.right.quote {
   right: -1.5em;
 }
 
