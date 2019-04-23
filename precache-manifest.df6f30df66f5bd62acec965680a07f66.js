@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/storyliner/static/js/runtime~main.2f6f50a4.js"
   },
   {
-    "revision": "7b6d2a2fc1d892bdc889",
-    "url": "/storyliner/static/js/main.b2d6dfc1.chunk.js"
+    "revision": "79d0692bddfce1c44b40",
+    "url": "/storyliner/static/js/main.0fbbf4e1.chunk.js"
   },
   {
     "revision": "974f3ff4f7927a6a546a",
     "url": "/storyliner/static/js/2.3e10c5ef.chunk.js"
   },
   {
-    "revision": "7b6d2a2fc1d892bdc889",
+    "revision": "79d0692bddfce1c44b40",
     "url": "/storyliner/static/css/main.804b6877.chunk.css"
   },
   {
-    "revision": "03149aa601335c0e58d3c732b3dd01b3",
+    "revision": "da056f16068f657a8e062069b76281d5",
     "url": "/storyliner/index.html"
   }
 ];
