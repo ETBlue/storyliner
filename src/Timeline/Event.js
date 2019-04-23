@@ -2,8 +2,10 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import queryString from 'query-string'
 
+import Relation from './Relation'
+import Location from './Location'
 import QuoteList from './QuoteList'
-import isDescriptionAvailable from './isDescriptionAvailable'
+import isMediaAvailable from './isMediaAvailable'
 import isLocationAvailable from './isLocationAvailable'
 import getRefMsg from './getRefMsg'
 
@@ -36,85 +38,11 @@ export default ({event, eventIndex, isActive, props, refEventIndex, refEvent, re
               <Link to={refMeUrl} className='RefMeButton ui basic mini icon button'>
                 <i className={`${isEventReferenced ? 'teal' : ''} icon thumbtack`} />
               </Link>
-              <p>
-                {event.subject && event.subject.length > 0 ? (
-                  <span className='ui large horizontal label'
-                    style={{backgroundColor: `hsla(${props.labelColor[event.subject]}, 50%, 50%, 0.3)`}}
-                    onClick={() => props.setFilter(event.subject)} >
-                    {event.subject}
-                  </span>
-                ) : null}
-                {event.subject_1_prep && event.subject_1_prep.length > 0 ? (
-                  <span>
-                    {event.subject_1_prep}
-                  </span>
-                ) : null}
-                {event.subject_1 && event.subject_1.length > 0 ? (
-                  <span className='ui large horizontal label'
-                    style={{backgroundColor: `hsla(${props.labelColor[event.subject_1]}, 50%, 50%, 0.3)`}}
-                    onClick={() => props.setFilter(event.subject_1)} >
-                    {event.subject_1}
-                  </span>
-                ) : null}
-                {event.action && event.action.length > 0 ? (
-                  <span>
-                    {event.action}
-                  </span>
-                ) : null}
-                {event.object && event.object.length > 0 ? (
-                  <span className='ui large horizontal label'
-                    style={{backgroundColor: `hsla(${props.labelColor[event.object]}, 50%, 50%, 0.3)`}}
-                    onClick={() => props.setFilter(event.object)} >
-                    {event.object}
-                  </span>
-                ) : null}
-                {event.object_1_prep && event.object_1_prep.length > 0 ? (
-                  <span>
-                    {event.object_1_prep}
-                  </span>
-                ) : null}
-                {event.object_1 && event.object_1.length > 0 ? (
-                  <span className='ui large horizontal label'
-                    style={{backgroundColor: `hsla(${props.labelColor[event.object_1]}, 50%, 50%, 0.3)`}}
-                    onClick={() => props.setFilter(event.object_1)} >
-                    {event.object_1}
-                  </span>
-                ) : null}
-                {event.topic && event.topic.length > 0 ? (
-                  <span>
-                    {event.topic}
-                  </span>
-                ) : null}
-              </p>
+              <Relation event={event} props={props} />
               {isLocationAvailable({event}) ? (
-                <p className='description'>
-                  {event.location_prep && event.location_prep.length > 0 ? (
-                    <span>
-                      {event.location_prep}
-                    </span>
-                  ) : null}
-                  {event.location && event.location.length > 0 ? (
-                    <span className='ui small horizontal label'
-                      style={{backgroundColor: `hsla(${props.labelColor[event.location]}, 20%, 70%, 0.3)`}}
-                      onClick={() => props.setFilter(event.location)} >
-                      {event.location}
-                    </span>
-                  ) : null}
-                  {event.location_1_prep && event.location_1_prep.length > 0 ? (
-                    <span>
-                      {event.location_1_prep}
-                    </span>
-                  ) : null}
-                  {event.location_1 && event.location_1.length > 0 ? (
-                    <span className='ui small horizontal label'
-                      style={{backgroundColor: `hsla(${props.labelColor[event.location_1]}, 20%, 70%, 0.3)`}}
-                      onClick={() => props.setFilter(event.location_1)} >
-                      {event.location_1}
-                    </span>
-                  ) : null}
-                </p>
+                <Location event={event} props={props} />
               ) : null}
-              {isDescriptionAvailable({event}) ? (
+              {isMediaAvailable({event}) ? (
                 <p className='description'>
                   {event.channel_prep}{event.channel}{event.content_carrier} — <a href={event.ref_url} target='_blank' rel='noopener noreferrer'>
                     {event.ref_title && event.ref_title.length > 0 ? event.ref_title : event.ref_url}

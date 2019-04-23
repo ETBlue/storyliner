@@ -1,7 +1,7 @@
-import {LABELS, SETTINGS} from '../_shared'
+import {SETTINGS} from '../_shared'
 
 import getDateTime from './getDateTime'
-
+import isLabel from './isLabel'
 import COLORS from './COLORS'
 
 export default (lines) => {
@@ -46,7 +46,7 @@ export default (lines) => {
           break
         default:
           event[header] = column || ''
-          if (LABELS.includes(header)) {
+          if (isLabel(header)) {
             labels.add(column)
           }
       }
