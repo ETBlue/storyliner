@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({filter, setFilter}) => {
+const Filter = ({filter, setFilter}) => {
   return (
     <div className='Filter ui two column stackable grid'>
       <div className='eleven wide column'>
@@ -16,3 +16,5 @@ export default ({filter, setFilter}) => {
     </div>
   )
 }
+
+export default React.memo(Filter)

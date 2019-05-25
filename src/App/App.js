@@ -113,17 +113,6 @@ const App = (props) => {
   }
 
   const isAvailable = queries.source && events.length > 0
-  const memoizedSidebar = useMemo(() => (
-    <Sidebar onCurrentClick={toggleSidebar} />
-  ), [])
-  const memoizedHeader = useMemo(() => (
-    <Header logo={logo}
-      title={isAvailable ? title : SETTINGS.title}
-      subtitle={isAvailable ? subtitle : SETTINGS.subtitle}
-      status={status}
-      onIconClick={startApp}
-      onLogoClick={toggleSidebar} />
-  ), [title, subtitle, status, isAvailable])
   const memoizedTimeline = useMemo(() => (
     <Timeline
       handleContextRef={handleContextRef}
@@ -141,9 +130,14 @@ const App = (props) => {
   ), [queries, events, filter, labelColor, firstStagedEventIndex, lastStagedEventIndex, visibleEventIDs, contextRef])
   return (
     <div className='App' style={showSidebar ? {left: '20rem'} : {}} >
-      {memoizedSidebar}
+      <Sidebar onCurrentClick={toggleSidebar} />
       <main className='App-main'>
-        {memoizedHeader}
+        <Header logo={logo}
+          title={isAvailable ? title : SETTINGS.title}
+          subtitle={isAvailable ? subtitle : SETTINGS.subtitle}
+          status={status}
+          onIconClick={startApp}
+          onLogoClick={toggleSidebar} />
         <section className='Body-wrapper ui container'>
           {isAvailable ? memoizedTimeline : (
             <Home />

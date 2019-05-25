@@ -9,7 +9,7 @@ import isMediaAvailable from './isMediaAvailable'
 import isLocationAvailable from './isLocationAvailable'
 import getRefMsg from './getRefMsg'
 
-export default ({event, eventIndex, isActive, props, refEventIndex, refEvent, refEventTitle}) => {
+const Event = ({event, eventIndex, isActive, props, refEventIndex, refEvent, refEventTitle}) => {
   const isQuoteExists = event.quote && event.quote.length > 0
   const isEventReferenced = refEventIndex === eventIndex
   const queries = Object.assign({}, props.queries)
@@ -47,14 +47,14 @@ export default ({event, eventIndex, isActive, props, refEventIndex, refEvent, re
                   </div>
                 ) : null}
                 <div className='Content-text'>
-                  <Relation event={event} props={props} />
+                  <Relation event={event} labelColor={props.labelColor} setFilter={props.setFilter} />
                   {event.description ? (
                     <p className='description'>
                       {event.description}
                     </p>
                   ) : null}
                   {isLocationAvailable({event}) ? (
-                    <Location event={event} props={props} />
+                    <Location event={event} labelColor={props.labelColor} setFilter={props.setFilter} />
                   ) : null}
                   {isMediaAvailable({event}) ? (
                     <p className='description'>
@@ -87,3 +87,5 @@ export default ({event, eventIndex, isActive, props, refEventIndex, refEvent, re
     </article>
   )
 }
+
+export default React.memo(Event)

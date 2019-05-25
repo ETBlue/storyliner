@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({event, label, props, size, sla}) => {
+const LabelSet = ({event, label, labelColor, setFilter, size, sla}) => {
   const set = []
   if (event[`${label}_prep`] && event[`${label}_prep`].length > 0) {
     set.push(
@@ -12,11 +12,13 @@ export default ({event, label, props, size, sla}) => {
   if (event[label] && event[label].length > 0) {
     set.push(
       <span key={label} className={`ui ${size} horizontal label`}
-        style={{backgroundColor: `hsla(${props.labelColor[event[label]]}, ${sla})`}}
-        onClick={() => props.setFilter(event[label])} >
+        style={{backgroundColor: `hsla(${labelColor[event[label]]}, ${sla})`}}
+        onClick={() => setFilter(event[label])} >
         {event[label]}
       </span>
     )
   }
   return set
 }
+
+export default React.memo(LabelSet)

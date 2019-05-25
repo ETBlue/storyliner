@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({quotes}) => {
+const QuoteList = ({quotes}) => {
   const quotesJSX = quotes.map((quote, quoteIndex) => {
     let Author = null
 
@@ -26,3 +26,5 @@ export default ({quotes}) => {
     </div>
   )
 }
+
+export default React.memo(QuoteList)

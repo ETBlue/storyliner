@@ -2,7 +2,7 @@ import React from 'react'
 
 import './Header.css'
 
-export default ({logo, title, subtitle, onIconClick, onLogoClick, status}) => {
+const Header = ({logo, title, subtitle, onIconClick, onLogoClick, status}) => {
   let icon = 'redo'
   switch (status) {
     case 'success':
@@ -41,3 +41,5 @@ export default ({logo, title, subtitle, onIconClick, onLogoClick, status}) => {
     </header>
   )
 }
+
+export default React.memo(Header)

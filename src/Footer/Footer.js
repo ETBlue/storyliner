@@ -2,7 +2,7 @@ import React from 'react'
 
 import './Footer.css'
 
-export default () => (
+const Footer = () => (
   <footer className='Footer' >
     <div className='ui center aligned container'>
       <div className='wrapper'>
@@ -43,3 +43,5 @@ export default () => (
     </div>
   </footer>
 )
+
+export default React.memo(Footer)
