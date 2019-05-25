@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
-const LabelSet = ({event, label, labelColor, setFilter, size, sla}) => {
+import {LabelColorContext} from '../_shared'
+
+const LabelSet = ({event, label, setFilter, size, sla}) => {
+  const labelColor = useContext(LabelColorContext)
   const set = []
   if (event[`${label}_prep`] && event[`${label}_prep`].length > 0) {
     set.push(
