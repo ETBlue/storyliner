@@ -94,7 +94,7 @@ const App = (props) => {
 
   const [showSidebar, setShowSidebar] = useState(false)
   const toggleSidebar = () => {
-    setShowSidebar(!showSidebar)
+    setShowSidebar(prev => !prev)
   }
 
   const scrollReset = useCallback((direction) => {
