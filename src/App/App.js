@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
 import Papa from 'papaparse'
@@ -18,146 +18,135 @@ import getVisibleEventIDs from './getVisibleEventIDs'
 import logo from './logo.svg'
 import './App.css'
 
-class App extends React.Component {
-  state = {
-    queries: queryString.parse(this.props.location.search),
-    isLoaded: false,
-    status: 'standby',
+const App = (props) => {
+  const queries = queryString.parse(props.location.search)
+  const [status, setStatus] = useState('standby')
 
-    title: '',
-    subtitle: '',
-    events: [],
+  const [title, setTitle] = useState('')
+  const [subtitle, setSubtitle] = useState('')
+  const [labelColor, setLabelColor] = useState(undefined)
+  const [events, setEvents] = useState([])
 
-    filter: '',
-    showSidebar: false,
-    visibleEventIDs: [],
-    firstStagedEventIndex: 0,
-    lastStagedEventIndex: 10,
+  const [visibleEventIDs, setVisibleEventIDs] = useState([])
+  const [firstStagedEventIndex, setFirstStagedEventIndex] = useState(0)
+  const [lastStagedEventIndex, setLastStagedEventIndex] = useState(10)
+  const updateVisibleEventIDs = () => {
+    const STAGECAPACITY = 5
+    const visibleIDs = getVisibleEventIDs(window.eventElements)
 
-    // for sticky menu
-    contextRef: null
+    setVisibleEventIDs(visibleIDs)
+    setFirstStagedEventIndex(visibleIDs[0] - STAGECAPACITY)
+    setLastStagedEventIndex(visibleIDs[visibleIDs.length - 1] + STAGECAPACITY)
   }
 
-  componentDidMount () {
-    this.startApp()
-    window.addEventListener('scroll', (e) => {
-      this.updateVisibleEventIDs()
-    })
-  }
+  const startApp = useCallback(() => {
+    if (!queries.source || decodeURIComponent(queries.source).length === 0) {
+      setStatus('invalid')
+    } else {
+      setStatus('loading')
 
-  componentDidUpdate (prevProps) {
-    if (this.props.location.search !== prevProps.location.search) {
-      const prevSource = this.state.queries.source
-      const newQueries = queryString.parse(this.props.location.search)
-      this.setState({queries: newQueries}, () => {
-        if (prevSource !== newQueries.source) {
-          this.startApp()
-        }
-      })
-    }
-  }
-
-  startApp = () => {
-    if (!this.state.queries.source || decodeURIComponent(this.state.queries.source).length === 0) {
-      this.setState({status: 'invalid', isLoaded: false})
-      return
-    }
-    this.fetchData()
-  }
-
-  fetchData = () => {
-    this.setState({status: 'loading', isLoaded: false}, () => {
-      Papa.parse(this.state.queries.source, {
+      Papa.parse(queries.source, {
         download: true,
         complete: (result) => {
-          const {title, subtitle, events, labelColor} = parseCsvArray(result.data)
-          updateStorage({title, subtitle, storage, source: this.state.queries.source})
-          this.setState({title, subtitle, events, labelColor,
-            isLoaded: true,
-            status: 'success'
-          }, () => {
-            this.eventElements = window.document.getElementsByClassName('Event')
-            this.updateVisibleEventIDs()
-            window.setTimeout(() => {
-              this.setState({status: 'standby'})
-            }, 5000)
+          const parsedCSV = parseCsvArray(result.data)
+          updateStorage({
+            title: parsedCSV.title,
+            subtitle: parsedCSV.subtitle,
+            storage,
+            source: queries.source
           })
+
+          setTitle(parsedCSV.title)
+          setSubtitle(parsedCSV.subtitle)
+          setLabelColor(parsedCSV.labelColor)
+          setEvents(parsedCSV.events)
+          setStatus('success')
+
+          window.eventElements = window.document.getElementsByClassName('Event')
+          updateVisibleEventIDs()
+          window.addEventListener('scroll', updateVisibleEventIDs)
+          window.setTimeout(() => {
+            setStatus('standby')
+          }, 5000)
         },
         error: (error) => {
           console.error(error)
         }
       })
-    })
+    }
+  }, [queries.source])
+  useEffect(() => {
+    startApp()
+    return () => {
+      delete window.eventElements
+      window.removeEventListener('scroll', updateVisibleEventIDs)
+    }
+  }, [queries.source])
+
+  const [filter, setFilter] = useState('')
+  const handleFilterUpdate = (character) => {
+    if (filter === character) {
+      setFilter('')
+    } else {
+      setFilter(character)
+    }
   }
 
-  updateVisibleEventIDs = () => {
-    const STAGECAPACITY = 5
-    const visibleIDs = getVisibleEventIDs(this.eventElements)
-
-    this.setState({
-      visibleEventIDs: visibleIDs,
-      firstStagedEventIndex: visibleIDs[0] - STAGECAPACITY,
-      lastStagedEventIndex: visibleIDs[visibleIDs.length - 1] + STAGECAPACITY
-    })
+  const [showSidebar, setShowSidebar] = useState(false)
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar)
   }
 
-  toggleSidebar = () => {
-    this.setState((prevState, props) => {
-      return {showSidebar: !prevState.showSidebar}
-    })
-  }
-
-  scrollReset = (direction) => {
-    this.props.history.push(`${this.props.location.pathname}${this.props.location.search}`)
+  const scrollReset = useCallback((direction) => {
+    props.history.push(`${props.location.pathname}${props.location.search}`)
     if (direction === 'top') {
       window.scrollTo(0, 0)
     } else if (direction === 'bottom') {
       window.scrollTo(0, window.document.body.scrollHeight)
     }
+  }, [props.history, props.location.pathname, props.location.search])
+
+  // for sticky menu
+  const [contextRef, setContextRef] = useState(null)
+  const handleContextRef = (contextRef) => {
+    setContextRef(contextRef)
   }
 
-  setFilter = (character) => {
-    this.setState((prevState, props) => {
-      if (prevState.filter === character) {
-        return {filter: ''}
-      }
-      return {filter: character}
-    })
-  }
-
-  handleContextRef = (contextRef) => {
-    this.setState({ contextRef })
-  }
-
-  render () {
-    const isAvailable = this.state.queries.source && this.state.events.length > 0
-    const {title, subtitle} = isAvailable ? this.state : SETTINGS
-
-    return (
-      <div className='App' style={this.state.showSidebar ? {left: '20rem'} : {}} >
-        <Sidebar onCurrentClick={this.toggleSidebar} />
-        <main className='App-main'>
-          <Header logo={logo} title={title} subtitle={subtitle} status={this.state.status}
-            onIconClick={this.startApp}
-            onLogoClick={this.toggleSidebar} />
-          <section className='Body-wrapper ui container'>
-            {isAvailable ? (
-              <Timeline
-                handleContextRef={this.handleContextRef}
-                scrollReset={this.scrollReset}
-                setFilter={this.setFilter}
-                {...this.state}
-              />
-            ) : (
-              <Home />
-            )}
-          </section>
-          <hr className='ui divider' />
-          <Footer />
-        </main>
-      </div>
-    )
-  }
+  const isAvailable = queries.source && events.length > 0
+  return (
+    <div className='App' style={showSidebar ? {left: '20rem'} : {}} >
+      <Sidebar onCurrentClick={toggleSidebar} />
+      <main className='App-main'>
+        <Header logo={logo}
+          title={isAvailable ? title : SETTINGS.title}
+          subtitle={isAvailable ? subtitle : SETTINGS.subtitle}
+          status={status}
+          onIconClick={startApp}
+          onLogoClick={toggleSidebar} />
+        <section className='Body-wrapper ui container'>
+          {isAvailable ? (
+            <Timeline
+              handleContextRef={handleContextRef}
+              scrollReset={scrollReset}
+              setFilter={handleFilterUpdate}
+              queries={queries}
+              events={events}
+              filter={filter}
+              firstStagedEventIndex={firstStagedEventIndex}
+              lastStagedEventIndex={lastStagedEventIndex}
+              visibleEventIDs={visibleEventIDs}
+              contextRef={contextRef}
+              labelColor={labelColor}
+            />
+          ) : (
+            <Home />
+          )}
+        </section>
+        <hr className='ui divider' />
+        <Footer />
+      </main>
+    </div>
+  )
 }
 
 export default withRouter(App)
