@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState, useEffect, useCallback, useMemo} from 'react'
 import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
 import Papa from 'papaparse'
@@ -113,32 +113,39 @@ const App = (props) => {
   }
 
   const isAvailable = queries.source && events.length > 0
+  const memoizedSidebar = useMemo(() => (
+    <Sidebar onCurrentClick={toggleSidebar} />
+  ), [])
+  const memoizedHeader = useMemo(() => (
+    <Header logo={logo}
+      title={isAvailable ? title : SETTINGS.title}
+      subtitle={isAvailable ? subtitle : SETTINGS.subtitle}
+      status={status}
+      onIconClick={startApp}
+      onLogoClick={toggleSidebar} />
+  ), [title, subtitle, status, isAvailable])
+  const memoizedTimeline = useMemo(() => (
+    <Timeline
+      handleContextRef={handleContextRef}
+      scrollReset={scrollReset}
+      setFilter={handleFilterUpdate}
+      queries={queries}
+      events={events}
+      filter={filter}
+      firstStagedEventIndex={firstStagedEventIndex}
+      lastStagedEventIndex={lastStagedEventIndex}
+      visibleEventIDs={visibleEventIDs}
+      contextRef={contextRef}
+      labelColor={labelColor}
+    />
+  ), [queries, events, filter, labelColor, firstStagedEventIndex, lastStagedEventIndex, visibleEventIDs, contextRef])
   return (
     <div className='App' style={showSidebar ? {left: '20rem'} : {}} >
-      <Sidebar onCurrentClick={toggleSidebar} />
+      {memoizedSidebar}
       <main className='App-main'>
-        <Header logo={logo}
-          title={isAvailable ? title : SETTINGS.title}
-          subtitle={isAvailable ? subtitle : SETTINGS.subtitle}
-          status={status}
-          onIconClick={startApp}
-          onLogoClick={toggleSidebar} />
+        {memoizedHeader}
         <section className='Body-wrapper ui container'>
-          {isAvailable ? (
-            <Timeline
-              handleContextRef={handleContextRef}
-              scrollReset={scrollReset}
-              setFilter={handleFilterUpdate}
-              queries={queries}
-              events={events}
-              filter={filter}
-              firstStagedEventIndex={firstStagedEventIndex}
-              lastStagedEventIndex={lastStagedEventIndex}
-              visibleEventIDs={visibleEventIDs}
-              contextRef={contextRef}
-              labelColor={labelColor}
-            />
-          ) : (
+          {isAvailable ? memoizedTimeline : (
             <Home />
           )}
         </section>
