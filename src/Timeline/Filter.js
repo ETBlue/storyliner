@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
-const Filter = ({filter, setFilter}) => {
+import {FilterContext} from '../_shared'
+
+const Filter = () => {
+  const {filter, setFilter} = useContext(FilterContext)
   return (
     <div className='Filter ui two column stackable grid'>
       <div className='eleven wide column'>

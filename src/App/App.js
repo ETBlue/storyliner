@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom'
 import queryString from 'query-string'
 import Papa from 'papaparse'
 
-import {SETTINGS, storage, LabelColorContextProvider} from '../_shared'
+import {SETTINGS, storage, LabelColorContextProvider, FilterContextProvider} from '../_shared'
 
 import {Sidebar} from '../Sidebar'
 import {Home} from '../Home'
@@ -83,15 +83,6 @@ const App = (props) => {
     }
   }, [queries.source])
 
-  const [filter, setFilter] = useState('')
-  const handleFilterUpdate = (character) => {
-    if (filter === character) {
-      setFilter('')
-    } else {
-      setFilter(character)
-    }
-  }
-
   const [showSidebar, setShowSidebar] = useState(false)
   const toggleSidebar = () => {
     setShowSidebar(prev => !prev)
@@ -114,20 +105,16 @@ const App = (props) => {
 
   const isAvailable = queries.source && events.length > 0
   const memoizedTimeline = useMemo(() => (
-    <LabelColorContextProvider value={labelColor}>
-      <Timeline
-        handleContextRef={handleContextRef}
-        scrollReset={scrollReset}
-        setFilter={handleFilterUpdate}
-        queries={queries}
-        events={events}
-        filter={filter}
-        firstStagedEventIndex={firstStagedEventIndex}
-        lastStagedEventIndex={lastStagedEventIndex}
-        visibleEventIDs={visibleEventIDs}
-        contextRef={contextRef} />
-    </LabelColorContextProvider>
-  ), [queries, events, filter, labelColor, firstStagedEventIndex, lastStagedEventIndex, visibleEventIDs, contextRef])
+    <Timeline
+      handleContextRef={handleContextRef}
+      scrollReset={scrollReset}
+      queries={queries}
+      events={events}
+      firstStagedEventIndex={firstStagedEventIndex}
+      lastStagedEventIndex={lastStagedEventIndex}
+      visibleEventIDs={visibleEventIDs}
+      contextRef={contextRef} />
+  ), [queries, events, firstStagedEventIndex, lastStagedEventIndex, visibleEventIDs, contextRef])
   return (
     <div className='App' style={showSidebar ? {left: '20rem'} : {}} >
       <Sidebar onCurrentClick={toggleSidebar} />
@@ -139,7 +126,13 @@ const App = (props) => {
           onIconClick={startApp}
           onLogoClick={toggleSidebar} />
         <section className='Body-wrapper ui container'>
-          {isAvailable ? memoizedTimeline : (
+          {isAvailable ? (
+            <LabelColorContextProvider value={labelColor}>
+              <FilterContextProvider>
+                {memoizedTimeline}
+              </FilterContextProvider>
+            </LabelColorContextProvider>
+          ) : (
             <Home />
           )}
         </section>

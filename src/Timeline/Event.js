@@ -47,14 +47,14 @@ const Event = ({event, eventIndex, isActive, props, refEventIndex, refEvent, ref
                   </div>
                 ) : null}
                 <div className='Content-text'>
-                  <Relation event={event} setFilter={props.setFilter} />
+                  <Relation event={event} />
                   {event.description ? (
                     <p className='description'>
                       {event.description}
                     </p>
                   ) : null}
                   {isLocationAvailable({event}) ? (
-                    <Location event={event} setFilter={props.setFilter} />
+                    <Location event={event} />
                   ) : null}
                   {isMediaAvailable({event}) ? (
                     <p className='description'>

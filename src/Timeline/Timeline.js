@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {withRouter} from 'react-router-dom'
 import {Sticky} from 'semantic-ui-react'
 
-import {getEventIndex} from '../_shared'
+import {getEventIndex, FilterContext} from '../_shared'
 
 import isEventListed from './isEventListed'
 import isEventInViewPort from './isEventInViewPort'
@@ -15,6 +15,7 @@ import MenuItem from './MenuItem'
 import './Timeline.css'
 
 const Timeline = (props) => {
+  const {filter} = useContext(FilterContext)
   // get ready to set up page body
   const Menu = []
   const EventList = []
@@ -32,7 +33,7 @@ const Timeline = (props) => {
 
     const isActive = getEventIndex(props.location.hash) === eventIndex
 
-    if (isEventListed({filter: props.filter, event})) {
+    if (isEventListed({filter, event})) {
       EventList.push(
         <Event key={eventIndex} eventIndex={eventIndex} event={event}
           isActive={isActive} props={props}
@@ -84,7 +85,7 @@ const Timeline = (props) => {
         </Sticky>
       </div>
       <div className='Event-wrapper'>
-        {props.filter.length > 0 ? (
+        {filter.length > 0 ? (
           <Filter {...props} />
         ) : null}
         {EventList}
