@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/storyliner/static/css/main.32e0a8d0.chunk.css",
-    "main.js": "/storyliner/static/js/main.56573f9a.chunk.js",
-    "main.js.map": "/storyliner/static/js/main.56573f9a.chunk.js.map",
+    "main.js": "/storyliner/static/js/main.a8632907.chunk.js",
+    "main.js.map": "/storyliner/static/js/main.a8632907.chunk.js.map",
     "runtime~main.js": "/storyliner/static/js/runtime~main.2f6f50a4.js",
     "runtime~main.js.map": "/storyliner/static/js/runtime~main.2f6f50a4.js.map",
-    "static/js/2.4333b01f.chunk.js": "/storyliner/static/js/2.4333b01f.chunk.js",
-    "static/js/2.4333b01f.chunk.js.map": "/storyliner/static/js/2.4333b01f.chunk.js.map",
+    "static/js/2.89cb5fca.chunk.js": "/storyliner/static/js/2.89cb5fca.chunk.js",
+    "static/js/2.89cb5fca.chunk.js.map": "/storyliner/static/js/2.89cb5fca.chunk.js.map",
     "index.html": "/storyliner/index.html",
-    "precache-manifest.07b1163128797d0b6fea5d5044dc8016.js": "/storyliner/precache-manifest.07b1163128797d0b6fea5d5044dc8016.js",
+    "precache-manifest.660aaeeba39b113ff76dbfe0adfcccf6.js": "/storyliner/precache-manifest.660aaeeba39b113ff76dbfe0adfcccf6.js",
     "service-worker.js": "/storyliner/service-worker.js",
     "static/css/main.32e0a8d0.chunk.css.map": "/storyliner/static/css/main.32e0a8d0.chunk.css.map",
     "static/media/logo.svg": "/storyliner/static/media/logo.5d5d9eef.svg"
