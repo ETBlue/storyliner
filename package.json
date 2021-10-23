@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "gh-pages": "^2.0.0",
-    "papaparse": "^4.6.0"
+    "papaparse": "^5.2.0"
   },
   "browserslist": [
     ">0.2%",
