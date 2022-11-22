@@ -60,6 +60,10 @@ export default (lines) => {
     }
   })
 
+  events.sort((a, b) => {
+    return a.momentDate > b.momentDate
+  })
+
   const labelColor = {}
   let colors = new Set(COLORS)
   labels.delete('')
